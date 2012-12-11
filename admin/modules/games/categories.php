@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2008 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 24/12/2008 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -63,8 +63,8 @@ if($mybb->input['action'] == "add")
 		{
 			//Insert category
 			$insert_category = array(
-				'title'		=> addslashes($mybb->input['title']),
-				'image'		=> addslashes($mybb->input['image']),
+				'title'		=> $db->escape_string($mybb->input['title']),
+				'image'		=> $db->escape_string($mybb->input['image']),
 				'active'	=> intval($mybb->input['active'])
 			);
 			
@@ -160,8 +160,8 @@ elseif($mybb->input['action'] == "edit")
 		{
 			//Update category
 			$update_category = array(
-				'title'		=> addslashes($mybb->input['title']),
-				'image'		=> addslashes($mybb->input['image']),
+				'title'		=> $db->escape_string($mybb->input['title']),
+				'image'		=> $db->escape_string($mybb->input['image']),
 				'active'	=> intval($mybb->input['active'])
 			);
 			

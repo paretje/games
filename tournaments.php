@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 21/03/2010 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -60,7 +60,7 @@ switch($mybb->input['action'])
 		FROM ".TABLE_PREFIX."games_tournaments t
 		LEFT JOIN ".TABLE_PREFIX."games g ON (t.gid=g.gid)
 		LEFT JOIN ".TABLE_PREFIX."users u ON (t.champion=u.uid)
-		WHERE t.status='".addslashes($mybb->input['status'])."' AND g.active='1'
+		WHERE t.status='".$db->escape_string($mybb->input['status'])."' AND g.active='1'
 		ORDER BY t.dateline DESC");
 		$tournaments_test = $db->num_rows($query);
 		
@@ -185,7 +185,7 @@ switch($mybb->input['action'])
 				'tid'			=> intval($tid),
 				'rid'			=> intval("1"),
 				'uid'			=> intval($mybb->user['uid']),
-				'username'		=> addslashes($mybb->user['username'])
+				'username'		=> $db->escape_string($mybb->user['username'])
 			);
 			
 			//Plugins
@@ -517,7 +517,7 @@ switch($mybb->input['action'])
 			'tid'			=> intval($mybb->input['tid']),
 			'rid'			=> intval("1"),
 			'uid'			=> intval($mybb->user['uid']),
-			'username'		=> addslashes($mybb->user['username'])
+			'username'		=> $db->escape_string($mybb->user['username'])
 		);
 		
 		//Plugins

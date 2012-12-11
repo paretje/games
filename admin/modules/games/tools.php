@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2009 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 17/04/2008 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -126,11 +126,11 @@ elseif($mybb->input['action'] == "repair_champions")
 		{
 			$champs_array = array(
 				'gid'			=> intval($champs[$gid]['gid']),
-				'title'			=> addslashes($champs[$gid]['title']),
+				'title'			=> $db->escape_string($champs[$gid]['title']),
 				'uid'			=> intval($champs[$gid]['uid']),
-				'username'		=> addslashes($champs[$gid]['username']),
-				'score'			=> addslashes($champs[$gid]['score']),
-				'dateline'		=> addslashes($champs[$gid]['dateline']),
+				'username'		=> $db->escape_string($champs[$gid]['username']),
+				'score'			=> $db->escape_string($champs[$gid]['score']),
+				'dateline'		=> $db->escape_string($champs[$gid]['dateline']),
 			);
 			
 			if(isset($champs[$gid]['champscore']))

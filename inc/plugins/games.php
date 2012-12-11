@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2011 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 07/11/2012 by Paretje based on Jockl advice
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -57,7 +57,7 @@ function games_info()
 		"website"	=> "http://www.gamesection.org",
 		"author"	=> "Paretje",
 		"authorsite"	=> "http://www.gamesection.org",
-		"version"	=> "1.2.2",
+		"version"	=> "1.2.3",
 		"guid"		=> "db37073977904e9458f54937ceb13a9f",
 		"compatibility" => "14*,16*"
 	);
@@ -262,28 +262,28 @@ change_admin_permission("games", "version", 1);
 require_once MYBB_ROOT."inc/functions_task.php";
 
 $gamescleanup_insert = array(
-	'title'		=> addslashes("Game Section Cleanup"),
-	'description'	=> addslashes("Cleans old Game Section sessions"),
-	'file'		=> addslashes("gamescleanup"),
-	'minute'	=> addslashes("0"),
-	'hour'		=> addslashes("*"),
-	'day'		=> addslashes("*"),
-	'month'		=> addslashes("*"),
-	'weekday'	=> addslashes("*"),
+	'title'		=> $db->escape_string("Game Section Cleanup"),
+	'description'	=> $db->escape_string("Cleans old Game Section sessions"),
+	'file'		=> $db->escape_string("gamescleanup"),
+	'minute'	=> $db->escape_string("0"),
+	'hour'		=> $db->escape_string("*"),
+	'day'		=> $db->escape_string("*"),
+	'month'		=> $db->escape_string("*"),
+	'weekday'	=> $db->escape_string("*"),
 	'enabled'	=> intval("1"),
 	'logging'	=> intval("1")
 );
 $gamescleanup_insert['nextrun'] = fetch_next_run($gamescleanup_insert);
 
 $tournamentstatus_insert = array(
-	'title'		=> addslashes("Game Section Tournament Status"),
-	'description'	=> addslashes("Automaticaly changes the status of a Game Section Tournament"),
-	'file'		=> addslashes("tournamentstatus"),
-	'minute'	=> addslashes("0"),
-	'hour'		=> addslashes("*"),
-	'day'		=> addslashes("*"),
-	'month'		=> addslashes("*"),
-	'weekday'	=> addslashes("*"),
+	'title'		=> $db->escape_string("Game Section Tournament Status"),
+	'description'	=> $db->escape_string("Automaticaly changes the status of a Game Section Tournament"),
+	'file'		=> $db->escape_string("tournamentstatus"),
+	'minute'	=> $db->escape_string("0"),
+	'hour'		=> $db->escape_string("*"),
+	'day'		=> $db->escape_string("*"),
+	'month'		=> $db->escape_string("*"),
+	'weekday'	=> $db->escape_string("*"),
 	'enabled'	=> intval("1"),
 	'logging'	=> intval("1")
 );
@@ -295,17 +295,17 @@ $db->insert_query("tasks", $tournamentstatus_insert);
 //Insert the default game of the Game Section
 $game_insert = array(
 	'cid'		=> intval("0"),
-	'title'		=> addslashes("Pacman"),
-	'name'		=> addslashes("pacman"),
-	'description'	=> addslashes("Eat all the little dots without letting the ghosts get you!"),
-	'what'		=> addslashes("Eat all of the dots."),
-	'use_keys'	=> addslashes("Arrow keys to move."),
-	'bgcolor'	=> addslashes("000000"),
+	'title'		=> $db->escape_string("Pacman"),
+	'name'		=> $db->escape_string("pacman"),
+	'description'	=> $db->escape_string("Eat all the little dots without letting the ghosts get you!"),
+	'what'		=> $db->escape_string("Eat all of the dots."),
+	'use_keys'	=> $db->escape_string("Arrow keys to move."),
+	'bgcolor'	=> $db->escape_string("000000"),
 	'active'	=> intval("1"),
-	'width'		=> addslashes("360"),
-	'height'	=> addslashes("420"),
+	'width'		=> $db->escape_string("360"),
+	'height'	=> $db->escape_string("420"),
 	'dateline'	=> TIME_NOW,
-	'score_type'	=> addslashes("DESC")
+	'score_type'	=> $db->escape_string("DESC")
 );
 
 $db->insert_query("games", $game_insert);
@@ -348,11 +348,11 @@ require_once MYBB_ROOT."games/templates.php";
 
 //Insert Game Section theme
 $new_theme = array(
-	'name'		=> addslashes($theme['name']),
-	'directory'	=> addslashes($theme['directory']),
-	'catsperline'	=> addslashes($theme['catsperline']),
+	'name'		=> $db->escape_string($theme['name']),
+	'directory'	=> $db->escape_string($theme['directory']),
+	'catsperline'	=> $db->escape_string($theme['catsperline']),
 	'active'	=> intval("1"),
-	'CSS'		=> addslashes($theme['css'])
+	'CSS'		=> $db->escape_string($theme['css'])
 );
 
 $db->insert_query("games_themes", $new_theme);
@@ -884,11 +884,11 @@ function games_users_delete()
 		{
 			$champs_array = array(
 				'gid'			=> intval($champ[$gid]['gid']),
-				'title'			=> addslashes($champ[$gid]['title']),
+				'title'			=> $db->escape_string($champ[$gid]['title']),
 				'uid'			=> intval($champ[$gid]['uid']),
-				'username'		=> addslashes($champ[$gid]['username']),
-				'score'			=> addslashes($champ[$gid]['score']),
-				'dateline'		=> addslashes($champ[$gid]['dateline']),
+				'username'		=> $db->escape_string($champ[$gid]['username']),
+				'score'			=> $db->escape_string($champ[$gid]['score']),
+				'dateline'		=> $db->escape_string($champ[$gid]['dateline']),
 			);
 			
 			$db->update_query("games_champions", $champs_array, "gid='".$champ[$gid]['gid']."'");
