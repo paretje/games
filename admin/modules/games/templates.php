@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2008 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 30/10/2008 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -76,8 +76,8 @@ if($mybb->input['action'] == "add")
 			//Insert template
 			$insert_template = array(
 				'theme'		=> intval($mybb->input['tid']),
-				'title'		=> addslashes($mybb->input['title']),
-				'template'	=> addslashes($mybb->input['template'])
+				'title'		=> $db->escape_string($mybb->input['title']),
+				'template'	=> $db->escape_string($mybb->input['template'])
 			);
 			
 			//Plugin
@@ -236,8 +236,8 @@ elseif($mybb->input['action'] == "edit")
 		{
 			//Update template
 			$update_template = array(
-				'title'		=> addslashes($mybb->input['title']),
-				'template'	=> addslashes($mybb->input['template'])
+				'title'		=> $db->escape_string($mybb->input['title']),
+				'template'	=> $db->escape_string($mybb->input['template'])
 			);
 			
 			//Plugin

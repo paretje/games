@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2008 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 24/12/2008 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -70,7 +70,7 @@ if($mybb->input['action'] == "add")
 		}
 		
 		//Test theme
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE name='".addslashes($mybb->input['name'])."'");
+		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE name='".$db->escape_string($mybb->input['name'])."'");
 		$theme_test = $db->num_rows($query);
 		
 		if($theme_test != 0)
@@ -83,10 +83,10 @@ if($mybb->input['action'] == "add")
 		{
 			//Insert theme
 			$insert_theme = array(
-				'name'		=> addslashes($mybb->input['name']),
-				'directory'	=> addslashes($mybb->input['directory']),
+				'name'		=> $db->escape_string($mybb->input['name']),
+				'directory'	=> $db->escape_string($mybb->input['directory']),
 				'catsperline'	=> intval($mybb->input['catsperline']),
-				'css'		=> addslashes($mybb->input['css']),
+				'css'		=> $db->escape_string($mybb->input['css']),
 				'active'	=> intval($mybb->input['active'])
 			);
 			
@@ -222,7 +222,7 @@ elseif($mybb->input['action'] == "import")
 				require_once MYBB_ADMIN_DIR."games/".$_FILES['theme_file']['name'];
 				
 				//Test theme
-				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE name='".addslashes($theme['name'])."'");
+				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE name='".$db->escape_string($theme['name'])."'");
 				$theme_test = $db->num_rows($query);
 				
 				if($theme_test != 0)
@@ -235,10 +235,10 @@ elseif($mybb->input['action'] == "import")
 				{
 					//Insert theme
 					$insert_theme = array(
-						'name'		=> addslashes($theme['name']),
-						'directory'	=> addslashes($theme['directory']),
+						'name'		=> $db->escape_string($theme['name']),
+						'directory'	=> $db->escape_string($theme['directory']),
 						'catsperline'	=> intval($theme['catsperline']),
-						'css'		=> addslashes($theme['css']),
+						'css'		=> $db->escape_string($theme['css']),
 						'active'	=> intval($mybb->input['active'])
 					);
 					
@@ -363,10 +363,10 @@ elseif($mybb->input['action'] == "edit")
 		{
 			//Update theme
 			$update_theme = array(
-				'name'		=> addslashes($mybb->input['name']),
-				'directory'	=> addslashes($mybb->input['directory']),
+				'name'		=> $db->escape_string($mybb->input['name']),
+				'directory'	=> $db->escape_string($mybb->input['directory']),
 				'catsperline'	=> intval($mybb->input['catsperline']),
-				'css'		=> addslashes($mybb->input['css']),
+				'css'		=> $db->escape_string($mybb->input['css']),
 				'active'	=> intval($mybb->input['active'])
 			);
 			
@@ -509,7 +509,7 @@ elseif($mybb->input['action'] == "export")
 		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_templates WHERE theme='".intval($mybb->input['tid'])."' ORDER BY title ASC");
 		while($templates = $db->fetch_array($query))
 		{
-			$templates['template'] = str_replace('\\\\', "\\\\\\", str_replace('$', '\$', addslashes($templates['template'])));
+			$templates['template'] = str_replace('\\\\', "\\\\\\", str_replace('$', '\$', $db->escape_string($templates['template'])));
 			
 			$templates_vars .= "\$theme_templates['".$templates['title']."'] = \"".$templates['template']."\";\n\n";
 		}

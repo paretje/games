@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 07/02/2010 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -49,8 +49,8 @@ if($mybb->user['uid'] == 0)
 //IBProArcade, IBProArcade v32 and vBulletin Arcade v3
 if(floatval($mybb->input['gscore']) && !empty($mybb->input['gname']) && $mybb->request_method == "post")
 {
-	$name = $mybb->input['gname'];
-	$score = $mybb->input['gscore'];
+	$name = $db->escape_string(stripslashes($mybb->input['gname']));
+	$score = floatval($mybb->input['gscore']);
 }
 else
 {
@@ -230,7 +230,7 @@ else
 			$update_score = array(
 				'gid'			=> intval($gid),
 				'uid'			=> intval($mybb->user['uid']),
-				'username'		=> addslashes($mybb->user['username']),
+				'username'		=> $db->escape_string($mybb->user['username']),
 				'score'			=> floatval($score),
 				'dateline'		=> time(),
 				'ip'			=> get_ip()
@@ -253,7 +253,7 @@ else
 			'sid'			=> NULL,
 			'gid'			=> intval($gid),
 			'uid'			=> intval($mybb->user['uid']),
-			'username'		=> addslashes($mybb->user['username']),
+			'username'		=> $db->escape_string($mybb->user['username']),
 			'score'			=>floatval($score),
 			'dateline'		=> time(),
 			'ip'			=> get_ip()
@@ -278,7 +278,7 @@ else
 			//Yes, update the champion
 			$update_champ = array(
 				'uid'			=> intval($mybb->user['uid']),
-				'username'		=> addslashes($mybb->user['username']),
+				'username'		=> $db->escape_string($mybb->user['username']),
 				'score'			=> floatval($score),
 				'dateline'		=> TIME_NOW
 			);
@@ -319,9 +319,9 @@ else
 		//No, insert the champ
 		$insert_champ = array(
 			'gid'			=> intval($gid),
-			'title'			=> addslashes($game['title']),
+			'title'			=> $db->escape_string($game['title']),
 			'uid'			=> intval($mybb->user['uid']),
-			'username'		=> addslashes($mybb->user['username']),
+			'username'		=> $db->escape_string($mybb->user['username']),
 			'score'			=> floatval($score),
 			'dateline'		=> TIME_NOW
 		);

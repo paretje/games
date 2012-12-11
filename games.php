@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 07/11/2012 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -858,7 +858,7 @@ switch($mybb->input['action'])
 		$rate = array(
 			'gid'			=> intval($mybb->input['gid']),
 			'uid'			=> intval($mybb->user['uid']),
-			'username'		=> addslashes($mybb->user['username']),
+			'username'		=> $db->escape_string($mybb->user['username']),
 			'rating'		=> intval($mybb->input['rating']),
 			'dateline'		=> TIME_NOW,
 			'ip'			=> get_ip(),
@@ -910,7 +910,7 @@ switch($mybb->input['action'])
 		//Is there searched on a title
 		if(!empty($mybb->input['s']))
 		{
-			$title_q = addslashes(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['s'])));
+			$title_q = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['s'])));
 			$where_search = " AND title LIKE '%".$title_q."%'";
 			
 			$s = "&s=".htmlspecialchars_uni($mybb->input['s']);
@@ -929,7 +929,7 @@ switch($mybb->input['action'])
 		//Is there searched on a description
 		if(!empty($mybb->input['des']))
 		{
-			$des_q = addslashes(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['des'])));
+			$des_q = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['des'])));
 			
 			$where_search .= " AND description LIKE '%".$des_q."%'";
 			
@@ -968,7 +968,7 @@ switch($mybb->input['action'])
 		//Is there searched on a title
 		if(!empty($mybb->input['s']))
 		{
-			$title = addslashes(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['s'])));
+			$title = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['s'])));
 			
 			$where_search = " AND title LIKE '%".$title."%'";
 			$where_search2 = " AND g.title LIKE '%".$title."%'";
@@ -986,7 +986,7 @@ switch($mybb->input['action'])
 		//Is there searched on a description
 		if(!empty($mybb->input['des']))
 		{
-			$des = addslashes(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['des'])));
+			$des = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['des'])));
 			
 			$where_search .= " AND description LIKE '%".$des."%'";
 			$where_search2 .= " AND g.description LIKE '%".$des."%'";
@@ -1689,7 +1689,7 @@ switch($mybb->input['action'])
 			
 			//Insert/update comment
 			$update_comment = array(
-				'comment'		=> addslashes($mybb->input['comment']),
+				'comment'		=> $db->escape_string($mybb->input['comment']),
 			);
 			
 			$db->update_query("games_scores", $update_comment, "gid='".$gid."' AND uid='".$mybb->user['uid']."'");
@@ -1975,8 +1975,8 @@ switch($mybb->input['action'])
 			$do_settings = array(
 				'games_maxgames'		=> intval($mybb->input['maxgames']),
 				'games_maxscores'		=> intval($mybb->input['maxscores']),
-				'games_sortby'			=> addslashes($mybb->input['sortby']),
-				'games_order'			=> addslashes($mybb->input['order']),
+				'games_sortby'			=> $db->escape_string($mybb->input['sortby']),
+				'games_order'			=> $db->escape_string($mybb->input['order']),
 				'games_theme'			=> intval($mybb->input['theme']),
 				'games_tournamentnotify'	=> intval($mybb->input['tournamentnotify'])
 			);

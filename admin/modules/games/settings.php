@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2009 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 24/01/2009 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -60,7 +60,7 @@ if($mybb->input['action'] == "edit")
 		{
 			foreach($mybb->input['settings'] as $name => $value)
 			{
-				$db->update_query("games_settings", array('value' => addslashes($value)), "name='".addslashes($name)."'");
+				$db->update_query("games_settings", array('value' => $db->escape_string($value)), "name='".$db->escape_string($name)."'");
 			}
 			
 			//Log

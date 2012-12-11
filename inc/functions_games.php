@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 07/11/2012 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -367,9 +367,9 @@ function replace_templates_gs($title, $find, $replace, $themes=1)
 	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_templates WHERE title='".$title."'".$where_theme);
 	while($template = $db->fetch_array($query))
 	{
-		$old_template = addslashes($template['template']);
+		$old_template = $db->escape_string($template['template']);
 		
-		$new_template['template'] = addslashes(preg_replace($find, $replace, $template['template']));
+		$new_template['template'] = $db->escape_string(preg_replace($find, $replace, $template['template']));
 		
 		if($template['template'] != $old_template)
 		{

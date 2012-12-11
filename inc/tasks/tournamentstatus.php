@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 18/02/2010 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -61,9 +61,9 @@ function task_tournamentstatus($task)
 		
 			$roundinformation['1']['starttime'] = TIME_NOW;
 			$update_tournament = array(
-				'status'		=> addslashes("started"),
+				'status'		=> $db->escape_string("started"),
 				'round'			=> intval("1"),
-				'roundinformation'	=> addslashes(serialize($roundinformation))
+				'roundinformation'	=> $db->escape_string(serialize($roundinformation))
 			);
 		
 			$db->update_query("games_tournaments", $update_tournament, "tid='".$topen['tid']."'");
@@ -109,7 +109,7 @@ function task_tournamentstatus($task)
 					$tround['roundinformation'][($tround['round']+1)]['starttime'] = TIME_NOW;
 					$update_tournament = array(
 						'round'			=> intval($tround['round']+1),
-						'roundinformation'	=> addslashes(serialize($tround['roundinformation']))
+						'roundinformation'	=> $db->escape_string(serialize($tround['roundinformation']))
 					);
 					$db->update_query("games_tournaments", $update_tournament, "tid='".$tround['tid']."'");
 				
@@ -129,7 +129,7 @@ function task_tournamentstatus($task)
 							'tid'			=> intval($tround['tid']),
 							'rid'			=> intval($tround['round']+1),
 							'uid'			=> intval($players['uid']),
-							'username'		=> addslashes($players['username'])
+							'username'		=> $db->escape_string($players['username'])
 						);
 						$db->insert_query("games_tournaments_players", $add_player);
 					
@@ -154,9 +154,9 @@ function task_tournamentstatus($task)
 					$tround['roundinformation'][$tround['round']]['endtime'] = TIME_NOW;
 					$tround['roundinformation'][$tround['rounds']]['endtime'] = TIME_NOW;
 					$update_tournament = array(
-						'status'		=> addslashes("finished"),
+						'status'		=> $db->escape_string("finished"),
 						'champion'		=> intval($champ['uid']),
-						'roundinformation'	=> addslashes(serialize($tround['roundinformation']))
+						'roundinformation'	=> $db->escape_string(serialize($tround['roundinformation']))
 					);
 					$db->update_query("games_tournaments", $update_tournament, "tid='".$tround['tid']."'");
 				
@@ -171,8 +171,8 @@ function task_tournamentstatus($task)
 					$tround['roundinformation'][$tround['round']]['endtime'] = TIME_NOW;
 					$tround['roundinformation'][$tround['rounds']]['endtime'] = TIME_NOW;
 					$update_tournament = array(
-						'status'		=> addslashes("finished"),
-						'roundinformation'	=> addslashes(serialize($tround['roundinformation']))
+						'status'		=> $db->escape_string("finished"),
+						'roundinformation'	=> $db->escape_string(serialize($tround['roundinformation']))
 					);
 					$db->update_query("games_tournaments", $update_tournament, "tid='".$tround['tid']."'");
 				
@@ -190,7 +190,7 @@ function task_tournamentstatus($task)
 					$tround['roundinformation'][$round]['starttime'] = TIME_NOW;
 					$update_tournament = array(
 						'round'			=> intval($round),
-						'roundinformation'	=> addslashes(serialize($tround['roundinformation']))
+						'roundinformation'	=> $db->escape_string(serialize($tround['roundinformation']))
 					);
 					$db->update_query("games_tournaments", $update_tournament, "tid='".$tround['tid']."'");
 				
@@ -210,7 +210,7 @@ function task_tournamentstatus($task)
 							'tid'			=> intval($tround['tid']),
 							'rid'			=> intval($round),
 							'uid'			=> intval($players['uid']),
-							'username'		=> addslashes($players['username'])
+							'username'		=> $db->escape_string($players['username'])
 						);
 						$db->insert_query("games_tournaments_players", $add_player);
 					
@@ -253,9 +253,9 @@ function task_tournamentstatus($task)
 					//Update tournament
 					$tstarted['roundinformation'][$tstarted['rounds']]['endtime'] = TIME_NOW;
 					$update_tournament = array(
-						'status'		=> addslashes("finished"),
+						'status'		=> $db->escape_string("finished"),
 						'champion'		=> intval($champ['uid']),
-						'roundinformation'	=> addslashes(serialize($tstarted['roundinformation']))
+						'roundinformation'	=> $db->escape_string(serialize($tstarted['roundinformation']))
 					);
 					$db->update_query("games_tournaments", $update_tournament, "tid='".$tstarted['tid']."'");
 				
@@ -269,8 +269,8 @@ function task_tournamentstatus($task)
 					//Update tournament
 					$tstarted['roundinformation'][$tstarted['rounds']]['endtime'] = TIME_NOW;
 					$update_tournament = array(
-						'status'		=> addslashes("finished"),
-						'roundinformation'	=> addslashes(serialize($tstarted['roundinformation']))
+						'status'		=> $db->escape_string("finished"),
+						'roundinformation'	=> $db->escape_string(serialize($tstarted['roundinformation']))
 					);
 					$db->update_query("games_tournaments", $update_tournament, "tid='".$tstarted['tid']."'");
 				

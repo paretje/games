@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2012 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 03/01/2010 by Paretje
+ *   Last modified: 11/12/2012 by Paretje
  *
  ***************************************************************************/
 
@@ -123,7 +123,7 @@ if($mybb->input['action'] == "add")
 		}
 		
 		//Test game
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".addslashes($mybb->input['name'])."'");
+		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".$db->escape_string($mybb->input['name'])."'");
 		$game_test = $db->num_rows($query);
 		
 		if($game_test != 0 && $mybb->input['force'] != 1)
@@ -137,16 +137,16 @@ if($mybb->input['action'] == "add")
 			//Insert game
 			$insert_game = array(
 				'cid'		=> intval($mybb->input['cid']),
-				'title'		=> addslashes($mybb->input['title']),
-				'name'		=> addslashes($mybb->input['name']),
-				'description'	=> addslashes($mybb->input['description']),
-				'what'		=> addslashes($mybb->input['what']),
-				'use_keys'	=> addslashes($mybb->input['use_keys']),
-				'bgcolor'	=> addslashes($mybb->input['bgcolor']),
-				'width'		=> addslashes($mybb->input['width']),
-				'height'	=> addslashes($mybb->input['height']),
+				'title'		=> $db->escape_string($mybb->input['title']),
+				'name'		=> $db->escape_string($mybb->input['name']),
+				'description'	=> $db->escape_string($mybb->input['description']),
+				'what'		=> $db->escape_string($mybb->input['what']),
+				'use_keys'	=> $db->escape_string($mybb->input['use_keys']),
+				'bgcolor'	=> $db->escape_string($mybb->input['bgcolor']),
+				'width'		=> $db->escape_string($mybb->input['width']),
+				'height'	=> $db->escape_string($mybb->input['height']),
 				'dateline'	=> TIME_NOW,
-				'score_type'	=> addslashes($mybb->input['score_type']),
+				'score_type'	=> $db->escape_string($mybb->input['score_type']),
 				'active'	=> intval($mybb->input['active'])
 			);
 			
@@ -316,7 +316,7 @@ elseif($mybb->input['action'] == "add_simple")
 		$filename = $filename[0];
 		
 		//Test game
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".addslashes($filename)."'");
+		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".$db->escape_string($filename)."'");
 		$game_test = $db->num_rows($query);
 		
 		if($game_test != 0 && $mybb->input['force'] != 1)
@@ -374,16 +374,16 @@ elseif($mybb->input['action'] == "add_simple")
 				//Insert game
 				$insert_game = array(
 					'cid'		=> intval($mybb->input['cid']),
-					'title'		=> addslashes($config['gtitle']),
-					'name'		=> addslashes($config['gname']),
-					'description'	=> addslashes($config['gwords']),
-					'what'		=> addslashes($config['object']),
-					'use_keys'	=> addslashes($config['gkeys']),
-					'bgcolor'	=> addslashes($config['bgcolor']),
+					'title'		=> $db->escape_string($config['gtitle']),
+					'name'		=> $db->escape_string($config['gname']),
+					'description'	=> $db->escape_string($config['gwords']),
+					'what'		=> $db->escape_string($config['object']),
+					'use_keys'	=> $db->escape_string($config['gkeys']),
+					'bgcolor'	=> $db->escape_string($config['bgcolor']),
 					'width'		=> intval($config['gwidth']),
 					'height'	=> intval($config['gheight']),
 					'dateline'	=> TIME_NOW,
-					'score_type'	=> addslashes($high),
+					'score_type'	=> $db->escape_string($high),
 					'active'	=> intval($mybb->input['active'])
 				);
 				
@@ -531,7 +531,7 @@ elseif($mybb->input['action'] == "add_tar")
 		$filename = my_substr($filename[0], 5);
 		
 		//Test game
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".addslashes($filename)."'");
+		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".$db->escape_string($filename)."'");
 		$game_test = $db->num_rows($query);
 		
 		if($game_test != 0 && $mybb->input['force'] != 1)
@@ -626,16 +626,16 @@ elseif($mybb->input['action'] == "add_tar")
 						//Insert game
 						$insert_game = array(
 							'cid'		=> intval($mybb->input['cid']),
-							'title'		=> addslashes($config['gtitle']),
-							'name'		=> addslashes($config['gname']),
-							'description'	=> addslashes($config['gwords']),
-							'what'		=> addslashes($config['object']),
-							'use_keys'	=> addslashes($config['gkeys']),
-							'bgcolor'	=> addslashes($config['bgcolor']),
+							'title'		=> $db->escape_string($config['gtitle']),
+							'name'		=> $db->escape_string($config['gname']),
+							'description'	=> $db->escape_string($config['gwords']),
+							'what'		=> $db->escape_string($config['object']),
+							'use_keys'	=> $db->escape_string($config['gkeys']),
+							'bgcolor'	=> $db->escape_string($config['bgcolor']),
 							'width'		=> intval($config['gwidth']),
 							'height'	=> intval($config['gheight']),
 							'dateline'	=> TIME_NOW,
-							'score_type'	=> addslashes($high),
+							'score_type'	=> $db->escape_string($high),
 							'active'	=> intval($mybb->input['active'])
 						);
 						
@@ -782,7 +782,7 @@ elseif($mybb->input['action'] == "edit")
 			if($mybb->input['score_type'] != $game['score_type'])
 			{
 				//Load best score
-				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_scores WHERE gid='".intval($mybb->input['gid'])."' ORDER BY score ".addslashes($mybb->input['score_type'])." LIMIT 0,1");
+				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_scores WHERE gid='".intval($mybb->input['gid'])."' ORDER BY score ".$db->escape_string($mybb->input['score_type'])." LIMIT 0,1");
 				$score = $db->fetch_array($query);
 				$score_test = $db->num_rows($query);
 				
@@ -792,7 +792,7 @@ elseif($mybb->input['action'] == "edit")
 					//Update champion
 					$update_champ = array(
 						'uid'			=> intval($score['uid']),
-						'username'		=> addslashes($score['username']),
+						'username'		=> $db->escape_string($score['username']),
 						'score'			=> floatval($score['score']),
 						'dateline'		=> intval($score['dateline'])
 					);
@@ -826,15 +826,15 @@ elseif($mybb->input['action'] == "edit")
 			//Update game
 			$update_game = array(
 				'cid'		=> intval($mybb->input['cid']),
-				'title'		=> addslashes($mybb->input['title']),
-				'name'		=> addslashes($mybb->input['name']),
-				'description'	=> addslashes($mybb->input['description']),
-				'what'		=> addslashes($mybb->input['what']),
-				'use_keys'	=> addslashes($mybb->input['use_keys']),
-				'bgcolor'	=> addslashes($mybb->input['bgcolor']),
-				'width'		=> addslashes($mybb->input['width']),
-				'height'	=> addslashes($mybb->input['height']),
-				'score_type'	=> addslashes($mybb->input['score_type']),
+				'title'		=> $db->escape_string($mybb->input['title']),
+				'name'		=> $db->escape_string($mybb->input['name']),
+				'description'	=> $db->escape_string($mybb->input['description']),
+				'what'		=> $db->escape_string($mybb->input['what']),
+				'use_keys'	=> $db->escape_string($mybb->input['use_keys']),
+				'bgcolor'	=> $db->escape_string($mybb->input['bgcolor']),
+				'width'		=> $db->escape_string($mybb->input['width']),
+				'height'	=> $db->escape_string($mybb->input['height']),
+				'score_type'	=> $db->escape_string($mybb->input['score_type']),
 				'active'	=> intval($mybb->input['active'])
 			);
 			
