@@ -1369,7 +1369,10 @@ if (!defined("PCL_TAR"))
         TrFctEnd(__FILE__, __LINE__, PclErrorCode(), PclErrorString());
         return PclErrorCode();
       }
-
+      /*
+       * This control isn't needed. At first it is incorrect, and one of the
+       * first things done in the PclTarHandleAddFile-function is to control
+       * if the real correct file-length is'n too big.
       // ----- Check the path length
       if (strlen($p_filename) > 99)
       {
@@ -1380,7 +1383,8 @@ if (!defined("PCL_TAR"))
         TrFctEnd(__FILE__, __LINE__, PclErrorCode(), PclErrorString());
         return PclErrorCode();
       }
-
+      */
+      
       TrFctMessage(__FILE__, __LINE__, 4, "File position before header =".($p_mode=="tar"?ftell($p_tar):gztell($p_tar)));
 
       // ----- Add the file
