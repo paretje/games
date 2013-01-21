@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 21/01/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -1723,7 +1723,7 @@ switch($mybb->input['action'])
 		}
 		
 		$gid = intval($mybb->input['gid']);
-		$score = intval($mybb->input['score']);
+		$score = floatval($mybb->input['score']);
 		
 		//Control game
 		$query = $db->query("SELECT g.*, f.fid
@@ -1740,33 +1740,41 @@ switch($mybb->input['action'])
 		}
 		
 		//Control page
-		if(!intval($mybb->input['page']) && intval($mybb->input['score']))
+		if(!intval($mybb->input['page']))
 		{
-			$scores_higher = 1;
-			
-			//Loading scores
-			$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_scores WHERE gid='".$gid."'");
-			$count = $db->num_rows($query);
-			
-			while($scores_page = $db->fetch_array($query))
+			//If score == 0, then there is no score added, so page = 1
+			if(!floatval($mybb->input['score']))
 			{
-				if($game['score_type'] == "DESC" && $scores_page['score'] > $score)
-				{
-					$scores_higher++;
-				}
-				elseif($game['score_type'] == "ASC" && $scores_page['score'] < $score)
-				{
-					$scores_higher++;
-				}
-				elseif($scores_page['score'] == $score && $scores_page['dateline'] < TIME_NOW)
-				{
-					$scores_higher++;
-				}
+				$page = 1;
 			}
-			
-			//Page
-			$page = $scores_higher / $maxscores;
-			$page = ceil($page);
+			else
+			{
+				$scores_higher = 1;
+				
+				//Loading scores
+				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_scores WHERE gid='".$gid."'");
+				$count = $db->num_rows($query);
+				
+				while($scores_page = $db->fetch_array($query))
+				{
+					if($game['score_type'] == "DESC" && $scores_page['score'] > $score)
+					{
+						$scores_higher++;
+					}
+					elseif($game['score_type'] == "ASC" && $scores_page['score'] < $score)
+					{
+						$scores_higher++;
+					}
+					elseif($scores_page['score'] == $score && $scores_page['dateline'] < TIME_NOW)
+					{
+						$scores_higher++;
+					}
+				}
+				
+				//Page
+				$page = $scores_higher / $maxscores;
+				$page = ceil($page);
+			}
 		}
 		else
 		{
