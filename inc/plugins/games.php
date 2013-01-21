@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: �� 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 21/01/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -616,7 +616,7 @@ function games_xmlhttp()
 		//Category settings
 		if(intval($mybb->input['cid']) != 0 && $games_core->settings['stats_cats'] == 1)
 		{
-			$where_cat = " AND cid='".$mybb->input['cid']."'";
+			$where_cat = " AND cid='".intval($mybb->input['cid'])."'";
 		}
 		
 		//Put games in array
@@ -639,7 +639,11 @@ function games_xmlhttp()
 	}
 	elseif($mybb->input['action'] == "games_search")
 	{
-		$title = $mybb->input['title'];
+		//Replacing
+		$patterns[0] = '/ /';
+		$replacements[0] = "%";
+		
+		$title = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['s'])));
 		
 		// If the string is less than 3 characters, quit.
 		if(my_strlen($mybb->input['title']) < 3)
