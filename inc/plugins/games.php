@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: �� 2006-2012 The Game Section Development Group
+ *   Copyright: �� 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 21/01/2013 by Paretje
  *
  ***************************************************************************/
 
