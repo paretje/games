@@ -2,7 +2,7 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2013 The Game Section Development Group
+ *   Copyright: �� 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
@@ -57,7 +57,7 @@ function games_info()
 		"website"	=> "http://www.gamesection.org",
 		"author"	=> "Paretje",
 		"authorsite"	=> "http://www.gamesection.org",
-		"version"	=> "1.2.3-1",
+		"version"	=> "1.2.3",
 		"guid"		=> "db37073977904e9458f54937ceb13a9f",
 		"compatibility" => "14*,16*"
 	);
@@ -643,7 +643,7 @@ function games_xmlhttp()
 		$patterns[0] = '/ /';
 		$replacements[0] = "%";
 		
-		$title = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['title'])));
+		$title = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['s'])));
 		
 		// If the string is less than 3 characters, quit.
 		if(my_strlen($mybb->input['title']) < 3)
