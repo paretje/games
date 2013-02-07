@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 07/02/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -177,7 +177,8 @@ elseif($mybb->input['action'] == "repair_last_champions")
 	}
 	
 	//Save the cache
-	krsort($lastchamps);
+	if(is_array($lastchamps))
+		krsort($lastchamps);
 	$cache->update("games_lastchamps", $lastchamps);
 	
 	//Plugin
