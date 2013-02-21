@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 21/01/2013 by Paretje
+ *   Last modified: 21/02/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -1752,7 +1752,10 @@ switch($mybb->input['action'])
 				$scores_higher = 1;
 				
 				//Loading scores
-				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_scores WHERE gid='".$gid."'");
+				//Excluding our own score, since this would effect people having their score at the end of a page
+				//Note the use of <> instead of !=, as this is the ANSI SQL notation, and in future all queries
+				//should be like this, to make sure other DB's can handle the Game Section as well.
+				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_scores WHERE gid='".$gid." AND uid<>'".$mybb->user['uid']."'");
 				$count = $db->num_rows($query);
 				
 				while($scores_page = $db->fetch_array($query))
