@@ -65,7 +65,7 @@ function games_info()
 
 function games_install()
 {
-	global $db, $cache, $lang;
+	global $db, $cach, $lnang;
 	
 	// Create the Game Section tables
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games` (
@@ -385,14 +385,14 @@ function games_uninstall()
 function games_activate()
 {
 	global $db;
-
-//Update MyBB templates
-require_once MYBB_ROOT.'inc/adminfunctions_templates.php';
-
-find_replace_templatesets('header', '#'.preg_quote('{$lang->toplinks_help}</a></li>').'#', "{\$lang->toplinks_help}</a></li>
+	
+	// Update MyBB templates to integrate the Game Section in MyBB
+	require_once MYBB_ROOT.'inc/adminfunctions_templates.php';
+	
+	find_replace_templatesets('header', '#'.preg_quote('{$lang->toplinks_help}</a></li>').'#', "{\$lang->toplinks_help}</a></li>
 					<li><a href=\"{\$mybb->settings['bburl']}/games.php\"><img src=\"{\$mybb->settings['bburl']}/games/images/games.png\" alt=\"\" />{\$lang->gamesection}</a></li>");
-
-find_replace_templatesets('usercp_nav', '#'.preg_quote('{$usercpmenu}').'#', "{\$usercpmenu}
+	
+	find_replace_templatesets('usercp_nav', '#'.preg_quote('{$usercpmenu}').'#', "{\$usercpmenu}
 <tr>
 	<td class=\"tcat\">
 		<div class=\"expcolimage\"><img src=\"{\$theme['imgdir']}/collapse{\$collapsedimg['usercpgames']}.gif\" id=\"usercpgames_img\" class=\"expander\" alt=\"[-]\" title=\"[-]\" /></div>
@@ -407,14 +407,14 @@ find_replace_templatesets('usercp_nav', '#'.preg_quote('{$usercpmenu}').'#', "{\
 function games_deactivate()
 {
 	global $db, $cache;
-
-//Delete Game Section updates of the MyBB templates
-require_once MYBB_ROOT."inc/adminfunctions_templates.php";
-
-find_replace_templatesets("header", '#'.preg_quote('
+	
+	// Undo Game Section changes to MyBB templates
+	require_once MYBB_ROOT."inc/adminfunctions_templates.php";
+	
+	find_replace_templatesets("header", '#'.preg_quote('
 					<li><a href="{$mybb->settings[\'bburl\']}/games.php"><img src="{$mybb->settings[\'bburl\']}/games/images/games.png" alt="" />{$lang->gamesection}</a></li>').'#', '', 0);
-
-find_replace_templatesets("usercp_nav", '#'.preg_quote('
+	
+	find_replace_templatesets("usercp_nav", '#'.preg_quote('
 <tr>
 	<td class="tcat">
 		<div class="expcolimage"><img src="{$theme[\'imgdir\']}/collapse{$collapsedimg[\'usercpgames\']}.gif" id="usercpgames_img" class="expander" alt="[-]" title="[-]" /></div>
@@ -442,7 +442,7 @@ function games_global()
 {
 	global $lang;
 	
-	//Loading language file
+	// Loading language file
 	$lang->load("games");
 }
 
@@ -450,13 +450,13 @@ function games_index()
 {
 	global $mybb, $db, $lang, $plugins;
 	
-	//Headers to prevent that the browser holds this page in his cache
+	// Headers to prevent browser-caching
 	header("Expires: Sat, 1 Jan 2000 01:00:00 GMT");
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	header("Cache-Control: no-cache, must-revalidate");
 	header("Pragma: no-cache");
 	
-	//IBProArcade v2 insert of a score
+	// Handle IBProArcade v2 scores
 	switch($mybb->input['act'])
 	{
 		case 'Arcade':
@@ -469,7 +469,7 @@ function games_index()
 		break;
 	}
 	
-	//IBProArcade v32 insert of a score
+	// Handle IBProArcade v32 scores
 	switch($mybb->input['autocom'])
 	{
 		case 'arcade':
