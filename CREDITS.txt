@@ -1,3 +1,12 @@
 CREDITS OF THE GAME SECTION
 
-Many people gave their time to the Game Section in past, present and future. Because of my absence and the drop of activity on the Game Section, the old credits file can't be confirmed. It's unknown if the past translators are still active here, so possibly their can be a change of position in the near future. Anyway: Thank You!
+During those years the Game Section has been developed, many people have put
+their time in developing the Game Section to the product it is now. Meaning
+people reporting bugs, advise fixes, translating to their own language, giving
+support to other people. Those people aren't listed here, as it would be an
+impossible task to make such a list complete, but, to anybody listening to this
+description: thanks!
+
+At the moment, most notable and active for current development are:
+Development: Paretje
+Forum Support: Jockl
