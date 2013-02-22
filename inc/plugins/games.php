@@ -66,7 +66,7 @@ function games_info()
 
 function games_install()
 {
-	global $db, $cach, $lnang;
+	global $db, $cache, $lang;
 	
 	// Create the Game Section tables
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games` (
@@ -299,10 +299,9 @@ function games_install()
 	
 	rebuild_settings();
 	
-	//Load templates
+	//Load and insert templates
 	require_once MYBB_ROOT."games/templates.php";
 	
-	// Insert Game Section templates
 	foreach($games_templates as $title => $template)
 	{
 		$template_insert = array(
@@ -344,7 +343,6 @@ function games_uninstall()
 	DROP `games_maxscores`,
 	DROP `games_sortby`,
 	DROP `games_order`,
-	DROP `games_theme`,
 	DROP `games_tournamentnotify`;");
 	
 	// Delete Game Section ACP permissions
@@ -362,24 +360,27 @@ function games_uninstall()
 	$db->delete_query("tasks", "file='gamescleanup'");
 	$db->delete_query("tasks", "file='tournamentstatus'");
 	
-	// Delete settinggrroups
-	foreach($settings_groups as $key => $group)
+	// Load and delete settings and settinggroups
+	require_once MYBB_ROOT."games/settings.php";
+	
+	foreach($games_settinggroups as $key => $group)
 	{
-		$db->delete_query("settinggroups", "name='".$group['name']."'");
+		$db->delete_query("settinggroups", "name='".$db->escape_string($group['name'])."'");
 	}
 	
-	// Delete settings
-	foreach($new_settings as $key => $setting)
+	foreach($games_settings as $key => $setting)
 	{
-		$db->delete_query("settings", "name='".$setting['name']."'");
+		$db->delete_query("settings", "name='".$db->escape_string($setting['name'])."'");
 	}
 	
 	rebuild_settings();
 	
-	// Delete templates
-	foreach($theme_templates as $title => $template)
+	// Load and delete templates
+	require_once MYBB_ROOT."games/templates.php";
+	
+	foreach($games_templates as $title => $template)
 	{
-		$db->delete_query("templates", "title='".$title."' AND sid='-1'");
+		$db->delete_query("templates", "title='".$db->escape_string($title)."' AND sid='-1'");
 	}
 }
 
