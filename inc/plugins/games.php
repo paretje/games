@@ -42,6 +42,7 @@ $plugins->add_hook("member_logout_end", "games_member_logout");
 $plugins->add_hook("fetch_wol_activity_end", "games_online_activity");
 $plugins->add_hook("build_friendly_wol_location_end", "games_online_location");
 $plugins->add_hook("admin_tools_get_admin_log_action", "games_admin_log");
+$plugins->add_hook("admin_config_settings_begin", "games_config_settings");
 $plugins->add_hook("datahandler_user_update", "games_users_edit");
 $plugins->add_hook("admin_user_users_merge_commit", "games_users_merge");
 $plugins->add_hook("admin_user_users_delete_commit", "games_users_delete");
@@ -259,15 +260,15 @@ function games_install()
 	$db->insert_query("games", $game_insert);
 	
 	// Load settings language file as it's the place where the title and descriptions are kept
-	$lang->load($section, $isdatahandler=false, true);
+	$lang->load("games_settings", false, true);
 	
 	// Load and insert settings and settinggroups
 	require_once MYBB_ROOT."games/settings.php";
 	
 	foreach($games_settinggroups as $key => $group)
 	{
-		$group['title'] = "settings_group_title_".$group['name'];
-		$group['description'] = "settings_group_desc_".$group['name'];
+		$group['title'] = "setting_group_".$group['name'];
+		$group['description'] = $group['title']."_desc";
 		$settinggroup_insert = array(
 			'name'		=> $db->escape_string($group['name']),
 			'title'		=> $db->escape_string($lang->$group['title']),
@@ -281,8 +282,8 @@ function games_install()
 	
 	foreach($games_settings as $key => $setting)
 	{
-		$setting['title'] = "settings_title_".$setting['name'];
-		$setting['description'] = "settings_desc_".$setting['name'];
+		$setting['title'] = "setting_".$setting['name'];
+		$setting['description'] = $setting['title']."_desc";
 		$setting_insert = array(
 			'name'		=> $db->escape_string($setting['name']),
 			'title'		=> $db->escape_string($lang->$setting['title']),
@@ -687,6 +688,12 @@ function games_admin_log($plugin_array)
 		
 		return $plugin_array;
 	}
+}
+
+function games_config_settings()
+{
+	global $lang;
+	$lang->load("games_settings");
 }
 
 function games_users_edit($user)
