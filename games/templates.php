@@ -27,7 +27,7 @@
  *
  ***************************************************************************/
 
-$theme_templates['games'] = "<html>
+$games_templates['games'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection}</title>
 {\$headerinclude}
@@ -78,7 +78,7 @@ $theme_templates['games'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_bit'] = "<tr>
+$games_templates['games_bit'] = "<tr>
 <td class=\"{\$bgcolor}\" align=\"center\">
 <strong><a href=\"games.php?action=play&amp;gid={\$games[\'gid\']}\">{\$games[\'title\']}</a></strong>{\$new_game}<br />
 <br />
@@ -114,16 +114,16 @@ $theme_templates['games_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_bit_favourite_add'] = "<li><a href=\"games.php?action=add_favourite&amp;gid={\$games[\'gid\']}\">{\$lang->add_favourite}</a></li>";
+$games_templates['games_bit_favourite_add'] = "<li><a href=\"games.php?action=add_favourite&amp;gid={\$games[\'gid\']}\">{\$lang->add_favourite}</a></li>";
 
-$theme_templates['games_bit_favourite_delete'] = "<li><a href=\"games.php?action=delete_favourite&amp;gid={\$games[\'gid\']}\">{\$lang->delete_favourite}</a></li>";
+$games_templates['games_bit_favourite_delete'] = "<li><a href=\"games.php?action=delete_favourite&amp;gid={\$games[\'gid\']}\">{\$lang->delete_favourite}</a></li>";
 
-$theme_templates['games_bit_rate'] = "<br />
+$games_templates['games_bit_rate'] = "<br />
 <a href=\"games.php?action=rate&amp;gid={\$games[\'gid\']}\">{\$lang->rate}</a>";
 
-$theme_templates['games_bit_tournament'] = "<li><a href=\"tournaments.php?action=add&amp;gid={\$games[\'gid\']}\">{\$lang->add_tournament}</a></li>";
+$games_templates['games_bit_tournament'] = "<li><a href=\"tournaments.php?action=add&amp;gid={\$games[\'gid\']}\">{\$lang->add_tournament}</a></li>";
 
-$theme_templates['games_categories'] = "<br />
+$games_templates['games_categories'] = "<br />
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
 <thead>
 <tr>
@@ -140,15 +140,15 @@ $theme_templates['games_categories'] = "<br />
 </tbody>
 </table>";
 
-$theme_templates['games_categories_bit'] = "<td class=\"{\$bgcolor}\" width=\"{\$procent}%\" align=\"center\">
+$games_templates['games_categories_bit'] = "<td class=\"{\$bgcolor}\" width=\"{\$procent}%\" align=\"center\">
 <a href=\"games.php?cid={\$categories[\'cid\']}\">{\$categories[\'image\']}{\$categories[\'title\']}</a> ({\$categories[\'games\']})
 </td>{\$tr}";
 
-$theme_templates['games_categories_bit_cur'] = "<td class=\"{\$bgcolor}\" width=\"{\$procent}%\" align=\"center\">
+$games_templates['games_categories_bit_cur'] = "<td class=\"{\$bgcolor}\" width=\"{\$procent}%\" align=\"center\">
 <strong>{\$categories[\'image\']}{\$categories[\'title\']}</strong> ({\$categories[\'games\']})
 </td>{\$tr}";
 
-$theme_templates['games_champs'] = "<html>
+$games_templates['games_champs'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->last_champions}</title>
 {\$headerinclude}
@@ -176,7 +176,7 @@ $theme_templates['games_champs'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_champs_bit'] = "<tr>
+$games_templates['games_champs_bit'] = "<tr>
 <td class=\"{\$bgcolor}\">
 <a href=\"games.php?action=stats&amp;uid={\$champ[\'uid\']}\">{\$champ[\'username\']}</a>
 </td>
@@ -194,7 +194,7 @@ $theme_templates['games_champs_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_favourites'] = "<html>
+$games_templates['games_favourites'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->your_favourites}</title>
 {\$headerinclude}
@@ -235,7 +235,7 @@ $theme_templates['games_favourites'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_footer'] = "<br />
+$games_templates['games_footer'] = "<br />
 <!-- DON\'T REMOVE THIS COPYRIGHT -->
 <span class=\"smalltext\">
 Powered by the <a href=\"http://www.gamesection.org\" target=\"_blank\">Game Section</a><br />
@@ -243,7 +243,7 @@ Copyright © 2006-{\$copy_year} <strong><a href=\"http://www.gamesection.org\" t
 </span>
 <br />";
 
-$theme_templates['games_menu'] = "<br />
+$games_templates['games_menu'] = "<br />
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
 <tr>
 <td class=\"trow1\">
@@ -258,16 +258,16 @@ $theme_templates['games_menu'] = "<br />
 </tr>
 </table>";
 
-$theme_templates['games_menu_lastchamps'] = "<li><a href=\"games.php?action=last_champs\">{\$lang->last_champions}</a></li>";
+$games_templates['games_menu_lastchamps'] = "<li><a href=\"games.php?action=last_champs\">{\$lang->last_champions}</a></li>";
 
-$theme_templates['games_menu_user'] = "<li><a href=\"games.php?action=favourites\">{\$lang->your_favourites}</a></li>
+$games_templates['games_menu_user'] = "<li><a href=\"games.php?action=favourites\">{\$lang->your_favourites}</a></li>
 <li><a href=\"games.php?action=settings\">{\$lang->your_settings}</a></li>
 <li><a href=\"games.php?action=stats\">{\$lang->your_stats}</a></li>";
 
-$theme_templates['games_multipages'] = "<br />
+$games_templates['games_multipages'] = "<br />
 {\$multipage}";
 
-$theme_templates['games_online'] = "<br />
+$games_templates['games_online'] = "<br />
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
 <thead>
 <tr>
@@ -289,7 +289,7 @@ $theme_templates['games_online'] = "<br />
 </tbody>
 </table>";
 
-$theme_templates['games_play'] = "<html>
+$games_templates['games_play'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$game[\'title\']}</title>
 {\$headerinclude}
@@ -364,7 +364,7 @@ $theme_templates['games_play'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_rate'] = "<html>
+$games_templates['games_rate'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->rate_game}</title>
 {\$headerinclude}
@@ -401,7 +401,7 @@ $theme_templates['games_rate'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_scores'] = "<html>
+$games_templates['games_scores'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->highscores}</title>
 {\$headerinclude}
@@ -457,7 +457,7 @@ $theme_templates['games_scores'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_scores_bit'] = "<tr>
+$games_templates['games_scores_bit'] = "<tr>
 <td class=\"{\$bgcolor}\" align=\"right\">
 {\$rank}
 </td>
@@ -475,11 +475,11 @@ $theme_templates['games_scores_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_scores_favourite_add'] = "<a href=\"games.php?action=add_favourite&amp;gid={\$game[\'gid\']}\">{\$lang->add_favourite}</a>";
+$games_templates['games_scores_favourite_add'] = "<a href=\"games.php?action=add_favourite&amp;gid={\$game[\'gid\']}\">{\$lang->add_favourite}</a>";
 
-$theme_templates['games_scores_favourite_delete'] = "<a href=\"games.php?action=delete_favourite&amp;gid={\$game[\'gid\']}\">{\$lang->delete_favourite}</a>";
+$games_templates['games_scores_favourite_delete'] = "<a href=\"games.php?action=delete_favourite&amp;gid={\$game[\'gid\']}\">{\$lang->delete_favourite}</a>";
 
-$theme_templates['games_scores_newcomment'] = "<form method=\"post\" action=\"games.php\">
+$games_templates['games_scores_newcomment'] = "<form method=\"post\" action=\"games.php\">
 <input type=\"hidden\" name=\"action\" value=\"do_newscore\" />
 <input type=\"hidden\" name=\"gid\" value=\"{\$gid}\" />
 <input type=\"hidden\" name=\"page\" value=\"{\$page}\" />
@@ -487,7 +487,7 @@ $theme_templates['games_scores_newcomment'] = "<form method=\"post\" action=\"ga
 <input type=\"submit\" class=\"button\" value=\"{\$lang->save}\" />
 </form>";
 
-$theme_templates['games_search'] = "<html>
+$games_templates['games_search'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->searchresults}</title>
 {\$headerinclude}
@@ -518,7 +518,7 @@ $theme_templates['games_search'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_search_bar'] = "<br />
+$games_templates['games_search_bar'] = "<br />
 <table border=\"0\" cellspacing=\"1\" cellpadding=\"4\" class=\"tborder\">
 <thead>
 <tr>
@@ -549,7 +549,7 @@ $theme_templates['games_search_bar'] = "<br />
 </tbody>
 </table>";
 
-$theme_templates['games_search_bit'] = "<tr>
+$games_templates['games_search_bit'] = "<tr>
 <td class=\"{\$bgcolor}\">
 <a href=\"games.php?action=play&amp;gid={\$search[\'gid\']}\">{\$search[\'title\']}</a>
 {\$new_game}</td>
@@ -567,7 +567,7 @@ $theme_templates['games_search_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_stats'] = "<br />
+$games_templates['games_stats'] = "<br />
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
 <thead>
 <tr>
@@ -608,7 +608,7 @@ $theme_templates['games_stats'] = "<br />
 </tbody>
 </table>";
 
-$theme_templates['games_stats_bestplayers'] = "<fieldset>
+$games_templates['games_stats_bestplayers'] = "<fieldset>
 <legend><strong>{\$lang->bestplayers}</strong></legend>
 <table width=\"100%\">
 <tr>
@@ -617,7 +617,7 @@ $theme_templates['games_stats_bestplayers'] = "<fieldset>
 </table>
 </fieldset>";
 
-$theme_templates['games_stats_bestplayers_bit'] = "<td width=\"33%\" valign=\"top\">
+$games_templates['games_stats_bestplayers_bit'] = "<td width=\"33%\" valign=\"top\">
 <table width=\"100%\">
 <tr>
 <td class=\"tcat\" align=\"center\">
@@ -632,7 +632,7 @@ $theme_templates['games_stats_bestplayers_bit'] = "<td width=\"33%\" valign=\"to
 </table>
 </td>";
 
-$theme_templates['games_stats_champs_bit'] = "<tr>
+$games_templates['games_stats_champs_bit'] = "<tr>
 <td>
 {\$last_champs_sen}
 </td>
@@ -641,9 +641,9 @@ $theme_templates['games_stats_champs_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_stats_games_bit'] = "<a href=\"games.php?action=play&amp;gid={\$games[\'gid\']}\"><img src=\"./games/images/{\$games[\'name\']}2.gif\" alt=\"\" /> <strong>{\$games[\'title\']}</strong></a><br />";
+$games_templates['games_stats_games_bit'] = "<a href=\"games.php?action=play&amp;gid={\$games[\'gid\']}\"><img src=\"./games/images/{\$games[\'name\']}2.gif\" alt=\"\" /> <strong>{\$games[\'title\']}</strong></a><br />";
 
-$theme_templates['games_stats_randomgames'] = "<script type=\"text/javascript\" src=\"jscripts/randomgames.js?ver=120\"></script>
+$games_templates['games_stats_randomgames'] = "<script type=\"text/javascript\" src=\"jscripts/randomgames.js?ver=120\"></script>
 <fieldset>
 <legend><strong><a onclick=\"randomgames_update({\$cid})\">{\$lang->\$randomgames}</a></strong></legend>
 <div id=\"randomgames\">
@@ -651,9 +651,9 @@ $theme_templates['games_stats_randomgames'] = "<script type=\"text/javascript\" 
 </div>
 </fieldset>";
 
-$theme_templates['games_stats_randomgames_bit'] = "<a href=\"games.php?action=play&amp;gid={\$games[\$id][\'gid\']}\"><img src=\"./games/images/{\$games[\$id][\'name\']}2.gif\" alt=\"\" /> <strong>{\$games[\$id][\'title\']}</strong></a><br />";
+$games_templates['games_stats_randomgames_bit'] = "<a href=\"games.php?action=play&amp;gid={\$games[\$id][\'gid\']}\"><img src=\"./games/images/{\$games[\$id][\'name\']}2.gif\" alt=\"\" /> <strong>{\$games[\$id][\'title\']}</strong></a><br />";
 
-$theme_templates['games_tournaments_add'] = "<html>
+$games_templates['games_tournaments_add'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->add_tournament}</title>
 {\$headerinclude}
@@ -719,26 +719,26 @@ $theme_templates['games_tournaments_add'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_tournaments_add_game'] = "<input type=\"text\" class=\"textbox\" id=\"title\" name=\"title\" size=\"40\" maxlength=\"30\" value=\"\" />
+$games_templates['games_tournaments_add_game'] = "<input type=\"text\" class=\"textbox\" id=\"title\" name=\"title\" size=\"40\" maxlength=\"30\" value=\"\" />
 <a onclick=\"search_games(title.value)\">{\$lang->search}</a>
 <div id=\"games\"></div>";
 
-$theme_templates['games_tournaments_add_game_search'] = "<br />
+$games_templates['games_tournaments_add_game_search'] = "<br />
 <div id=\"selected_game\" style=\"float:right;\"></div>
 <select name=\"gid\" onchange=\"search_games_selected(this.value)\">
 {\$games_bit}
 </select>";
 
-$theme_templates['games_tournaments_add_game_search_bit'] = "<option value=\"{\$games[\'gid\']}\">{\$games[\'title\']}</option>";
+$games_templates['games_tournaments_add_game_search_bit'] = "<option value=\"{\$games[\'gid\']}\">{\$games[\'title\']}</option>";
 
-$theme_templates['games_tournaments_add_game_set'] = "<input type=\"hidden\" name=\"gid\" value=\"{\$game[\'gid\']}\" />
+$games_templates['games_tournaments_add_game_set'] = "<input type=\"hidden\" name=\"gid\" value=\"{\$game[\'gid\']}\" />
 <a href=\"games.php?action=play&amp;gid={\$game[\'gid\']}\">{\$game[\'title\']}</a>";
 
-$theme_templates['games_tournaments_add_rounds_bit'] = "<option value=\"{\$val}\">{\$tournaments_rounds_sen}</option>";
+$games_templates['games_tournaments_add_rounds_bit'] = "<option value=\"{\$val}\">{\$tournaments_rounds_sen}</option>";
 
-$theme_templates['games_tournaments_add_roundtime_bit'] = "<option value=\"{\$val}\">{\$tournaments_roundtime_sen}</option>";
+$games_templates['games_tournaments_add_roundtime_bit'] = "<option value=\"{\$val}\">{\$tournaments_roundtime_sen}</option>";
 
-$theme_templates['games_tournaments_bar'] = "<br />
+$games_templates['games_tournaments_bar'] = "<br />
 <table border=\"0\" cellspacing=\"1\" cellpadding=\"4\" class=\"tborder\">
 <thead>
 <tr>
@@ -762,20 +762,20 @@ $theme_templates['games_tournaments_bar'] = "<br />
 </tbody>
 </table>";
 
-$theme_templates['games_tournaments_bar_user'] = "<td class=\"trow1\" width=\"33%\">
+$games_templates['games_tournaments_bar_user'] = "<td class=\"trow1\" width=\"33%\">
 {\$tournaments_bar_user_games_bit}
 </td>
 {\$tournaments_bar_user_add}";
 
-$theme_templates['games_tournaments_bar_user_add'] = "<td class=\"trow1\" align=\"center\" width=\"33%\">
+$games_templates['games_tournaments_bar_user_add'] = "<td class=\"trow1\" align=\"center\" width=\"33%\">
 <span class=\"tournaments\">
 <strong><a href=\"tournaments.php?action=add\">{\$lang->add_tournament}</a></strong>
 </span>
 </td>";
 
-$theme_templates['games_tournaments_bar_user_games_bit'] = "<a href=\"games.php?action=play&amp;gid={\$tournaments[\'gid\']}&amp;tid={\$tournaments[\'tid\']}\"><img src=\"./games/images/{\$tournaments[\'name\']}2.gif\" alt=\"\" /> <strong>{\$tournaments[\'title\']}</strong></a><br />";
+$games_templates['games_tournaments_bar_user_games_bit'] = "<a href=\"games.php?action=play&amp;gid={\$tournaments[\'gid\']}&amp;tid={\$tournaments[\'tid\']}\"><img src=\"./games/images/{\$tournaments[\'name\']}2.gif\" alt=\"\" /> <strong>{\$tournaments[\'title\']}</strong></a><br />";
 
-$theme_templates['games_tournaments_finished'] = "<html>
+$games_templates['games_tournaments_finished'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->\$lang_string}</title>
 {\$headerinclude}
@@ -802,7 +802,7 @@ $theme_templates['games_tournaments_finished'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_tournaments_finished_bit'] = "<tr>
+$games_templates['games_tournaments_finished_bit'] = "<tr>
 <td class=\"{\$bgcolor}\">
 <a href=\"tournaments.php?action=view&amp;tid={\$tournaments[\'tid\']}\">{\$tournaments[\'title\']}</a>
 </td>
@@ -817,7 +817,7 @@ $theme_templates['games_tournaments_finished_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_tournaments_open'] = "<html>
+$games_templates['games_tournaments_open'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->\$lang_string}</title>
 {\$headerinclude}
@@ -843,7 +843,7 @@ $theme_templates['games_tournaments_open'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_tournaments_open_bit'] = "<tr>
+$games_templates['games_tournaments_open_bit'] = "<tr>
 <td class=\"{\$bgcolor}\">
 <a href=\"tournaments.php?action=view&amp;tid={\$tournaments[\'tid\']}\">{\$tournaments[\'title\']}</a>
 </td>
@@ -855,7 +855,7 @@ $theme_templates['games_tournaments_open_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_tournaments_started'] = "<html>
+$games_templates['games_tournaments_started'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->\$lang_string}</title>
 {\$headerinclude}
@@ -881,7 +881,7 @@ $theme_templates['games_tournaments_started'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_tournaments_started_bit'] = "<tr>
+$games_templates['games_tournaments_started_bit'] = "<tr>
 <td class=\"{\$bgcolor}\">
 <a href=\"tournaments.php?action=view&amp;tid={\$tournaments[\'tid\']}\">{\$tournaments[\'title\']}</a>
 </td>
@@ -893,7 +893,7 @@ $theme_templates['games_tournaments_started_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_tournaments_view'] = "<html>
+$games_templates['games_tournaments_view'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->view_tournament}</title>
 {\$headerinclude}
@@ -921,7 +921,7 @@ $theme_templates['games_tournaments_view'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_tournaments_view_infobox_finished'] = "<br />
+$games_templates['games_tournaments_view_infobox_finished'] = "<br />
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
 <tr>
 <td colspan=\"2\" class=\"thead\"><strong>{\$lang->tournament_infobox}</strong></td>
@@ -942,7 +942,7 @@ $theme_templates['games_tournaments_view_infobox_finished'] = "<br />
 </tr>
 </table>";
 
-$theme_templates['games_tournaments_view_infobox_open'] = "<br />
+$games_templates['games_tournaments_view_infobox_open'] = "<br />
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
 <tr>
 <td colspan=\"2\" class=\"thead\"><strong>{\$lang->tournament_infobox}</strong></td>
@@ -961,7 +961,7 @@ $theme_templates['games_tournaments_view_infobox_open'] = "<br />
 </tr>
 </table>";
 
-$theme_templates['games_tournaments_view_infobox_started'] = "<br />
+$games_templates['games_tournaments_view_infobox_started'] = "<br />
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
 <tr>
 <td colspan=\"2\" class=\"thead\"><strong>{\$lang->tournament_infobox}</strong></td>
@@ -981,23 +981,23 @@ $theme_templates['games_tournaments_view_infobox_started'] = "<br />
 </tr>
 </table>";
 
-$theme_templates['games_tournaments_view_rounds'] = "<tr>
+$games_templates['games_tournaments_view_rounds'] = "<tr>
 <td class=\"tcat\" align=\"center\" width=\"1\" valign=\"right\"><strong>{\$rid}</strong></td>
 {\$tournament_rounds_bit}
 </tr>";
 
-$theme_templates['games_tournaments_view_rounds_bit'] = "<td colspan=\"{\$colspan_round}\" class=\"{\$bgcolor} tournaments\" width=\"{\$width}%\" align=\"center\" valign=\"middle\">
+$games_templates['games_tournaments_view_rounds_bit'] = "<td colspan=\"{\$colspan_round}\" class=\"{\$bgcolor} tournaments\" width=\"{\$width}%\" align=\"center\" valign=\"middle\">
 <span class=\"largetext\"><strong>{\$players[\'username\']}</strong></span>
 {\$tournament_rounds_bit_info}
 </td>";
 
-$theme_templates['games_tournaments_view_rounds_bit_info'] = "<br />
+$games_templates['games_tournaments_view_rounds_bit_info'] = "<br />
 <br />
 {\$lang->bestscore}: <strong>{\$players[\'score\']}</strong> ({\$lang_tournament_tries_needed})<br />
 {\$lang_tournament_tries}<br />
 {\$lang->gainedat}: {\$pubdate}";
 
-$theme_templates['games_tournaments_view_rounds_champion'] = "<tr>
+$games_templates['games_tournaments_view_rounds_champion'] = "<tr>
 <td class=\"tcat\" align=\"center\" width=\"1\" valign=\"right\"><strong>#</strong></td>
 <td colspan=\"{\$tournament[\'maxplayers\']}\" class=\"trow1 tournaments\" width=\"100%\" align=\"center\" valign=\"middle\">
 <img src=\"./games/{\$theme_games[\'directory\']}/champ.png\" alt=\"\" /><br />
@@ -1005,7 +1005,7 @@ $theme_templates['games_tournaments_view_rounds_champion'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_user_settings'] = "<html>
+$games_templates['games_user_settings'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->editsettings}</title>
 {\$headerinclude}
@@ -1083,19 +1083,19 @@ $theme_templates['games_user_settings'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_user_settings_maxgames'] = "<select name=\"maxgames\">
+$games_templates['games_user_settings_maxgames'] = "<select name=\"maxgames\">
 <option value=\"0\">{\$lang->usedefauld}</option>
 {\$options_maxgames}
 </select>";
 
-$theme_templates['games_user_settings_maxscores'] = "<select name=\"maxscores\">
+$games_templates['games_user_settings_maxscores'] = "<select name=\"maxscores\">
 <option value=\"0\">{\$lang->usedefauld}</option>
 {\$options_maxscores}
 </select>";
 
-$theme_templates['games_user_settings_themes'] = "<option value=\"{\$themes[\'tid\']}\"{\$selected}>{\$themes[\'name\']}</option>";
+$games_templates['games_user_settings_themes'] = "<option value=\"{\$themes[\'tid\']}\"{\$selected}>{\$themes[\'name\']}</option>";
 
-$theme_templates['games_user_settings_tournaments'] = "<br />
+$games_templates['games_user_settings_tournaments'] = "<br />
 <fieldset class=\"trow2\">
 <legend><strong>{\$lang->options_tournaments}</strong></legend>
 <table cellspacing=\"0\" cellpadding=\"2\">
@@ -1106,7 +1106,7 @@ $theme_templates['games_user_settings_tournaments'] = "<br />
 </table>
 </fieldset>";
 
-$theme_templates['games_user_stats'] = "<html>
+$games_templates['games_user_stats'] = "<html>
 <head>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->statsofuser}</title>
 {\$headerinclude}
@@ -1175,13 +1175,13 @@ $theme_templates['games_user_stats'] = "<html>
 </body>
 </html>";
 
-$theme_templates['games_user_stats_bestplayers'] = "<tr>
+$games_templates['games_user_stats_bestplayers'] = "<tr>
 <td class=\"trow1\">
 <strong>{\$lang->bestplayerrank}</strong>  {\$top100rank}
 </td>
 </tr>";
 
-$theme_templates['games_user_stats_bit'] = "<tr>
+$games_templates['games_user_stats_bit'] = "<tr>
 <td class=\"{\$bgcolor}\">
 <a href=\"games.php?action=play&amp;gid={\$games[\$gid][\'gid\']}\">{\$games[\$gid][\'title\']}</a>
 </td>
@@ -1199,14 +1199,14 @@ $theme_templates['games_user_stats_bit'] = "<tr>
 </td>
 </tr>";
 
-$theme_templates['games_user_stats_multipages'] = "<tr>
+$games_templates['games_user_stats_multipages'] = "<tr>
 <td valign=\"top\" colspan=\"2\">
 {\$multipage}
 </td>
 </tr>
 <tr>";
 
-$theme_templates['games_user_stats_tournaments'] = "<br />
+$games_templates['games_user_stats_tournaments'] = "<br />
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\" width=\"200\">
 <tr>
 <td class=\"thead\"><strong>{\$lang->tournamentsstatistics}</strong></td>
