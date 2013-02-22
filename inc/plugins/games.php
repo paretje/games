@@ -65,7 +65,7 @@ function games_info()
 
 function games_install()
 {
-	global $db, $cache;
+	global $db, $cache, $lang;
 	
 	// Create the Game Section tables
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games` (
@@ -212,13 +212,13 @@ function games_install()
 		'title'		=> $db->escape_string("Game Section Cleanup"),
 		'description'	=> $db->escape_string("Cleans old Game Section sessions"),
 		'file'		=> $db->escape_string("gamescleanup"),
-		'minute'	=> $db->escape_string("0"),
+		'minute'	=> 0,
 		'hour'		=> $db->escape_string("*"),
 		'day'		=> $db->escape_string("*"),
 		'month'		=> $db->escape_string("*"),
 		'weekday'	=> $db->escape_string("*"),
-		'enabled'	=> intval("1"),
-		'logging'	=> intval("1")
+		'enabled'	=> 1,
+		'logging'	=> 1
 	);
 	$gamescleanup_insert['nextrun'] = fetch_next_run($gamescleanup_insert);
 	
@@ -226,13 +226,13 @@ function games_install()
 		'title'		=> $db->escape_string("Game Section Tournament Status"),
 		'description'	=> $db->escape_string("Automaticaly changes the status of a Game Section Tournament"),
 		'file'		=> $db->escape_string("tournamentstatus"),
-		'minute'	=> $db->escape_string("0"),
+		'minute'	=> 0,
 		'hour'		=> $db->escape_string("*"),
 		'day'		=> $db->escape_string("*"),
 		'month'		=> $db->escape_string("*"),
 		'weekday'	=> $db->escape_string("*"),
-		'enabled'	=> intval("1"),
-		'logging'	=> intval("1")
+		'enabled'	=> 1,
+		'logging'	=> 1
 	);
 	$tournamentstatus_insert['nextrun'] = fetch_next_run($tournamentstatus_insert);
 	
@@ -242,32 +242,37 @@ function games_install()
 	// Insert Pacman
 	// Shouldn't this be deleted as this is not GPL'ed?
 	$game_insert = array(
-		'cid'		=> intval("0"),
+		'cid'		=> 0,
 		'title'		=> $db->escape_string("Pacman"),
 		'name'		=> $db->escape_string("pacman"),
 		'description'	=> $db->escape_string("Eat all the little dots without letting the ghosts get you!"),
 		'purpose'	=> $db->escape_string("Eat all of the dots."),
 		'keys'		=> $db->escape_string("Arrow keys to move."),
 		'bgcolor'	=> $db->escape_string("000000"),
-		'active'	=> intval("1"),
-		'width'		=> $db->escape_string("360"),
-		'height'	=> $db->escape_string("420"),
+		'active'	=> 1,
+		'width'		=> 360,
+		'height'	=> 420,
 		'dateline'	=> TIME_NOW,
 		'score_type'	=> $db->escape_string("DESC")
 	);
 	
 	$db->insert_query("games", $game_insert);
 	
+	// Load settings language file as it's the place where the title and descriptions are kept
+	$lang->load($section, $isdatahandler=false, true);
+	
 	// Load and insert settings and settinggroups
 	require_once MYBB_ROOT."games/settings.php";
 	
 	foreach($games_settinggroups as $key => $group)
 	{
+		$group['title'] = "settings_group_title_".$group['name'];
+		$group['description'] = "settings_group_desc_".$group['name'];
 		$settinggroup_insert = array(
-			'name'		=> $group['name'],
-			'title'		=> $group['title'],
-			'description'	=> $group['description'],
-			'disporder'	=> $group['displayorder'],
+			'name'		=> $db->escape_string($group['name']),
+			'title'		=> $db->escape_string($lang->$group['title']),
+			'description'	=> $db->escape_string($lang->$group['description']),
+			'disporder'	=> $db->escape_string($group['displayorder']),
 			'isdefault'	=> 0
 		);
 		
@@ -276,13 +281,15 @@ function games_install()
 	
 	foreach($games_settings as $key => $setting)
 	{
+		$setting['title'] = "settings_title_".$setting['name'];
+		$setting['description'] = "settings_desc_".$setting['name'];
 		$setting_insert = array(
-			'name'		=> $setting['name'],
-			'title'		=> $setting['title'],
-			'description'	=> $setting['description'],
-			'optionscode'	=> $setting['optionscode'],
-			'value'		=> $setting['value'],
-			'disporder'	=> $setting['displayorder'],
+			'name'		=> $db->escape_string($setting['name']),
+			'title'		=> $db->escape_string($lang->$setting['title']),
+			'description'	=> $db->escape_string($lang->$setting['description']),
+			'optionscode'	=> $db->escape_string($setting['optionscode']),
+			'value'		=> $db->escape_string($setting['value']),
+			'disporder'	=> $db->escape_string($setting['displayorder']),
 			'gid'		=> $gid[$setting['gid']]
 		);
 		
@@ -298,10 +305,10 @@ function games_install()
 	foreach($games_templates as $title => $template)
 	{
 		$template_insert = array(
-			"title"		=> $title,
-			"template"	=> $template,
-			"sid"		=> "-1",
-			'version'	=> "1900",
+			"title"		=> $db->escape_string($title),
+			"template"	=> $db->escape_string($template),
+			"sid"		=> -1,
+			'version'	=> $db->escape_string($mybb->version_code),
 			'dateline'	=> TIME_NOW
 		);
 		
