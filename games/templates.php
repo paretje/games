@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 22/02/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -26,11 +26,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ***************************************************************************/
-
-$theme['name'] = "Game Section Default";
-$theme['directory'] = "images";
-$theme['catsperline'] = "5";
-$theme['css'] = "";
 
 $theme_templates['games'] = "<html>
 <head>

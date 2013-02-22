@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 16/02/2010 by Paretje
+ *   Last modified: 22/02/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -29,31 +29,35 @@
 
 //Setting groups
 $settings_groups[] = array(
-	'name'		=> "general",
+	'name'		=> "games_general",
 	'title'		=> "General Options",
 	'description'	=> "This group contains various settings.",
-	'displayorder'	=> "1"
+	'displayorder'	=> "1",
+	'gid'		=> "1"
 );
 
 $settings_groups[] = array(
-	'name'		=> "display",
+	'name'		=> "games_display",
 	'title'		=> "Display Options",
 	'description'	=> "This group contains options to configure the look of the Game Section.",
-	'displayorder'	=> "2"
+	'displayorder'	=> "2",
+	'gid'		=> "2"
 );
 
 $settings_groups[] = array(
-	'name'		=> "statistics",
+	'name'		=> "games_statistics",
 	'title'		=> "Statistics Options",
 	'description'	=> "This group contains the options used by the statistics of the Game Section.",
-	'displayorder'	=> "3"
+	'displayorder'	=> "3",
+	'gid'		=> "3"
 );
 
 $settings_groups[] = array(
-	'name'		=> "tournaments",
+	'name'		=> "games_tournaments",
 	'title'		=> "Tournaments System",
 	'description'	=> "This group contains the settings to configure the tournaments system of the Game Section.",
-	'displayorder'	=> "4"
+	'displayorder'	=> "4",
+	'gid'		=> "4"
 );
 
 //Settings

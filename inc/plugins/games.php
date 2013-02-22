@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 21/01/2013 by Paretje
+ *   Last modified: 22/02/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -57,9 +57,9 @@ function games_info()
 		"website"	=> "http://www.gamesection.org",
 		"author"	=> "Paretje",
 		"authorsite"	=> "http://www.gamesection.org",
-		"version"	=> "1.2.3-1",
+		"version"	=> "1.9.0-r?",
 		"guid"		=> "db37073977904e9458f54937ceb13a9f",
-		"compatibility" => "14*,16*"
+		"compatibility" => "16*"
 	);
 }
 
@@ -74,8 +74,9 @@ $db->write_query("CREATE TABLE `".TABLE_PREFIX."games` (
 `title` VARCHAR(50) NOT NULL,
 `name` VARCHAR(50) NOT NULL,
 `description` TEXT NOT NULL,
-`what` TEXT NOT NULL,
-`use_keys` TEXT NOT NULL,
+`purpose` TEXT NOT NULL,
+`keys` TEXT NOT NULL,
+`champion` INT(15) DEFAULT '0' NOT NULL,
 `played` INT(15) DEFAULT '0' NOT NULL,
 `lastplayed` BIGINT(30) NOT NULL,
 `lastplayedby` INT(10) DEFAULT '0' NOT NULL,
@@ -101,16 +102,6 @@ PRIMARY KEY (`cid`),
 KEY `active` (`active`)
 ) ENGINE=MyISAM".$db->build_create_table_collation().";");
 
-$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_champions` (
-`gid` INT(10) NOT NULL,
-`title` VARCHAR(50) NOT NULL,
-`uid` INT(10) NOT NULL,
-`username` VARCHAR(120) NOT NULL,
-`score` FLOAT NOT NULL,
-`dateline` BIGINT(30) NOT NULL,
-PRIMARY KEY (`gid`)
-) ENGINE=MyISAM".$db->build_create_table_collation().";");
-
 $db->write_query("CREATE TABLE `".TABLE_PREFIX."games_favourites` (
 `fid` INT(15) NOT NULL AUTO_INCREMENT,
 `gid` INT(10) NOT NULL,
@@ -124,7 +115,6 @@ $db->write_query("CREATE TABLE `".TABLE_PREFIX."games_rating` (
 `rid` INT(15) NOT NULL AUTO_INCREMENT,
 `gid` INT(10) NOT NULL,
 `uid` INT(10) NOT NULL,
-`username` VARCHAR(120) NOT NULL,
 `rating` INT(1) NOT NULL,
 `dateline` BIGINT(30) NOT NULL,
 `ip` VARCHAR(30) NOT NULL,
@@ -137,7 +127,6 @@ $db->write_query("CREATE TABLE `".TABLE_PREFIX."games_scores` (
 `sid` INT(15) NOT NULL AUTO_INCREMENT,
 `gid` INT(10) NOT NULL,
 `uid` INT(10) NOT NULL,
-`username` VARCHAR(120) NOT NULL,
 `score` FLOAT NOT NULL,
 `comment` VARCHAR(120) NOT NULL,
 `dateline` BIGINT(30) NOT NULL,
@@ -152,46 +141,6 @@ $db->write_query("CREATE TABLE `".TABLE_PREFIX."games_sessions` (
 `sessiondata` TEXT NOT NULL,
 `lastchange` BIGINT(30) NOT NULL,
 PRIMARY KEY (`uid`)
-) ENGINE=MyISAM".$db->build_create_table_collation().";");
-
-$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_settings` (
-`sid` INT(5) NOT NULL AUTO_INCREMENT,
-`name` VARCHAR(120) NOT NULL,
-`title` VARCHAR(120) NOT NULL,
-`description` TEXT NOT NULL,
-`optionscode` TEXT NOT NULL,
-`value` TEXT NOT NULL,
-`displayorder` INT(5) NOT NULL,
-`gid` INT(5) NOT NULL,
-PRIMARY KEY (`sid`),
-KEY `gid` (`gid`)
-) ENGINE=MyISAM".$db->build_create_table_collation().";");
-
-$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_settings_groups` (
-`gid` INT(5) NOT NULL AUTO_INCREMENT,
-`name` VARCHAR(120) NOT NULL,
-`title` VARCHAR(200) NOT NULL,
-`description` TEXT NOT NULL,
-`displayorder` INT(5) NOT NULL,
-PRIMARY KEY (`gid`)
-) ENGINE=MyISAM".$db->build_create_table_collation().";");
-
-$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_templates` (
-`tid` INT(25) NOT NULL AUTO_INCREMENT,
-`theme` INT(10) NOT NULL,
-`title` VARCHAR(120) NOT NULL,
-`template` TEXT NOT NULL,
-PRIMARY KEY (`tid`)
-) ENGINE=MyISAM".$db->build_create_table_collation().";");
-
-$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_themes` (
-`tid` INT(25) NOT NULL AUTO_INCREMENT,
-`name` VARCHAR(120) NOT NULL,
-`directory` VARCHAR(120) NOT NULL DEFAULT 'images',
-`catsperline` INT(2) NOT NULL DEFAULT '5',
-`active` INT(1) NOT NULL DEFAULT '1',
-`CSS` TEXT NOT NULL,
-PRIMARY KEY (`tid`)
 ) ENGINE=MyISAM".$db->build_create_table_collation().";");
 
 $db->write_query("CREATE TABLE `".TABLE_PREFIX."games_tournaments` (
@@ -317,56 +266,47 @@ require_once MYBB_ROOT."games/settings.php";
 foreach($settings_groups as $key => $group)
 {
 	$group_insert = array(
-		'gid'		=> $group['gid'],
-		'name'		=> $group['name'],
-		'title'		=> $group['title'],
+		'name'			=> $group['name'],
+		'title'			=> $group['title'],
 		'description'	=> $group['description'],
-		'displayorder'	=> $group['displayorder']
+		'disporder'		=> $group['displayorder'],
+		'isdefault'		=> 0
 	);
 	
-	$db->insert_query("games_settings_groups", $group_insert);
+	$gid[$group['gid']] = $db->insert_query("settinggroups", $group_insert);
 }
 
 //Insert settings
 foreach($new_settings as $key => $setting)
 {
 	$setting_insert = array(
-		'name'		=> $setting['name'],
-		'title'		=> $setting['title'],
+		'name'			=> $setting['name'],
+		'title'			=> $setting['title'],
 		'description'	=> $setting['description'],
 		'optionscode'	=> $setting['optionscode'],
-		'value'		=> $setting['value'],
-		'displayorder'	=> $setting['displayorder'],
-		'gid'		=> $setting['gid']
+		'value'			=> $setting['value'],
+		'disporder'	=> $setting['displayorder'],
+		'gid'			=> $gid[$setting['gid']]
 	);
 	
-	$db->insert_query("games_settings", $setting_insert);
+	$db->insert_query("settings", $setting_insert);
 }
 
-//Load theme and templates
+//Load templates
 require_once MYBB_ROOT."games/templates.php";
-
-//Insert Game Section theme
-$new_theme = array(
-	'name'		=> $db->escape_string($theme['name']),
-	'directory'	=> $db->escape_string($theme['directory']),
-	'catsperline'	=> $db->escape_string($theme['catsperline']),
-	'active'	=> intval("1"),
-	'CSS'		=> $db->escape_string($theme['css'])
-);
-
-$db->insert_query("games_themes", $new_theme);
 
 // Insert Game Section templates
 foreach($theme_templates as $title => $template)
 {
 	$template_insert = array(
-		"theme"		=> "1",
 		"title"		=> $title,
-		"template"	=> $template
+		"template"	=> $template,
+		"sid"		=> "-1",
+		'version'	=> "1900",
+		'dateline'	=> TIME_NOW
 	);
 	
-	$db->insert_query("games_templates", $template_insert);
+	$db->insert_query("templates", $template_insert);
 }
 }
 
