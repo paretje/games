@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 16/02/2010 by Paretje
+ *   Last modified: 22/02/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -57,7 +57,7 @@ $l['settings_title_order'] = "Default Order";
 $l['settings_title_maxscores'] = "Default Scores Per Page";
 $l['settings_title_set_maxscores'] = "User Selectable Scores Per Page";
 $l['settings_title_new_game'] = "Days For New Game";
-$l['settings_title_theme'] = "Default Theme";
+$l['settings_title_catsperline'] = "Categories Per Line";
 $l['settings_title_online'] = "View Who's Online On";
 
 $l['settings_title_stats_global'] = "View Statistics On Global";
@@ -86,7 +86,7 @@ $l['settings_desc_order'] = "Select the order to sort the games.";
 $l['settings_desc_maxscores'] = "Default scores shown per page.";
 $l['settings_desc_set_maxscores'] = "Enter the options users should be able to select, as their maximum of scores per page, separated by commas.";
 $l['settings_desc_new_game'] = "The number of days a game will be marked as new.";
-$l['settings_desc_theme'] = "Select the default theme of the Game Section.";
+$l['settings_desc_catsperline'] = "Select the number of categories per line you want in the categories-box.";
 $l['settings_desc_online'] = "Select where you want to view the \"Who's Online\"-box.";
 
 $l['settings_desc_stats_global'] = "View Game Section statistics on the global page?";

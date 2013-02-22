@@ -54,7 +54,7 @@ $games_settinggroups[] = array(
 
 //Settings
 $games_settings[] = array(
-	'name'		=> "closed",
+	'name'		=> "games_closed",
 	'optionscode'	=> "yesno",
 	'value'		=> "0",
 	'displayorder'	=> "1",
@@ -62,7 +62,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "banned",
+	'name'		=> "games_banned",
 	'optionscode'	=> "textarea",
 	'value'		=> "",
 	'displayorder'	=> "2",
@@ -70,7 +70,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "maxgames",
+	'name'		=> "games_maxgames",
 	'optionscode'	=> "text",
 	'value'		=> "20",
 	'displayorder'	=> "1",
@@ -78,7 +78,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "set_maxgames",
+	'name'		=> "games_set_maxgames",
 	'optionscode'	=> "text",
 	'value'		=> "10,20,25,50,100",
 	'displayorder'	=> "2",
@@ -86,7 +86,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "sortby",
+	'name'		=> "games_sortby",
 	'optionscode'	=> "select\ntitle=Name\ndateline=Date Added\nplayed=Times Played\nlastplayed=Last Played\nrating=Rating",
 	'value'		=> "title",
 	'displayorder'	=> "3",
@@ -94,7 +94,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "order",
+	'name'		=> "games_order",
 	'optionscode'	=> "select\nASC=Ascending\nDESC=Descending",
 	'value'		=> "ASC",
 	'displayorder'	=> "4",
@@ -102,7 +102,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "maxscores",
+	'name'		=> "games_maxscores",
 	'optionscode'	=> "text",
 	'value'		=> "10",
 	'displayorder'	=> "5",
@@ -110,7 +110,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "set_maxscores",
+	'name'		=> "games_set_maxscores",
 	'optionscode'	=> "text",
 	'value'		=> "5,10,20,25",
 	'displayorder'	=> "6",
@@ -118,7 +118,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "new_game",
+	'name'		=> "games_new_game",
 	'optionscode'	=> "text",
 	'value'		=> "7",
 	'displayorder'	=> "7",
@@ -126,15 +126,15 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "theme",
-	'optionscode'	=> "theme",
+	'name'		=> "games_catsperline",
+	'optionscode'	=> "text",
 	'value'		=> "1",
 	'displayorder'	=> "8",
 	'gid'		=> "2"
 );
 
 $games_settings[] = array(
-	'name'		=> "online",
+	'name'		=> "games_online",
 	'optionscode'	=> "select\nnever=Never\nonly=Only On Games Pages\nevery=Every Page",
 	'value'		=> "only",
 	'displayorder'	=> "9",
@@ -142,7 +142,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "online_image",
+	'name'		=> "games_online_image",
 	'optionscode'	=> "yesno",
 	'value'		=> "1",
 	'displayorder'	=> "10",
@@ -150,7 +150,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_global",
+	'name'		=> "games_stats_global",
 	'optionscode'	=> "yesno",
 	'value'		=> "1",
 	'displayorder'	=> "1",
@@ -158,7 +158,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_cats",
+	'name'		=> "games_stats_cats",
 	'optionscode'	=> "yesno",
 	'value'		=> "1",
 	'displayorder'	=> "2",
@@ -166,7 +166,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_games_max",
+	'name'		=> "games_stats_games_max",
 	'optionscode'	=> "text",
 	'value'		=> "15",
 	'displayorder'	=> "3",
@@ -174,7 +174,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_lastchamps_max",
+	'name'		=> "games_stats_lastchamps_max",
 	'optionscode'	=> "text",
 	'value'		=> "5",
 	'displayorder'	=> "4",
@@ -182,7 +182,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_lastscores_max",
+	'name'		=> "games_stats_lastscores_max",
 	'optionscode'	=> "text",
 	'value'		=> "1",
 	'displayorder'	=> "5",
@@ -190,7 +190,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_bestplayers",
+	'name'		=> "games_stats_bestplayers",
 	'optionscode'	=> "yesno",
 	'value'		=> "1",
 	'displayorder'	=> "6",
@@ -198,7 +198,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_randomgames",
+	'name'		=> "games_stats_randomgames",
 	'optionscode'	=> "yesno",
 	'value'		=> "0",
 	'displayorder'	=> "7",
@@ -206,7 +206,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_randomgames_max",
+	'name'		=> "games_stats_randomgames_max",
 	'optionscode'	=> "text",
 	'value'		=> "1",
 	'displayorder'	=> "8",
@@ -214,7 +214,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_lastchamps_advanced",
+	'name'		=> "games_stats_lastchamps_advanced",
 	'optionscode'	=> "yesno",
 	'value'		=> "1",
 	'displayorder'	=> "9",
@@ -222,7 +222,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_lastchamps_advanced_max",
+	'name'		=> "games_stats_lastchamps_advanced_max",
 	'optionscode'	=> "text",
 	'value'		=> "20",
 	'displayorder'	=> "10",
@@ -230,7 +230,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "stats_userstats_multipages",
+	'name'		=> "games_stats_userstats_multipages",
 	'optionscode'	=> "yesno",
 	'value'		=> "1",
 	'displayorder'	=> "11",
@@ -238,7 +238,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "tournaments_activated",
+	'name'		=> "games_tournaments_activated",
 	'optionscode'	=> "yesno",
 	'value'		=> "0",
 	'displayorder'	=> "1",
@@ -246,7 +246,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "tournaments_set_rounds",
+	'name'		=> "games_tournaments_set_rounds",
 	'optionscode'	=> "text",
 	'value'		=> "1,2,3",
 	'displayorder'	=> "2",
@@ -254,7 +254,7 @@ $games_settings[] = array(
 );
 
 $games_settings[] = array(
-	'name'		=> "tournaments_set_roundtime",
+	'name'		=> "games_tournaments_set_roundtime",
 	'optionscode'	=> "text",
 	'value'		=> "1,2,3,4,5",
 	'displayorder'	=> "3",
