@@ -712,21 +712,21 @@ function games_users_merge()
 	/* Delete all duplicated favourites
 	 * As we are merging two users, there shouldn't be more then 2 of them,
 	 * otherwise there was already a problem before merging. */
-	$query = $db->query("SELECT gid FROM ".TABLE_PREFIX."games_favourites WHERE uid='".$destination_user['uid']."' GROUP BY gid HAVING COUNT(*)='2'");
+	$query = $db->query("SELECT gid FROM ".TABLE_PREFIX."games_favourites WHERE uid='".$destination_user['uid']."' GROUP BY gid HAVING COUNT(*)>1");
 	while($favourite = $db->fetch_array($query))
 	{
 		$db->delete_query("games_favourites", "gid='".$favourite['gid']."' uid='".$destination_user['uid']."'", 1);
 	}
 	
 	// Delete all duplicated ratings
-	$query = $db->query("SELECT gid FROM ".TABLE_PREFIX."games_rating WHERE uid='".$destination_user['uid']."' GROUP BY gid HAVING COUNT(*)='2' ORDER BY rating DESC");
+	$query = $db->query("SELECT gid FROM ".TABLE_PREFIX."games_rating WHERE uid='".$destination_user['uid']."' GROUP BY gid HAVING COUNT(*)>1");
 	while($rating = $db->fetch_array($query))
 	{
 		$ratings[] = $rating['gid'];
 		$db->delete_query("games_rating", "gid='".$rating['gid']."' uid='".$destination_user['uid']."'", 1);
 	}
 	
-	// Recount rating
+	// Recalculate rating
 	$query2 = $db->query("SELECT gid, SUM(rating) as rating_sum, COUNT(*) as rating_count FROM ".TABLE_PREFIX."games_rating WHERE gid='".$gid."' ORDER BY gid");
 	while($ratings_count = $db->fetch_array($query2))
 	{
@@ -734,40 +734,34 @@ function games_users_merge()
 		$db->update_query("games", $rating_update, "gid='".$ratings_count['gid']."'");
 	}
 	
-	//Delete all duplicated scores (DESC)
-	$query = $db->query("SELECT *
-	FROM ".TABLE_PREFIX."games_scores s
-	LEFT JOIN ".TABLE_PREFIX."games g ON (s.gid=g.gid)
-	WHERE g.score_type='DESC' AND s.uid='".$destination_user['uid']."'
-	ORDER BY s.score DESC");
+	// Delete all duplicated scores (DESC)
+	$query = $db->query("
+		SELECT s.gid, MIN(s.score) as min_score, g.champion
+		FROM ".TABLE_PREFIX."games_scores s
+		LEFT JOIN ".TABLE_PREFIX."games g ON (s.gid=g.gid)
+		WHERE g.score_type='DESC' AND s.uid='".$destination_user['uid']."'
+		GROUP BY s.gid
+	");
 	while($scores = $db->fetch_array($query))
 	{
-		if(!isset($score[$scores['gid']]))
-		{
-			$score[$scores['gid']] = "OK";
-		}
-		else
-		{
-			$db->delete_query("games_scores", "sid='".$scores['sid']."'");
-		}
+		$db->delete_query("games_scores", "sid!='".$scores['champion']."'
+			AND gid='".$scores['gid']."' AND uid='".$destination_user['uid']."'
+			AND score='".$scores['min_score']."'", 1);
 	}
 	
-	//Delete all duplicated scores (ASC)
-	$query = $db->query("SELECT *
-	FROM ".TABLE_PREFIX."games_scores s
-	LEFT JOIN ".TABLE_PREFIX."games g ON (s.gid=g.gid)
-	WHERE g.score_type='ASC' AND s.uid='".$destination_user['uid']."'
-	ORDER BY s.score ASC");
+	// Delete all duplicated scores (ASC)
+	$query = $db->query("
+		SELECT s.gid, MAX(s.score) as max_score, g.champion
+		FROM ".TABLE_PREFIX."games_scores s
+		LEFT JOIN ".TABLE_PREFIX."games g ON (s.gid=g.gid)
+		WHERE g.score_type='ASC' AND s.uid='".$destination_user['uid']."'
+		GROUP BY s.gid
+	");
 	while($scores = $db->fetch_array($query))
 	{
-		if(!isset($score[$scores['gid']]))
-		{
-			$score[$scores['gid']] = "OK";
-		}
-		else
-		{
-			$db->delete_query("games_scores", "sid='".$scores['sid']."'");
-		}
+		$db->delete_query("games_scores", "sid!='".$scores['champion']."'
+			AND gid='".$scores['gid']."' AND uid='".$destination_user['uid']."'
+			AND score='".$scores['max_score']."'", 1);
 	}
 }
 
