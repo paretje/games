@@ -43,7 +43,6 @@ $plugins->add_hook("fetch_wol_activity_end", "games_online_activity");
 $plugins->add_hook("build_friendly_wol_location_end", "games_online_location");
 $plugins->add_hook("admin_tools_get_admin_log_action", "games_admin_log");
 $plugins->add_hook("admin_config_settings_begin", "games_config_settings");
-$plugins->add_hook("datahandler_user_update", "games_users_edit");
 $plugins->add_hook("admin_user_users_merge_commit", "games_users_merge");
 $plugins->add_hook("admin_user_users_delete_commit", "games_users_delete");
 $plugins->add_hook("admin_user_groups_edit_graph_tabs", "games_groups_graph_tabs");
@@ -697,89 +696,42 @@ function games_config_settings()
 	$lang->load("games_settings");
 }
 
-function games_users_edit($user)
-{
-	global $old_user, $db;
-	if($user->user_update_data['username'] != $old_user['username'] && $user->user_update_data['username'] != '')
-	{
-		$username_update = array(
-			"username" => $user->user_update_data['username']
-		);
-		
-		//Update all champions and scores
-		$db->update_query("games_champions", $username_update, "uid='".$user->uid."'");
-		$db->update_query("games_scores", $username_update, "uid='".$user->uid."'");
-	}
-	
-	return $user;
-}
-
 function games_users_merge()
 {
 	global $source_user, $destination_user, $db;
 	
-	$user_update = array(
-		"uid"		=> $destination_user['uid'],
-		"username"	=> $destination_user['username']
-	);
-	
-	$uid_update['uid'] = $destuser['uid'];
-	
-	//Update all champions and scores
-	$db->update_query("games_champions", $user_update, "uid='".$source_user['uid']."'");
+	// Update all uid's in the Game Section tables
+	$uid_update['uid'] = $destination_user['uid'];
 	$db->update_query("games_favourites", $uid_update, "uid='".$source_user['uid']."'");
-	$db->update_query("games_rating", $user_update, "uid='".$source_user['uid']."'");
-	$db->update_query("games_scores", $user_update, "uid='".$source_user['uid']."'");
+	$db->update_query("games_rating", $uid_update, "uid='".$source_user['uid']."'");
+	$db->update_query("games_scores", $uid_update, "uid='".$source_user['uid']."'");
 	
-	//Delete session of source user
-	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_sessions WHERE uid='".$source_user['uid']."'");
+	// Delete session of source user
+	$db->delete_query("games_sessions", "uid='".$source_user['uid']."'");
 	
-	//Delete all duplicated favourites
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_favourites WHERE uid='".$destination_user['uid']."'");
-	while($favourites = $db->fetch_array($query))
+	/* Delete all duplicated favourites
+	 * As we are merging two users, there shouldn't be more then 2 of them,
+	 * otherwise there was already a problem before merging. */
+	$query = $db->query("SELECT gid FROM ".TABLE_PREFIX."games_favourites WHERE uid='".$destination_user['uid']."' GROUP BY gid HAVING COUNT(*)='2'");
+	while($favourite = $db->fetch_array($query))
 	{
-		if(!isset($favourite[$favourites['gid']]))
-		{
-			$favourite[$favourites['gid']] = "OK";
-		}
-		else
-		{
-			$db->delete_query("games_favourites", "fid='".$favourites['fid']."'");
-		}
+		$db->delete_query("games_favourites", "gid='".$favourite['gid']."' uid='".$destination_user['uid']."'", 1);
 	}
 	
-	//Delete all duplicated ratings
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_rating ORDER BY rating DESC");
+	// Delete all duplicated ratings
+	$query = $db->query("SELECT gid FROM ".TABLE_PREFIX."games_rating WHERE uid='".$destination_user['uid']."' GROUP BY gid HAVING COUNT(*)='2' ORDER BY rating DESC");
 	while($rating = $db->fetch_array($query))
 	{
-		//Control double ratings
-		if(!isset($ratings[$rating['gid']][$rating['uid']]))
-		{
-			$ratings[$rating['gid']][$rating['uid']] = "OK";
-		}
-		else
-		{
-			$db->delete_query("games_rating", "rid='".$rating['rid']."'");
-		}
-		
-		//Rate count_chars
-		$ratings[$rating['gid']]['rating'] += $rating['rating'];
-		
-		//Count ratings
-		$ratings[$rating['gid']]['rate_count']++;
+		$ratings[] = $rating['gid'];
+		$db->delete_query("games_rating", "gid='".$rating['gid']."' uid='".$destination_user['uid']."'", 1);
 	}
 	
-	//Recount rating
-	$query2 = $db->query("SELECT * FROM ".TABLE_PREFIX."games");
-	while($games = $db->fetch_array($query2))
+	// Recount rating
+	$query2 = $db->query("SELECT gid, SUM(rating) as rating_sum, COUNT(*) as rating_count FROM ".TABLE_PREFIX."games_rating WHERE gid='".$gid."' ORDER BY gid");
+	while($ratings_count = $db->fetch_array($query2))
 	{
-		if($ratings[$games['gid']]['rate_count'] != 0)
-		{
-			$rating = $ratings[$games['gid']]['rating'] / $ratings[$games['gid']]['rate_count'];
-			$rating = ceil($rating);
-			
-			$db->write_query("UPDATE ".TABLE_PREFIX."games SET rating='".$rating."' WHERE gid='".$games['gid']."'");
-		}
+		$rating_update['rating'] = ceil($ratings_count['rating_sum']/$ratings_count['rating_count']);
+		$db->update_query("games", $rating_update, "gid='".$ratings_count['gid']."'");
 	}
 	
 	//Delete all duplicated scores (DESC)
