@@ -741,6 +741,7 @@ function games_users_merge()
 		LEFT JOIN ".TABLE_PREFIX."games g ON (s.gid=g.gid)
 		WHERE g.score_type='DESC' AND s.uid='".$destination_user['uid']."'
 		GROUP BY s.gid
+		HAVING COUNT(*)>1
 	");
 	while($scores = $db->fetch_array($query))
 	{
@@ -756,6 +757,7 @@ function games_users_merge()
 		LEFT JOIN ".TABLE_PREFIX."games g ON (s.gid=g.gid)
 		WHERE g.score_type='ASC' AND s.uid='".$destination_user['uid']."'
 		GROUP BY s.gid
+		HAVING COUNT(*)>1
 	");
 	while($scores = $db->fetch_array($query))
 	{
