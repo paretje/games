@@ -122,6 +122,12 @@ switch($mybb->input['action'])
 			eval("\$multipages = \"".$games_core->template("games_multipages")."\";");
 		}
 		
+		//No games
+		if($count == 0 || $pages < $page)
+		{
+			error($lang->no_games, $lang->error);
+		}
+		
 		//Game Section Stats
 		if($games_core->settings['stats_global'] == 1)
 		{
@@ -201,16 +207,9 @@ switch($mybb->input['action'])
 		GROUP BY g.gid
 		ORDER BY g.".$sortby." ".$order."
 		LIMIT ".$start.",".$perpage);
-		$games_test = $db->num_rows($query);
 		
 		//Plugin
 		$plugins->run_hooks("games_default_start");
-		
-		//No games
-		if($games_test == 0)
-		{
-			error($lang->no_games, $lang->error);
-		}
 		
 		while($games = $db->fetch_array($query))
 		{
