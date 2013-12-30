@@ -292,24 +292,6 @@ $tournamentstatus_insert['nextrun'] = fetch_next_run($tournamentstatus_insert);
 $db->insert_query("tasks", $gamescleanup_insert);
 $db->insert_query("tasks", $tournamentstatus_insert);
 
-//Insert the default game of the Game Section
-$game_insert = array(
-	'cid'		=> intval("0"),
-	'title'		=> $db->escape_string("Pacman"),
-	'name'		=> $db->escape_string("pacman"),
-	'description'	=> $db->escape_string("Eat all the little dots without letting the ghosts get you!"),
-	'what'		=> $db->escape_string("Eat all of the dots."),
-	'use_keys'	=> $db->escape_string("Arrow keys to move."),
-	'bgcolor'	=> $db->escape_string("000000"),
-	'active'	=> intval("1"),
-	'width'		=> $db->escape_string("360"),
-	'height'	=> $db->escape_string("420"),
-	'dateline'	=> TIME_NOW,
-	'score_type'	=> $db->escape_string("DESC")
-);
-
-$db->insert_query("games", $game_insert);
-
 //Load settings and settinggroups
 require_once MYBB_ROOT."games/settings.php";
 
