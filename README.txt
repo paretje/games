@@ -1,5 +1,7 @@
-INSTALATION INSTRUCTIONS FOR THE GAME SECTION
+INSTALATION INSTRUCTIONS OF THE GAME SECTION
 
-1. UPLOAD THE FILES TO YOUR MYBB FORUM
+1. Upload the files to the root directory of your MyBB board
 
-2. ACTIVATE THE PLUGIN
+2. Go to Admin CP -> Plugins -> Game Section -> Install & Activate
+
+3. Add some games

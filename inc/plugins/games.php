@@ -239,25 +239,6 @@ function games_install()
 	$db->insert_query("tasks", $gamescleanup_insert);
 	$db->insert_query("tasks", $tournamentstatus_insert);
 
-	// Add Pacman
-	// TODO: Shouldn't this be deleted as this is not GPL'ed?
-	$game_insert = array(
-		'cid'		=> 0,
-		'title'		=> $db->escape_string("Pacman"),
-		'name'		=> $db->escape_string("pacman"),
-		'description'	=> $db->escape_string("Eat all the little dots without letting the ghosts get you!"),
-		'purpose'	=> $db->escape_string("Eat all of the dots."),
-		'keys'		=> $db->escape_string("Arrow keys to move."),
-		'bgcolor'	=> $db->escape_string("000000"),
-		'active'	=> 1,
-		'width'		=> 360,
-		'height'	=> 420,
-		'dateline'	=> TIME_NOW,
-		'score_type'	=> $db->escape_string("DESC")
-	);
-
-	$db->insert_query("games", $game_insert);
-
 	// Load settings language file as it's the place where the title and descriptions are kept
 	$lang->load("games_settings", false, true);
 

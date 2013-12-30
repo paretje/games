@@ -1,12 +1,12 @@
 CREDITS OF THE GAME SECTION
 
 During those years the Game Section has been developed, many people have put
-their time in developing the Game Section to the product it is now. Meaning
-people reporting bugs, advise fixes, translating to their own language, giving
-support to other people. Those people aren't listed here, as it would be an
-impossible task to make such a list complete, but, to anybody listening to this
-description: thanks!
+their time and energy in the development of the Game Section as it is now. This
+includes people reporting bugs, propose fixes, translating to other languages,
+support other people, ...
 
-At the moment, most notable and active for current development are:
+It's impossible to list them all here, but to all those who have contributed,
+or will contribute in the future: thanks!
+
 Development: Paretje
 Forum Support: Jockl
