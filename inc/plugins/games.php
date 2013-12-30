@@ -33,7 +33,7 @@ if(!defined("IN_MYBB"))
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-//Pluins
+// TODO: Add tools
 $plugins->add_hook("global_start", "games_global");
 $plugins->add_hook("index_start", "games_index");
 $plugins->add_hook("xmlhttp", "games_xmlhttp");
@@ -179,10 +179,11 @@ function games_install()
 		) ENGINE=MyISAM".$db->build_create_table_collation().";");
 
 	// Insert fields in usergroups in order to make use of the MyBB permissions system
-	$db->write_query("ALTER TABLE `".TABLE_PREFIX."usergroups` ADD `canviewgames` INT(1) NOT NULL DEFAULT '1',
-	ADD `canplaygames` INT(1) NOT NULL DEFAULT '1',
-	ADD `canplaytournaments` INT(1) NOT NULL DEFAULT '1',
-	ADD `canaddtournaments` INT(1) NOT NULL DEFAULT '1';");
+	$db->write_query("ALTER TABLE `".TABLE_PREFIX."usergroups`
+		ADD `canviewgames` INT(1) NOT NULL DEFAULT '1',
+		ADD `canplaygames` INT(1) NOT NULL DEFAULT '1',
+		ADD `canplaytournaments` INT(1) NOT NULL DEFAULT '1',
+		ADD `canaddtournaments` INT(1) NOT NULL DEFAULT '1';");
 
 	$db->write_query("UPDATE ".TABLE_PREFIX."usergroups SET canviewgames='1', canplaygames='0', canplaytournaments='0', canaddtournaments='0' WHERE gid='1'");
 	$db->write_query("UPDATE ".TABLE_PREFIX."usergroups SET canviewgames='1', canplaygames='0', canplaytournaments='0', canaddtournaments='0' WHERE gid='5'");
@@ -191,11 +192,11 @@ function games_install()
 
 	// Insert fields in users to give the users the possiblity to change some settings of the Game Section
 	$db->write_query("ALTER TABLE `".TABLE_PREFIX."users`
-	ADD `games_maxgames` INT(2) NOT NULL DEFAULT '0',
-	ADD `games_maxscores` INT(2) NOT NULL DEFAULT '0',
-	ADD `games_sortby` VARCHAR(10) NOT NULL DEFAULT '0',
-	ADD `games_order` VARCHAR(4) NOT NULL DEFAULT '0',
-	ADD `games_tournamentnotify` INT(1) NOT NULL DEFAULT '1';");
+		ADD `games_maxgames` INT(2) NOT NULL DEFAULT '0',
+		ADD `games_maxscores` INT(2) NOT NULL DEFAULT '0',
+		ADD `games_sortby` VARCHAR(10) NOT NULL DEFAULT '0',
+		ADD `games_order` VARCHAR(4) NOT NULL DEFAULT '0',
+		ADD `games_tournamentnotify` INT(1) NOT NULL DEFAULT '1';");
 
 	// Insert the permissions for the ACP
 	change_admin_permission("games", false, 1);
@@ -238,7 +239,7 @@ function games_install()
 	$db->insert_query("tasks", $gamescleanup_insert);
 	$db->insert_query("tasks", $tournamentstatus_insert);
 
-	// Insert Pacman
+	// Add Pacman
 	// TODO: Shouldn't this be deleted as this is not GPL'ed?
 	$game_insert = array(
 		'cid'		=> 0,
@@ -297,9 +298,10 @@ function games_install()
 
 	rebuild_settings();
 
-	//Load and insert templates
+	// Load and insert templates
 	require_once MYBB_ROOT."games/templates.php";
 
+	// TODO: Add a template group in MyBB, and add them as default templates
 	foreach($games_templates as $title => $template)
 	{
 		$template_insert = array(
@@ -320,28 +322,28 @@ function games_uninstall()
 
 	// Delete the Game Section tables
 	$db->write_query("DROP TABLE `".TABLE_PREFIX."games`,
-	`".TABLE_PREFIX."games_categories`,
-	`".TABLE_PREFIX."games_favourites`,
-	`".TABLE_PREFIX."games_rating`,
-	`".TABLE_PREFIX."games_scores`,
-	`".TABLE_PREFIX."games_sessions`,
-	`".TABLE_PREFIX."games_tournaments`,
-	`".TABLE_PREFIX."games_tournaments_players`;");
+		`".TABLE_PREFIX."games_categories`,
+		`".TABLE_PREFIX."games_favourites`,
+		`".TABLE_PREFIX."games_rating`,
+		`".TABLE_PREFIX."games_scores`,
+		`".TABLE_PREFIX."games_sessions`,
+		`".TABLE_PREFIX."games_tournaments`,
+		`".TABLE_PREFIX."games_tournaments_players`;");
 
 	// Delete user-permissions fields
 	$db->write_query("ALTER TABLE `".TABLE_PREFIX."usergroups` DROP `canviewgames`,
-	DROP `canplaygames`,
-	DROP `canplaytournaments`,
-	DROP `canaddtournaments`;");
+		DROP `canplaygames`,
+		DROP `canplaytournaments`,
+		DROP `canaddtournaments`;");
 	$cache->update_usergroups();
 
 	// Delete users fields
 	$db->write_query("ALTER TABLE `".TABLE_PREFIX."users`
-	DROP `games_maxgames`,
-	DROP `games_maxscores`,
-	DROP `games_sortby`,
-	DROP `games_order`,
-	DROP `games_tournamentnotify`;");
+		DROP `games_maxgames`,
+		DROP `games_maxscores`,
+		DROP `games_sortby`,
+		DROP `games_order`,
+		DROP `games_tournamentnotify`;");
 
 	// Delete Game Section ACP permissions
 	change_admin_permission("games", false, -1);
@@ -497,6 +499,7 @@ function games_index()
 	}
 }
 
+// TODO: Update to new system
 function games_xmlhttp()
 {
 	global $mybb, $lang, $groupscache, $db, $charset, $theme_games, $plugins;
@@ -508,6 +511,8 @@ function games_xmlhttp()
 		$lang->load("games");
 
 		//Requires
+		/* TODO: This class should get a better name, according to what
+		 *       the objective will be */
 		require_once MYBB_ROOT."inc/class_games.php";
 		$games_core = new games;
 
@@ -630,7 +635,7 @@ function games_member_login()
 {
 	global $user, $db;
 
-	//Delete Game Section session of user
+	// Delete Game Section session of user
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_sessions WHERE uid='".$user['uid']."'");
 }
 
@@ -638,16 +643,16 @@ function games_member_logout()
 {
 	global $mybb, $db;
 
-	//Delete Game Section session of user
+	// Delete Game Section session of user
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_sessions WHERE uid='".$mybb->user['uid']."'");
 }
 
 function games_online_activity($user_activity)
 {
-	//Get the filename
 	$split_loc = explode(".php", $user_activity['location']);
 	$filename = my_substr($split_loc[0], -my_strpos(strrev($split_loc[0]), "/"));
 
+	// TODO: Add more specific activities?
 	if($user_activity['activity'] == "unknown" && $filename == "games")
 	{
 		$user_activity['activity'] = "games";
@@ -762,6 +767,7 @@ function games_users_merge()
 	}
 }
 
+// TODO: Check if everything is still OK
 function games_users_delete()
 {
 	global $user, $db;
@@ -823,6 +829,7 @@ function games_groups_graph_tabs($tabs)
 	return $tabs;
 }
 
+// TODO: I guess this will be more elegant with MyBB 1.8?
 function games_groups_graph()
 {
 	global $lang, $form, $mybb, $plugins;
