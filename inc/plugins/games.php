@@ -480,10 +480,9 @@ function games_index()
 	}
 }
 
-// TODO: Update to new system
 function games_xmlhttp()
 {
-	global $mybb, $lang, $groupscache, $db, $charset, $theme_games, $plugins;
+	global $mybb, $lang, $charset, $db, $templates;
 
 	if($mybb->input['action'] == "games_randomgames" || $mybb->input['action'] == "games_search")
 	{
@@ -513,7 +512,7 @@ function games_xmlhttp()
 		}
 
 		// Load x random games
-		for($i = 1; $i <= $games_core->settings['stats_randomgames_max']; $i++)
+		for($i = 1; $i <= $mybb->settings['games_stats_randomgames_max']; $i++)
 		{
 			$id = mt_rand(0, count($games)-1);
 			eval("\$randomgames_bit .= \"".$templates->get("games_stats_randomgames_bit")."\";");
