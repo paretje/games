@@ -489,56 +489,50 @@ function games_xmlhttp()
 	{
 		$lang->load("games");
 
-		$gsession = new GameSession;
-
 		// Is the Game Section closed?
 		if($mybb->settings['games_closed'] == 1 && $mybb->user['usergroup'] != 4)
 		{
 			xmlhttp_error($lang->closed);
 		}
+
+		header("Content-type: text/plain; charset=".$charset);
 	}
 
 	if($mybb->input['action'] == "games_randomgames")
 	{
-		//Category settings
-		if(intval($mybb->input['cid']) != 0 && $games_core->settings['stats_cats'] == 1)
+		if(intval($mybb->input['cid']) != 0 && $mybb->settings['games_stats_cats'] == 1)
 		{
 			$where_cat = " AND cid='".intval($mybb->input['cid'])."'";
 		}
 
-		//Put games in array
+		// TODO: Can't this be done with SQL?
 		$query = $db->query("SELECT gid, name, title FROM ".TABLE_PREFIX."games WHERE active='1'".$where_cat." ORDER BY dateline");
 		while($game = $db->fetch_array($query))
 		{
 			$games[] = $game;
 		}
 
-		//Load x random games
+		// Load x random games
 		for($i = 1; $i <= $games_core->settings['stats_randomgames_max']; $i++)
 		{
 			$id = mt_rand(0, count($games)-1);
-			eval("\$randomgames_bit .= \"".$games_core->template("games_stats_randomgames_bit")."\";");
+			eval("\$randomgames_bit .= \"".$templates->get("games_stats_randomgames_bit")."\";");
 		}
 
-		//Output
-		header("Content-type: text/plain; charset=".$charset);
 		echo $randomgames_bit;
 	}
 	elseif($mybb->input['action'] == "games_search")
 	{
-		//Replacing
 		$patterns[0] = '/ /';
 		$replacements[0] = "%";
+		$title = preg_replace($patterns, $replacements, $db->escape_string(htmlspecialchars_decode($mybb->input['title'])));
 
-		$title = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['title'])));
-
-		// If the string is less than 3 characters, quit.
+		// If the string has less than 3 characters, quit
 		if(my_strlen($mybb->input['title']) < 3)
 		{
 			exit;
 		}
 
-		//Load games
 		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE title LIKE '%".$title."%' AND active='1' ORDER BY title ASC");
 		$games_test = $db->num_rows($query);
 
@@ -546,12 +540,10 @@ function games_xmlhttp()
 		{
 			while($games = $db->fetch_array($query))
 			{
-				eval("\$games_bit .= \"".$games_core->template("games_tournaments_add_game_search_bit")."\";");
+				eval("\$games_bit .= \"".$templates->get("games_tournaments_add_game_search_bit")."\";");
 			}
 
-			//Output
-			header("Content-type: text/plain; charset=".$charset);
-			eval("\$results = \"".$games_core->template("games_tournaments_add_game_search")."\";");
+			eval("\$results = \"".$templates->get("games_tournaments_add_game_search")."\";");
 			echo $results;
 		}
 	}
