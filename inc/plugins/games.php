@@ -66,126 +66,129 @@ function games_info()
 function games_install()
 {
 	global $db, $cache, $lang;
-	
+
 	// Create the Game Section tables
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games` (
-	`gid` INT(10) NOT NULL AUTO_INCREMENT,
-	`cid` INT(5) NOT NULL,
-	`title` VARCHAR(50) NOT NULL,
-	`name` VARCHAR(50) NOT NULL,
-	`description` TEXT NOT NULL,
-	`purpose` TEXT NOT NULL,
-	`keys` TEXT NOT NULL,
-	`champion` INT(15) DEFAULT '0' NOT NULL,
-	`played` INT(15) DEFAULT '0' NOT NULL,
-	`lastplayed` BIGINT(30) NOT NULL,
-	`lastplayedby` INT(10) DEFAULT '0' NOT NULL,
-	`bgcolor` VARCHAR(6) DEFAULT '000000' NOT NULL,
-	`width` VARCHAR(4) DEFAULT '500' NOT NULL,
-	`height` VARCHAR(4) DEFAULT '500' NOT NULL,
-	`dateline` BIGINT(30) NOT NULL,
-	`score_type` VARCHAR(5) DEFAULT 'DESC' NOT NULL,
-	`rating` FLOAT NOT NULL,
-	`numratings` INT(5) NOT NULL,
-	`active` INT(1) DEFAULT '1' NOT NULL,
-	PRIMARY KEY (`gid`),
-	KEY `cid` (`cid`),
-	KEY `active` (`active`)
-	) ENGINE=MyISAM".$db->build_create_table_collation().";");
-	
+		`gid` INT(10) NOT NULL AUTO_INCREMENT,
+		`cid` INT(5) NOT NULL,
+		`title` VARCHAR(50) NOT NULL,
+		`name` VARCHAR(50) NOT NULL,
+		`description` TEXT NOT NULL,
+		`purpose` TEXT NOT NULL,
+		`keys` TEXT NOT NULL,
+		`champion` INT(15) DEFAULT '0' NOT NULL,
+		`played` INT(15) DEFAULT '0' NOT NULL,
+		`lastplayed` BIGINT(30) NOT NULL,
+		`lastplayedby` INT(10) DEFAULT '0' NOT NULL,
+		`bgcolor` VARCHAR(6) DEFAULT '000000' NOT NULL,
+		`width` VARCHAR(4) DEFAULT '500' NOT NULL,
+		`height` VARCHAR(4) DEFAULT '500' NOT NULL,
+		`dateline` BIGINT(30) NOT NULL,
+		`score_type` VARCHAR(5) DEFAULT 'DESC' NOT NULL,
+		`rating` FLOAT NOT NULL,
+		`numratings` INT(5) NOT NULL,
+		`active` INT(1) DEFAULT '1' NOT NULL,
+		PRIMARY KEY (`gid`),
+		KEY `cid` (`cid`),
+		KEY `active` (`active`)
+		) ENGINE=MyISAM".$db->build_create_table_collation().";");
+
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_categories` (
-	`cid` INT(5) NOT NULL AUTO_INCREMENT,
-	`title` VARCHAR(40) NOT NULL,
-	`image` VARCHAR(255) NOT NULL,
-	`active` INT(1) DEFAULT '1' NOT NULL,
-	PRIMARY KEY (`cid`),
-	KEY `active` (`active`)
-	) ENGINE=MyISAM".$db->build_create_table_collation().";");
-	
+		`cid` INT(5) NOT NULL AUTO_INCREMENT,
+		`title` VARCHAR(40) NOT NULL,
+		`image` VARCHAR(255) NOT NULL,
+		`active` INT(1) DEFAULT '1' NOT NULL,
+		PRIMARY KEY (`cid`),
+		KEY `active` (`active`)
+		) ENGINE=MyISAM".$db->build_create_table_collation().";");
+
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_favourites` (
-	`fid` INT(15) NOT NULL AUTO_INCREMENT,
-	`gid` INT(10) NOT NULL,
-	`uid` INT(10) NOT NULL,
-	PRIMARY KEY (`fid`),
-	KEY `gid` (`gid`),
-	KEY `uid` (`uid`)
-	) ENGINE=MyISAM".$db->build_create_table_collation().";");
-	
+		`fid` INT(15) NOT NULL AUTO_INCREMENT,
+		`gid` INT(10) NOT NULL,
+		`uid` INT(10) NOT NULL,
+		PRIMARY KEY (`fid`),
+		KEY `gid` (`gid`),
+		KEY `uid` (`uid`)
+		) ENGINE=MyISAM".$db->build_create_table_collation().";");
+
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_rating` (
-	`rid` INT(15) NOT NULL AUTO_INCREMENT,
-	`gid` INT(10) NOT NULL,
-	`uid` INT(10) NOT NULL,
-	`rating` INT(1) NOT NULL,
-	`dateline` BIGINT(30) NOT NULL,
-	`ip` VARCHAR(30) NOT NULL,
-	PRIMARY KEY (`rid`),
-	KEY `gid` (`gid`),
-	KEY `uid` (`uid`)
-	) ENGINE=MyISAM".$db->build_create_table_collation().";");
-	
+		`rid` INT(15) NOT NULL AUTO_INCREMENT,
+		`gid` INT(10) NOT NULL,
+		`uid` INT(10) NOT NULL,
+		`rating` INT(1) NOT NULL,
+		`dateline` BIGINT(30) NOT NULL,
+		`ip` VARCHAR(30) NOT NULL,
+		PRIMARY KEY (`rid`),
+		KEY `gid` (`gid`),
+		KEY `uid` (`uid`)
+		) ENGINE=MyISAM".$db->build_create_table_collation().";");
+
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_scores` (
-	`sid` INT(15) NOT NULL AUTO_INCREMENT,
-	`gid` INT(10) NOT NULL,
-	`uid` INT(10) NOT NULL,
-	`score` FLOAT NOT NULL,
-	`comment` VARCHAR(120) NOT NULL,
-	`dateline` BIGINT(30) NOT NULL,
-	`ip` VARCHAR(30) NOT NULL,
-	PRIMARY KEY (`sid`),
-	KEY `gid` (`gid`),
-	KEY `uid` (`uid`)
-	) ENGINE=MyISAM".$db->build_create_table_collation().";");
-	
+		`sid` INT(15) NOT NULL AUTO_INCREMENT,
+		`gid` INT(10) NOT NULL,
+		`uid` INT(10) NOT NULL,
+		`score` FLOAT NOT NULL,
+		`comment` VARCHAR(120) NOT NULL,
+		`dateline` BIGINT(30) NOT NULL,
+		`ip` VARCHAR(30) NOT NULL,
+		PRIMARY KEY (`sid`),
+		KEY `gid` (`gid`),
+		KEY `uid` (`uid`)
+		) ENGINE=MyISAM".$db->build_create_table_collation().";");
+
+	/* TODO: Reconsider the necessity of this seperate table
+	 * I think it was to avoid the creation of a new session after some
+	 * time, but I'm not sure */
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_sessions` (
-	`uid` INT(10) NOT NULL AUTO_INCREMENT,
-	`sessiondata` TEXT NOT NULL,
-	`lastchange` BIGINT(30) NOT NULL,
-	PRIMARY KEY (`uid`)
-	) ENGINE=MyISAM".$db->build_create_table_collation().";");
-	
+		`uid` INT(10) NOT NULL AUTO_INCREMENT,
+		`sessiondata` TEXT NOT NULL,
+		`lastchange` BIGINT(30) NOT NULL,
+		PRIMARY KEY (`uid`)
+		) ENGINE=MyISAM".$db->build_create_table_collation().";");
+
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_tournaments` (
-	`tid` INT(10) NOT NULL AUTO_INCREMENT,
-	`gid` INT(10) NOT NULL,
-	`dateline` BIGINT(30) NOT NULL,
-	`rounds` INT(1) NOT NULL,
-	`roundtime` INT(1) NOT NULL,
-	`maxtries` INT(2) NOT NULL,
-	`joinedplayers` INT(3) NOT NULL DEFAULT '1',
-	`status` VARCHAR(10) NOT NULL DEFAULT 'open',
-	`round` INT(1) NOT NULL DEFAULT '0',
-	`champion` INT(10) NOT NULL,
-	`roundinformation` TEXT NOT NULL,
-	PRIMARY KEY (`tid`),
-	KEY `gid` (`gid`)
-	) ENGINE=MyISAM".$db->build_create_table_collation().";");
-	
+		`tid` INT(10) NOT NULL AUTO_INCREMENT,
+		`gid` INT(10) NOT NULL,
+		`dateline` BIGINT(30) NOT NULL,
+		`rounds` INT(1) NOT NULL,
+		`roundtime` INT(1) NOT NULL,
+		`maxtries` INT(2) NOT NULL,
+		`joinedplayers` INT(3) NOT NULL DEFAULT '1',
+		`status` VARCHAR(10) NOT NULL DEFAULT 'open',
+		`round` INT(1) NOT NULL DEFAULT '0',
+		`champion` INT(10) NOT NULL,
+		`roundinformation` TEXT NOT NULL,
+		PRIMARY KEY (`tid`),
+		KEY `gid` (`gid`)
+		) ENGINE=MyISAM".$db->build_create_table_collation().";");
+
 	$db->write_query("CREATE TABLE `".TABLE_PREFIX."games_tournaments_players` (
-	`pid` INT(15) NOT NULL AUTO_INCREMENT,
-	`tid` INT(10) NOT NULL,
-	`rid` INT(1) NOT NULL,
-	`uid` INT(10) NOT NULL,
-	`username` VARCHAR(120) NOT NULL,
-	`score` FLOAT NOT NULL,
-	`score_try` INT(2) NOT NULL,
-	`tries` INT(2) NOT NULL,
-	`dateline` BIGINT(30) NOT NULL,
-	PRIMARY KEY (`pid`),
-	KEY `tid` (`tid`),
-	KEY `rid` (`rid`),
-	KEY `uid` (`uid`)
-	) ENGINE=MyISAM".$db->build_create_table_collation().";");
-	
+		`pid` INT(15) NOT NULL AUTO_INCREMENT,
+		`tid` INT(10) NOT NULL,
+		`rid` INT(1) NOT NULL,
+		`uid` INT(10) NOT NULL,
+		`username` VARCHAR(120) NOT NULL,
+		`score` FLOAT NOT NULL,
+		`score_try` INT(2) NOT NULL,
+		`tries` INT(2) NOT NULL,
+		`dateline` BIGINT(30) NOT NULL,
+		PRIMARY KEY (`pid`),
+		KEY `tid` (`tid`),
+		KEY `rid` (`rid`),
+		KEY `uid` (`uid`)
+		) ENGINE=MyISAM".$db->build_create_table_collation().";");
+
 	// Insert fields in usergroups in order to make use of the MyBB permissions system
 	$db->write_query("ALTER TABLE `".TABLE_PREFIX."usergroups` ADD `canviewgames` INT(1) NOT NULL DEFAULT '1',
 	ADD `canplaygames` INT(1) NOT NULL DEFAULT '1',
 	ADD `canplaytournaments` INT(1) NOT NULL DEFAULT '1',
 	ADD `canaddtournaments` INT(1) NOT NULL DEFAULT '1';");
-	
+
 	$db->write_query("UPDATE ".TABLE_PREFIX."usergroups SET canviewgames='1', canplaygames='0', canplaytournaments='0', canaddtournaments='0' WHERE gid='1'");
 	$db->write_query("UPDATE ".TABLE_PREFIX."usergroups SET canviewgames='1', canplaygames='0', canplaytournaments='0', canaddtournaments='0' WHERE gid='5'");
 	$db->write_query("UPDATE ".TABLE_PREFIX."usergroups SET canviewgames='0', canplaygames='0', canplaytournaments='0', canaddtournaments='0' WHERE gid='7'");
 	$cache->update_usergroups();
-	
+
 	// Insert fields in users to give the users the possiblity to change some settings of the Game Section
 	$db->write_query("ALTER TABLE `".TABLE_PREFIX."users`
 	ADD `games_maxgames` INT(2) NOT NULL DEFAULT '0',
@@ -193,17 +196,17 @@ function games_install()
 	ADD `games_sortby` VARCHAR(10) NOT NULL DEFAULT '0',
 	ADD `games_order` VARCHAR(4) NOT NULL DEFAULT '0',
 	ADD `games_tournamentnotify` INT(1) NOT NULL DEFAULT '1';");
-	
+
 	// Insert the permissions for the ACP
 	change_admin_permission("games", false, 1);
 	change_admin_permission("games", "games", 1);
 	change_admin_permission("games", "gamedata", 1);
 	change_admin_permission("games", "categories", 1);
 	change_admin_permission("games", "version", 1);
-	
+
 	// Insert the Game Section tasks
 	require_once MYBB_ROOT."inc/functions_task.php";
-	
+
 	$gamescleanup_insert = array(
 		'title'		=> $db->escape_string("Game Section Cleanup"),
 		'description'	=> $db->escape_string("Cleans old Game Section sessions"),
@@ -217,7 +220,7 @@ function games_install()
 		'logging'	=> 1
 	);
 	$gamescleanup_insert['nextrun'] = fetch_next_run($gamescleanup_insert);
-	
+
 	$tournamentstatus_insert = array(
 		'title'		=> $db->escape_string("Game Section Tournament Status"),
 		'description'	=> $db->escape_string("Automaticaly changes the status of a Game Section Tournament"),
@@ -231,10 +234,10 @@ function games_install()
 		'logging'	=> 1
 	);
 	$tournamentstatus_insert['nextrun'] = fetch_next_run($tournamentstatus_insert);
-	
+
 	$db->insert_query("tasks", $gamescleanup_insert);
 	$db->insert_query("tasks", $tournamentstatus_insert);
-	
+
 	// Insert Pacman
 	// TODO: Shouldn't this be deleted as this is not GPL'ed?
 	$game_insert = array(
@@ -251,15 +254,15 @@ function games_install()
 		'dateline'	=> TIME_NOW,
 		'score_type'	=> $db->escape_string("DESC")
 	);
-	
+
 	$db->insert_query("games", $game_insert);
-	
+
 	// Load settings language file as it's the place where the title and descriptions are kept
 	$lang->load("games_settings", false, true);
-	
+
 	// Load and insert settings and settinggroups
 	require_once MYBB_ROOT."games/settings.php";
-	
+
 	foreach($games_settinggroups as $key => $group)
 	{
 		$group['title'] = "setting_group_".$group['name'];
@@ -271,10 +274,10 @@ function games_install()
 			'disporder'	=> $db->escape_string($group['displayorder']),
 			'isdefault'	=> 0
 		);
-		
+
 		$gid[$group['gid']] = $db->insert_query("settinggroups", $settinggroup_insert);
 	}
-	
+
 	foreach($games_settings as $key => $setting)
 	{
 		$setting['title'] = "setting_".$setting['name'];
@@ -288,15 +291,15 @@ function games_install()
 			'disporder'	=> $db->escape_string($setting['displayorder']),
 			'gid'		=> $gid[$setting['gid']]
 		);
-		
+
 		$db->insert_query("settings", $setting_insert);
 	}
-	
+
 	rebuild_settings();
-	
+
 	//Load and insert templates
 	require_once MYBB_ROOT."games/templates.php";
-	
+
 	foreach($games_templates as $title => $template)
 	{
 		$template_insert = array(
@@ -306,7 +309,7 @@ function games_install()
 			'version'	=> $db->escape_string($mybb->version_code),
 			'dateline'	=> TIME_NOW
 		);
-		
+
 		$db->insert_query("templates", $template_insert);
 	}
 }
@@ -314,7 +317,7 @@ function games_install()
 function games_uninstall()
 {
 	global $db, $cache;
-	
+
 	// Delete the Game Section tables
 	$db->write_query("DROP TABLE `".TABLE_PREFIX."games`,
 	`".TABLE_PREFIX."games_categories`,
@@ -324,14 +327,14 @@ function games_uninstall()
 	`".TABLE_PREFIX."games_sessions`,
 	`".TABLE_PREFIX."games_tournaments`,
 	`".TABLE_PREFIX."games_tournaments_players`;");
-	
+
 	// Delete user-permissions fields
 	$db->write_query("ALTER TABLE `".TABLE_PREFIX."usergroups` DROP `canviewgames`,
 	DROP `canplaygames`,
 	DROP `canplaytournaments`,
 	DROP `canaddtournaments`;");
 	$cache->update_usergroups();
-	
+
 	// Delete users fields
 	$db->write_query("ALTER TABLE `".TABLE_PREFIX."users`
 	DROP `games_maxgames`,
@@ -339,36 +342,36 @@ function games_uninstall()
 	DROP `games_sortby`,
 	DROP `games_order`,
 	DROP `games_tournamentnotify`;");
-	
+
 	// Delete Game Section ACP permissions
 	change_admin_permission("games", false, -1);
 	change_admin_permission("games", "games", -1);
 	change_admin_permission("games", "gamedata", -1);
 	change_admin_permission("games", "categories", -1);
 	change_admin_permission("games", "version", -1);
-	
+
 	// Delete tasks
 	$db->delete_query("tasks", "file='gamescleanup'");
 	$db->delete_query("tasks", "file='tournamentstatus'");
-	
+
 	// Load and delete settings and settinggroups
 	require_once MYBB_ROOT."games/settings.php";
-	
+
 	foreach($games_settinggroups as $key => $group)
 	{
 		$db->delete_query("settinggroups", "name='".$db->escape_string($group['name'])."'");
 	}
-	
+
 	foreach($games_settings as $key => $setting)
 	{
 		$db->delete_query("settings", "name='".$db->escape_string($setting['name'])."'");
 	}
-	
+
 	rebuild_settings();
-	
+
 	// Load and delete templates
 	require_once MYBB_ROOT."games/templates.php";
-	
+
 	foreach($games_templates as $title => $template)
 	{
 		$db->delete_query("templates", "title='".$db->escape_string($title)."' AND sid='-1'");
@@ -378,13 +381,13 @@ function games_uninstall()
 function games_activate()
 {
 	global $db;
-	
+
 	// Update MyBB templates to integrate the Game Section in MyBB
 	require_once MYBB_ROOT.'inc/adminfunctions_templates.php';
-	
+
 	find_replace_templatesets('header', '#'.preg_quote('{$lang->toplinks_help}</a></li>').'#', "{\$lang->toplinks_help}</a></li>
 					<li><a href=\"{\$mybb->settings['bburl']}/games.php\"><img src=\"{\$mybb->settings['bburl']}/games/images/games.png\" alt=\"\" />{\$lang->gamesection}</a></li>");
-	
+
 	find_replace_templatesets('usercp_nav', '#'.preg_quote('{$usercpmenu}').'#', "{\$usercpmenu}
 <tr>
 	<td class=\"tcat\">
@@ -400,13 +403,13 @@ function games_activate()
 function games_deactivate()
 {
 	global $db, $cache;
-	
+
 	// Undo Game Section changes to MyBB templates
 	require_once MYBB_ROOT."inc/adminfunctions_templates.php";
-	
+
 	find_replace_templatesets("header", '#'.preg_quote('
 					<li><a href="{$mybb->settings[\'bburl\']}/games.php"><img src="{$mybb->settings[\'bburl\']}/games/images/games.png" alt="" />{$lang->gamesection}</a></li>').'#', '', 0);
-	
+
 	find_replace_templatesets("usercp_nav", '#'.preg_quote('
 <tr>
 	<td class="tcat">
@@ -422,19 +425,19 @@ function games_deactivate()
 function games_is_installed()
 {
 	global $db;
-	
+
 	if($db->table_exists("games"))
 	{
 		return true;
 	}
-	
+
 	return false;
 }
 
 function games_global()
 {
 	global $lang;
-	
+
 	// Loading language file
 	$lang->load("games");
 }
@@ -442,13 +445,13 @@ function games_global()
 function games_index()
 {
 	global $mybb, $db, $lang, $plugins;
-	
+
 	// Headers to prevent browser-caching
 	header("Expires: Sat, 1 Jan 2000 01:00:00 GMT");
 	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	header("Cache-Control: no-cache, must-revalidate");
 	header("Pragma: no-cache");
-	
+
 	// Handle IBProArcade v2 scores
 	switch($mybb->input['act'])
 	{
@@ -461,7 +464,7 @@ function games_index()
 			}
 		break;
 	}
-	
+
 	// Handle IBProArcade v32 scores
 	switch($mybb->input['autocom'])
 	{
@@ -471,15 +474,15 @@ function games_index()
 				case 'verifyscore':
 					$randchar1 = rand(1, 200);
 					$randchar2 = rand(1, 200);
-					
+
 					require_once MYBB_ROOT."inc/class_games.php";
 					$games_core = new games;
-					
+
 					$games_core->session_start();
 					$games_core->session['randchar1'] = $randchar1;
 					$games_core->session['randchar2'] = $randchar2;
 					$games_core->session_update();
-					
+
 					echo("&randchar=".$randchar1."&randchar2=".$randchar2."&savescore=1&blah=OK");
 					exit;
 				break;
@@ -497,26 +500,26 @@ function games_index()
 function games_xmlhttp()
 {
 	global $mybb, $lang, $groupscache, $db, $charset, $theme_games, $plugins;
-	
+
 	//Game Section core settings, themes, ...
 	if($mybb->input['action'] == "games_randomgames" || $mybb->input['action'] == "games_search")
 	{
 		//Games language
 		$lang->load("games");
-		
+
 		//Requires
 		require_once MYBB_ROOT."inc/class_games.php";
 		$games_core = new games;
-		
+
 		//Settings of the Game Section
 		$games_core->run_settings();
-		
+
 		//Game Section closed
 		if($games_core->settings['closed'] == 1 && $mybb->user['usergroup'] != 4)
 		{
 			xmlhttp_error($lang->closed);
 		}
-		
+
 		//Theme setting
 		if($mybb->user['uid'] != 0 && $mybb->user['games_theme'] != "0")
 		{
@@ -526,12 +529,12 @@ function games_xmlhttp()
 		{
 			$theme_games_tid = $games_core->settings['theme'];
 		}
-		
+
 		//Game Section Theme
 		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE tid='".$theme_games_tid."'");
 		$theme_games = $db->fetch_array($query);
 		$theme_games_test = $db->num_rows($query);
-		
+
 		if($theme_games_test == 0)
 		{
 			//The user selected theme doesn't exist, load the default theme
@@ -543,7 +546,7 @@ function games_xmlhttp()
 		{
 			$theme_games_test2 = 1;
 		}
-		
+
 		if($theme_games_test2 == 0)
 		{
 			//The standard theme doesn't exist, load the default Game Section theme
@@ -555,14 +558,14 @@ function games_xmlhttp()
 		{
 			$theme_games_test3 = 1;
 		}
-		
+
 		//No theme available
 		if($theme_games_test3 == 0)
 		{
 			xmlhttp_error("The users selected theme, the default theme and the Game Section Default theme doesn't exist.");
 		}
 	}
-	
+
 	//Functions
 	if($mybb->input['action'] == "games_randomgames")
 	{
@@ -571,21 +574,21 @@ function games_xmlhttp()
 		{
 			$where_cat = " AND cid='".intval($mybb->input['cid'])."'";
 		}
-		
+
 		//Put games in array
 		$query = $db->query("SELECT gid, name, title FROM ".TABLE_PREFIX."games WHERE active='1'".$where_cat." ORDER BY dateline");
 		while($game = $db->fetch_array($query))
 		{
 			$games[] = $game;
 		}
-		
+
 		//Load x random games
 		for($i = 1; $i <= $games_core->settings['stats_randomgames_max']; $i++)
 		{
 			$id = mt_rand(0, count($games)-1);
 			eval("\$randomgames_bit .= \"".$games_core->template("games_stats_randomgames_bit")."\";");
 		}
-		
+
 		//Output
 		header("Content-type: text/plain; charset=".$charset);
 		echo $randomgames_bit;
@@ -595,26 +598,26 @@ function games_xmlhttp()
 		//Replacing
 		$patterns[0] = '/ /';
 		$replacements[0] = "%";
-		
+
 		$title = $db->escape_string(preg_replace($patterns, $replacements, htmlspecialchars_decode($mybb->input['title'])));
-		
+
 		// If the string is less than 3 characters, quit.
 		if(my_strlen($mybb->input['title']) < 3)
 		{
 			exit;
 		}
-		
+
 		//Load games
 		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE title LIKE '%".$title."%' AND active='1' ORDER BY title ASC");
 		$games_test = $db->num_rows($query);
-		
+
 		if($games_test != 0)
 		{
 			while($games = $db->fetch_array($query))
 			{
 				eval("\$games_bit .= \"".$games_core->template("games_tournaments_add_game_search_bit")."\";");
 			}
-			
+
 			//Output
 			header("Content-type: text/plain; charset=".$charset);
 			eval("\$results = \"".$games_core->template("games_tournaments_add_game_search")."\";");
@@ -626,7 +629,7 @@ function games_xmlhttp()
 function games_member_login()
 {
 	global $user, $db;
-	
+
 	//Delete Game Section session of user
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_sessions WHERE uid='".$user['uid']."'");
 }
@@ -634,7 +637,7 @@ function games_member_login()
 function games_member_logout()
 {
 	global $mybb, $db;
-	
+
 	//Delete Game Section session of user
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_sessions WHERE uid='".$mybb->user['uid']."'");
 }
@@ -644,11 +647,11 @@ function games_online_activity($user_activity)
 	//Get the filename
 	$split_loc = explode(".php", $user_activity['location']);
 	$filename = my_substr($split_loc[0], -my_strpos(strrev($split_loc[0]), "/"));
-	
+
 	if($user_activity['activity'] == "unknown" && $filename == "games")
 	{
 		$user_activity['activity'] = "games";
-		
+
 		return $user_activity;
 	}
 }
@@ -656,11 +659,11 @@ function games_online_activity($user_activity)
 function games_online_location($plugin_array)
 {
 	global $lang;
-	
+
 	if($plugin_array['user_activity']['activity'] == "games")
 	{
 		$plugin_array['location_name'] = $lang->sprintf($lang->viewing_gamesection, str_replace("&amp;", "&", $plugin_array['user_activity']['location']));
-		
+
 		return $plugin_array;
 	}
 }
@@ -677,7 +680,7 @@ function games_admin_log($plugin_array)
 		{
 			$plugin_array['lang_string'] .= "_dir";
 		}
-		
+
 		return $plugin_array;
 	}
 }
@@ -691,16 +694,16 @@ function games_config_settings()
 function games_users_merge()
 {
 	global $source_user, $destination_user, $db;
-	
+
 	// Update all uid's in the Game Section tables
 	$uid_update['uid'] = $destination_user['uid'];
 	$db->update_query("games_favourites", $uid_update, "uid='".$source_user['uid']."'");
 	$db->update_query("games_rating", $uid_update, "uid='".$source_user['uid']."'");
 	$db->update_query("games_scores", $uid_update, "uid='".$source_user['uid']."'");
-	
+
 	// Delete session of source user
 	$db->delete_query("games_sessions", "uid='".$source_user['uid']."'");
-	
+
 	/* Delete all duplicated favourites
 	 * As we are merging two users, there shouldn't be more then 2 of them,
 	 * otherwise there was already a problem before merging. */
@@ -709,7 +712,7 @@ function games_users_merge()
 	{
 		$db->delete_query("games_favourites", "gid='".$favourite['gid']."' uid='".$destination_user['uid']."'", 1);
 	}
-	
+
 	// Delete all duplicated ratings
 	$query = $db->query("SELECT gid FROM ".TABLE_PREFIX."games_rating WHERE uid='".$destination_user['uid']."' GROUP BY gid HAVING COUNT(*)>1");
 	while($rating = $db->fetch_array($query))
@@ -717,7 +720,7 @@ function games_users_merge()
 		$ratings[] = $rating['gid'];
 		$db->delete_query("games_rating", "gid='".$rating['gid']."' uid='".$destination_user['uid']."'", 1);
 	}
-	
+
 	// Recalculate rating
 	$query2 = $db->query("SELECT gid, SUM(rating) as rating_sum, COUNT(*) as rating_count FROM ".TABLE_PREFIX."games_rating WHERE gid='".$gid."' ORDER BY gid");
 	while($ratings_count = $db->fetch_array($query2))
@@ -725,7 +728,7 @@ function games_users_merge()
 		$rating_update['rating'] = ceil($ratings_count['rating_sum']/$ratings_count['rating_count']);
 		$db->update_query("games", $rating_update, "gid='".$ratings_count['gid']."'");
 	}
-	
+
 	// Delete all duplicated scores (DESC)
 	$query = $db->query("
 		SELECT s.gid, MIN(s.score) as min_score, g.champion
@@ -741,7 +744,7 @@ function games_users_merge()
 			AND gid='".$scores['gid']."' AND uid='".$destination_user['uid']."'
 			AND score='".$scores['min_score']."'", 1);
 	}
-	
+
 	// Delete all duplicated scores (ASC)
 	$query = $db->query("
 		SELECT s.gid, MAX(s.score) as max_score, g.champion
@@ -762,13 +765,13 @@ function games_users_merge()
 function games_users_delete()
 {
 	global $user, $db;
-	
+
 	//Delete all favourites, ratings and scores
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_favourites WHERE uid='".$user['uid']."'");
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_rating WHERE uid='".$user['uid']."'");
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_scores WHERE uid='".$user['uid']."'");
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_sessions WHERE uid='".$user['uid']."'");
-	
+
 	//Update champions
 	//Loading the games and scores
 	$query = $db->query("SELECT DISTINCT g.gid, g.score_type, g.title, s.uid, s.username, s.score, s.dateline, c.score AS champscore
@@ -788,7 +791,7 @@ function games_users_delete()
 			$champ[$scores['gid']]['dateline'] = $scores['dateline'];
 		}
 	}
-	
+
 	//Read the array
 	if(is_array($champ))
 	{
@@ -802,11 +805,11 @@ function games_users_delete()
 				'score'			=> $db->escape_string($champ[$gid]['score']),
 				'dateline'		=> $db->escape_string($champ[$gid]['dateline']),
 			);
-			
+
 			$db->update_query("games_champions", $champs_array, "gid='".$champ[$gid]['gid']."'");
 		}
 	}
-	
+
 	//Delete champions without a second score
 	$db->delete_query("games_champions", "uid='".$user['uid']."'");
 }
@@ -814,35 +817,35 @@ function games_users_delete()
 function games_groups_graph_tabs($tabs)
 {
 	global $lang;
-	
+
 	$tabs['games'] = $lang->gamesection;
-	
+
 	return $tabs;
 }
 
 function games_groups_graph()
 {
 	global $lang, $form, $mybb, $plugins;
-	
+
 	//The Game Section Permissions
 	echo "<div id=\"tab_games\">";	
 	$form_container = new FormContainer($lang->gamesection);
-	
+
 	$general_options = array(
 		$form->generate_check_box("canviewgames", 1, $lang->can_view_games, array("checked" => $mybb->input['canviewgames'])),
 		$form->generate_check_box("canplaygames", 1, $lang->can_play_games, array("checked" => $mybb->input['canplaygames']))
 	);
 	$form_container->output_row($lang->gamesection, "", "<div class=\"group_settings_bit\">".implode("</div><div class=\"group_settings_bit\">", $general_options)."</div>");
-	
+
 	$tournaments_options = array(
 		$form->generate_check_box("canplaytournaments", 1, $lang->can_play_tournaments, array("checked" => $mybb->input['canplaytournaments'])),
 		$form->generate_check_box("canaddtournaments", 1, $lang->can_add_tournaments, array("checked" => $mybb->input['canaddtournaments']))
 	);
 	$form_container->output_row($lang->tournaments, "", "<div class=\"group_settings_bit\">".implode("</div><div class=\"group_settings_bit\">", $tournaments_options)."</div>");
-	
+
 	//Plugin
 	$plugins->run_hooks_by_ref("admin_user_groups_edit_games", $form_container);
-	
+
 	$form_container->end();
 	echo "</div>";
 }
@@ -850,7 +853,7 @@ function games_groups_graph()
 function games_groups_commit()
 {
 	global $updated_group, $mybb;
-	
+
 	$updated_group['canviewgames'] = $mybb->input['canviewgames'];
 	$updated_group['canplaygames'] = $mybb->input['canplaygames'];
 	$updated_group['canplaytournaments'] = $mybb->input['canplaytournaments'];
