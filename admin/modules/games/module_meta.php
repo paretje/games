@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2008 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 30/12/2008 by Paretje
+ *   Last modified: 30/12/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -41,10 +41,6 @@ function games_meta()
 	$sub_menu['10'] = array("id" => "games", "title" => $lang->nav_games, "link" => "index.php?module=games/games");
 	$sub_menu['15'] = array("id" => "gamedata", "title" => $lang->nav_gamedata, "link" => "index.php?module=games/gamedata");
 	$sub_menu['20'] = array("id" => "categories", "title" => $lang->nav_categories, "link" => "index.php?module=games/categories");
-	$sub_menu['30'] = array("id" => "settings", "title" => $lang->nav_settings, "link" => "index.php?module=games/settings");
-	$sub_menu['40'] = array("id" => "themes", "title" => $lang->nav_themes, "link" => "index.php?module=games/themes");
-	$sub_menu['50'] = array("id" => "templates", "title" => $lang->nav_templates, "link" => "index.php?module=games/templates");
-	$sub_menu['60'] = array("id" => "tools", "title" => $lang->nav_tools, "link" => "index.php?module=games/tools");
 	$sub_menu['70'] = array("id" => "version", "title" => $lang->nav_version, "link" => "index.php?module=games/version");
 	
 	$plugins->run_hooks_by_ref("admin_games_menu", $sub_menu);
@@ -64,10 +60,6 @@ function games_action_handler($action)
 		'games' => array('active' => 'games', 'file' => 'games.php'),
 		'gamedata' => array('active' => 'gamedata', 'file' => 'gamedata.php'),
 		'categories' => array('active' => 'categories', 'file' => 'categories.php'),
-		'settings' => array('active' => 'settings', 'file' => 'settings.php'),
-		'themes' => array('active' => 'themes', 'file' => 'themes.php'),
-		'templates' => array('active' => 'templates', 'file' => 'templates.php'),
-		'tools' => array('active' => 'tools', 'file' => 'tools.php'),
 		'version' => array('active' => 'version', 'file' => 'version.php')
 	);
 	
@@ -93,10 +85,6 @@ function games_admin_permissions()
 		"games"			=> $lang->can_manage_games,
 		"gamedata"		=> $lang->can_manage_gamedata,
 		"categories"		=> $lang->can_manage_categories,
-		"settings"		=> $lang->can_manage_settings,
-		"themes"		=> $lang->can_manage_themes,
-		"templates"		=> $lang->can_manage_templates,
-		"tools"			=> $lang->can_manage_tools,
 		"version"		=> $lang->can_manage_version
 	);
 	

@@ -57,7 +57,7 @@ function games_info()
 		"website"	=> "http://www.gamesection.org",
 		"author"	=> "Paretje",
 		"authorsite"	=> "http://www.gamesection.org",
-		"version"	=> "1.9.0-r?",
+		"version"	=> "1.3.0",
 		"guid"		=> "db37073977904e9458f54937ceb13a9f",
 		"compatibility" => "16*"
 	);
@@ -199,10 +199,6 @@ function games_install()
 	change_admin_permission("games", "games", 1);
 	change_admin_permission("games", "gamedata", 1);
 	change_admin_permission("games", "categories", 1);
-	change_admin_permission("games", "settings", 1);
-	change_admin_permission("games", "themes", 1);
-	change_admin_permission("games", "templates", 1);
-	change_admin_permission("games", "tools", 1);
 	change_admin_permission("games", "version", 1);
 	
 	// Insert the Game Section tasks
@@ -240,7 +236,7 @@ function games_install()
 	$db->insert_query("tasks", $tournamentstatus_insert);
 	
 	// Insert Pacman
-	// Shouldn't this be deleted as this is not GPL'ed?
+	// TODO: Shouldn't this be deleted as this is not GPL'ed?
 	$game_insert = array(
 		'cid'		=> 0,
 		'title'		=> $db->escape_string("Pacman"),
@@ -349,10 +345,6 @@ function games_uninstall()
 	change_admin_permission("games", "games", -1);
 	change_admin_permission("games", "gamedata", -1);
 	change_admin_permission("games", "categories", -1);
-	change_admin_permission("games", "settings", -1);
-	change_admin_permission("games", "themes", -1);
-	change_admin_permission("games", "templates", -1);
-	change_admin_permission("games", "tools", -1);
 	change_admin_permission("games", "version", -1);
 	
 	// Delete tasks
