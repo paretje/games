@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 22/02/2013 by Paretje
+ *   Last modified: 30/12/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -485,74 +485,19 @@ function games_xmlhttp()
 {
 	global $mybb, $lang, $groupscache, $db, $charset, $theme_games, $plugins;
 
-	//Game Section core settings, themes, ...
 	if($mybb->input['action'] == "games_randomgames" || $mybb->input['action'] == "games_search")
 	{
-		//Games language
 		$lang->load("games");
 
-		//Requires
-		/* TODO: This class should get a better name, according to what
-		 *       the objective will be */
-		require_once MYBB_ROOT."inc/class_games.php";
-		$games_core = new games;
+		$gsession = new GameSession;
 
-		//Settings of the Game Section
-		$games_core->run_settings();
-
-		//Game Section closed
-		if($games_core->settings['closed'] == 1 && $mybb->user['usergroup'] != 4)
+		// Is the Game Section closed?
+		if($mybb->settings['games_closed'] == 1 && $mybb->user['usergroup'] != 4)
 		{
 			xmlhttp_error($lang->closed);
 		}
-
-		//Theme setting
-		if($mybb->user['uid'] != 0 && $mybb->user['games_theme'] != "0")
-		{
-			$theme_games_tid = $mybb->user['games_theme'];
-		}
-		else
-		{
-			$theme_games_tid = $games_core->settings['theme'];
-		}
-
-		//Game Section Theme
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE tid='".$theme_games_tid."'");
-		$theme_games = $db->fetch_array($query);
-		$theme_games_test = $db->num_rows($query);
-
-		if($theme_games_test == 0)
-		{
-			//The user selected theme doesn't exist, load the default theme
-			$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE tid='".$games_core->settings['theme']."'");
-			$theme_games = $db->fetch_array($query);
-			$theme_games_test2 = $db->num_rows($query);
-		}
-		else
-		{
-			$theme_games_test2 = 1;
-		}
-
-		if($theme_games_test2 == 0)
-		{
-			//The standard theme doesn't exist, load the default Game Section theme
-			$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE tid='1'");
-			$theme_games = $db->fetch_array($query);
-			$theme_games_test3 = $db->num_rows($query);
-		}
-		else
-		{
-			$theme_games_test3 = 1;
-		}
-
-		//No theme available
-		if($theme_games_test3 == 0)
-		{
-			xmlhttp_error("The users selected theme, the default theme and the Game Section Default theme doesn't exist.");
-		}
 	}
 
-	//Functions
 	if($mybb->input['action'] == "games_randomgames")
 	{
 		//Category settings
