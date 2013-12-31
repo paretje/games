@@ -541,7 +541,7 @@ function whos_online()
 //Function to make the statistics of the Game Section
 function stats()
 {
-	global $mybb, $db, $games_core, $lang, $theme, $collapsed, $collapsedimg, $plugins;
+	global $mybb, $db, $games_core, $lang, $theme, $collapsed, $collapsedimg, $plugins, $templates;
 	
 	//Plugin
 	$plugins->run_hooks("games_stats_start");
