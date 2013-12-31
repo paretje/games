@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 21/02/2013 by Paretje
+ *   Last modified: 30/12/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -119,7 +119,7 @@ switch($mybb->input['action'])
 		{
 			$multipage = multipage($count, $perpage, $page, "games.php".$url_cat);
 			
-			eval("\$multipages = \"".$games_core->template("games_multipages")."\";");
+			eval("\$multipages = \"".$templates->get("games_multipages")."\";");
 		}
 		
 		//No games
@@ -129,13 +129,13 @@ switch($mybb->input['action'])
 		}
 		
 		//Game Section Stats
-		if($games_core->settings['stats_global'] == 1)
+		if($mybb->settings['games_stats_global'] == 1)
 		{
 			$stats = stats();
 		}
 		
 		//Tournaments bar
-		if($games_core->settings['tournaments_activated'] == 1)
+		if($mybb->settings['games_tournaments_activated'] == 1)
 		{
 			//Statistics
 			$tournaments_stats = $cache->read("games_tournaments_stats");
@@ -159,7 +159,7 @@ switch($mybb->input['action'])
 				
 				while($tournaments = $db->fetch_array($query))
 				{
-					eval("\$tournaments_bar_user_games_bit .= \"".$games_core->template("games_tournaments_bar_user_games_bit")."\";");
+					eval("\$tournaments_bar_user_games_bit .= \"".$templates->get("games_tournaments_bar_user_games_bit")."\";");
 				}
 				
 				//Test tournaments
@@ -171,14 +171,14 @@ switch($mybb->input['action'])
 				//Add tournament link
 				if($mybb->usergroup['canaddtournaments'] == 1)
 				{
-					eval("\$tournaments_bar_user_add = \"".$games_core->template("games_tournaments_bar_user_add")."\";");
+					eval("\$tournaments_bar_user_add = \"".$templates->get("games_tournaments_bar_user_add")."\";");
 				}
 				
 				$width = " width=\"33%\"";
-				eval("\$tournaments_bar_user = \"".$games_core->template("games_tournaments_bar_user")."\";");
+				eval("\$tournaments_bar_user = \"".$templates->get("games_tournaments_bar_user")."\";");
 			}
 			
-			eval("\$tournaments_bar = \"".$games_core->template("games_tournaments_bar")."\";");
+			eval("\$tournaments_bar = \"".$templates->get("games_tournaments_bar")."\";");
 		}
 		
 		//Search function
@@ -193,7 +193,7 @@ switch($mybb->input['action'])
 		$search_bar_s = htmlspecialchars_uni($mybb->input['s']);
 		$search_bar_des = htmlspecialchars_uni($mybb->input['des']);
 		
-		eval("\$search_bar = \"".$games_core->template("games_search_bar")."\";");
+		eval("\$search_bar = \"".$templates->get("games_search_bar")."\";");
 		
 		//Loading games
 		$query = $db->query("SELECT DISTINCT g.gid, g.title, g.name, g.description, g.played, g.lastplayed, g.lastplayedby, g.rating, g.numratings, g.dateline, c.username, c.score, f.fid, r.rid, s.score AS pscore, u.username AS lastplayedusername
@@ -227,11 +227,11 @@ switch($mybb->input['action'])
 			}
 			
 			//Is this a new game?
-			$date = TIME_NOW-($games_core->settings['new_game']*86400);
+			$date = TIME_NOW-($mybb->settings['games_new_game']*86400);
 			
 			if($games['dateline'] >= $date)
 			{
-				$new_game = " <img src=\"./games/".$theme_games['directory']."/new.png\" alt=\"\" />";
+				$new_game = " <img src=\"./games/images/new.png\" alt=\"\" />";
 			}
 			else
 			{
@@ -292,18 +292,18 @@ switch($mybb->input['action'])
 			{
 				if(!isset($games['fid']))
 				{
-					eval("\$games_favourite = \"".$games_core->template("games_bit_favourite_add")."\";");
+					eval("\$games_favourite = \"".$templates->get("games_bit_favourite_add")."\";");
 				}
 				else
 				{
-					eval("\$games_favourite = \"".$games_core->template("games_bit_favourite_delete")."\";");
+					eval("\$games_favourite = \"".$templates->get("games_bit_favourite_delete")."\";");
 				}
 			}
 			
 			//Tournaments
-			if($games_core->settings['tournaments_activated'] == 1 && $mybb->usergroup['canaddtournaments'] == 1 && $mybb->user['uid'] != 0)
+			if($mybb->settings['games_tournaments_activated'] == 1 && $mybb->usergroup['canaddtournaments'] == 1 && $mybb->user['uid'] != 0)
 			{
-				eval("\$games_tournament = \"".$games_core->template("games_bit_tournament")."\";");
+				eval("\$games_tournament = \"".$templates->get("games_bit_tournament")."\";");
 			}
 			
 			//Rating
@@ -320,7 +320,7 @@ switch($mybb->input['action'])
 			//Plugin
 			$plugins->run_hooks("games_default_games_end");
 			
-			eval("\$games_bit .= \"".$games_core->template("games_bit")."\";");
+			eval("\$games_bit .= \"".$templates->get("games_bit")."\";");
 		}
 		
 		//Categories
@@ -336,10 +336,10 @@ switch($mybb->input['action'])
 		$count = 1;
 		$count2 = 0;
 		
-		$lines = ceil($cat_test/$theme_games['catsperline']);
-		$maxcats = $lines*$theme_games['catsperline'];
+		$lines = ceil($cat_test/$mybb->settings['games_catsperline']);
+		$maxcats = $lines*$mybb->settings['games_catsperline'];
 		$cats = $maxcats-$cat_test;
-		$procent = 100/$theme_games['catsperline'];
+		$procent = 100/$mybb->settings['games_catsperline'];
 		$bgcolor = "";
 		
 		while($categories = $db->fetch_array($query))
@@ -354,7 +354,7 @@ switch($mybb->input['action'])
 			$categories['title'] = htmlspecialchars_uni($categories['title']);
 			
 			//Lines
-			if($count == $theme_games['catsperline'] && $maxcats != $count2)
+			if($count == $mybb->settings['games_catsperline'] && $maxcats != $count2)
 			{
 				$tr = "
 </tr>
@@ -390,11 +390,11 @@ switch($mybb->input['action'])
 			//Is this the current category?
 			if($categories['cid'] == intval($mybb->input['cid']))
 			{
-				eval("\$categories_bit .= \"".$games_core->template("games_categories_bit_cur")."\";");
+				eval("\$categories_bit .= \"".$templates->get("games_categories_bit_cur")."\";");
 			}
 			else
 			{
-				eval("\$categories_bit .= \"".$games_core->template("games_categories_bit")."\";");
+				eval("\$categories_bit .= \"".$templates->get("games_categories_bit")."\";");
 			}
 		}
 		
@@ -406,11 +406,11 @@ switch($mybb->input['action'])
 				$categories_bit .= "<td class=\"".$bgcolor."\"></td>";
 			}
 			
-			eval("\$categories_bar = \"".$games_core->template("games_categories")."\";");
+			eval("\$categories_bar = \"".$templates->get("games_categories")."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] != "never")
+		if($mybb->settings['games_online'] != "never")
 		{
 			$online = whos_online();
 		}
@@ -418,7 +418,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_default_end");
 		
-		eval("\$games_page = \"".$games_core->template("games")."\";");
+		eval("\$games_page = \"".$templates->get("games")."\";");
 		output_page($games_page);
 	break;
 	case 'play':
@@ -444,7 +444,7 @@ switch($mybb->input['action'])
 		$games_core->session_start();
 		
 		//Load tournament, and the session information
-		if($games_core->settings['tournaments_activated'] == 1 && intval($mybb->input['tid']))
+		if($mybb->settings['games_tournaments_activated'] == 1 && intval($mybb->input['tid']))
 		{
 			$query = $db->query("SELECT DISTINCT t.*, p.uid, p.tries
 			FROM ".TABLE_PREFIX."games_tournaments t
@@ -521,7 +521,7 @@ switch($mybb->input['action'])
 		$db->write_query("UPDATE ".TABLE_PREFIX."games SET played=played+1, lastplayed='".TIME_NOW."', lastplayedby='".$mybb->user['uid']."' WHERE gid='".$gid."'");
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -529,7 +529,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_play_end");
 		
-		eval("\$play = \"".$games_core->template('games_play')."\";");
+		eval("\$play = \"".$templates->get('games_play')."\";");
 		output_page($play);
 	break;
 	case 'favourites':
@@ -582,7 +582,7 @@ switch($mybb->input['action'])
 		{
 			$multipage = multipage($count, $perpage, $page, "games.php?action=favourites");
 			
-			eval("\$multipages = \"".$games_core->template("games_multipages")."\";");
+			eval("\$multipages = \"".$templates->get("games_multipages")."\";");
 		}
 		
 		//Loading games
@@ -624,11 +624,11 @@ switch($mybb->input['action'])
 			}
 			
 			//Is this a new game?
-			$date = TIME_NOW-($games_core->settings['new_game']*86400);
+			$date = TIME_NOW-($mybb->settings['games_new_game']*86400);
 			
 			if($games['dateline'] >= $date)
 			{
-				$new_game = " <img src=\"./games/".$theme_games['directory']."/new.png\" alt=\"\" />";
+				$new_game = " <img src=\"./games/images/new.png\" alt=\"\" />";
 			}
 			else
 			{
@@ -689,18 +689,18 @@ switch($mybb->input['action'])
 			{
 				if(!isset($games['fid']))
 				{
-					eval("\$games_favourite = \"".$games_core->template("games_bit_favourite_add")."\";");
+					eval("\$games_favourite = \"".$templates->get("games_bit_favourite_add")."\";");
 				}
 				else
 				{
-					eval("\$games_favourite = \"".$games_core->template("games_bit_favourite_delete")."\";");
+					eval("\$games_favourite = \"".$templates->get("games_bit_favourite_delete")."\";");
 				}
 			}
 			
 			//Tournaments
-			if($games_core->settings['tournaments_activated'] == 1 && $mybb->usergroup['canaddtournaments'] == 1 && $mybb->user['uid'] != 0)
+			if($mybb->settings['games_tournaments_activated'] == 1 && $mybb->usergroup['canaddtournaments'] == 1 && $mybb->user['uid'] != 0)
 			{
-				eval("\$games_tournament = \"".$games_core->template("games_bit_tournament")."\";");
+				eval("\$games_tournament = \"".$templates->get("games_bit_tournament")."\";");
 			}
 			
 			//Rating
@@ -717,11 +717,11 @@ switch($mybb->input['action'])
 			//Plugin
 			$plugins->run_hooks("games_favourites_games_end");
 			
-			eval("\$games_bit .= \"".$games_core->template("games_bit")."\";");
+			eval("\$games_bit .= \"".$templates->get("games_bit")."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -729,7 +729,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_favourites_end");
 		
-		eval("\$games_favourites = \"".$games_core->template("games_favourites")."\";");
+		eval("\$games_favourites = \"".$templates->get("games_favourites")."\";");
 		output_page($games_favourites);
 	break;
 	case 'add_favourite':
@@ -1023,7 +1023,7 @@ switch($mybb->input['action'])
 		$search_bar_s = htmlspecialchars_uni($mybb->input['s']);
 		$search_bar_des = htmlspecialchars_uni($mybb->input['des']);
 
-		eval("\$search_bar = \"".$games_core->template("games_search_bar")."\";");
+		eval("\$search_bar = \"".$templates->get("games_search_bar")."\";");
 		
 		//Header
 		//Title specification
@@ -1088,7 +1088,7 @@ switch($mybb->input['action'])
 			$addr = explode("&page=", $_SERVER['QUERY_STRING']);
 			$multipage = multipage($search_test, $perpage, $page, "games.php?".$addr[0]);
 			
-			eval("\$multipages = \"".$games_core->template("games_multipages")."\";");
+			eval("\$multipages = \"".$templates->get("games_multipages")."\";");
 		}
 		
 		//Loading results
@@ -1146,11 +1146,11 @@ switch($mybb->input['action'])
 			}
 			
 			//Is this a new game?
-			$date = TIME_NOW-($games_core->settings['new_game']*86400);
+			$date = TIME_NOW-($mybb->settings['games_new_game']*86400);
 			
 			if($search['dateline'] >= $date)
 			{
-				$new_game = " <img src=\"./games/".$theme_games['directory']."/new.png\" alt=\"\" />";
+				$new_game = " <img src=\"./games/images/new.png\" alt=\"\" />";
 			}
 			else
 			{
@@ -1160,11 +1160,11 @@ switch($mybb->input['action'])
 			//Plugin
 			$plugins->run_hooks("games_search_while");
 			
-			eval("\$search_bit .= \"".$games_core->template("games_search_bit")."\";");
+			eval("\$search_bit .= \"".$templates->get("games_search_bit")."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -1172,7 +1172,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_search_end");
 		
-		eval("\$searchpage = \"".$games_core->template('games_search')."\";");
+		eval("\$searchpage = \"".$templates->get('games_search')."\";");
 		output_page($searchpage);
 	break;
 	case 'stats':
@@ -1219,7 +1219,7 @@ switch($mybb->input['action'])
 		$total = 0;
 		
 		//Control if multipages is activated
-		if($games_core->settings['stats_userstats_multipages'] == 1)
+		if($mybb->settings['games_stats_userstats_multipages'] == 1)
 		{
 			//Control page
 			if(intval($mybb->input['page']))
@@ -1247,7 +1247,7 @@ switch($mybb->input['action'])
 			{
 				$multipage = multipage($count, $perpage, $page, "games.php?action=stats".$url_uid);
 			
-				eval("\$multipages = \"".$games_core->template("games_user_stats_multipages")."\";");
+				eval("\$multipages = \"".$templates->get("games_user_stats_multipages")."\";");
 			}
 		}
 		
@@ -1419,7 +1419,7 @@ switch($mybb->input['action'])
 				
 					$tottime = $date-$user_score[$gid]['dateline'];
 				
-					if($games_core->settings['stats_short'] == 0)
+					if($mybb->settings['games_stats_short'] == 0)
 					{
 						$tottime = nice_time($tottime);
 					}
@@ -1444,12 +1444,12 @@ switch($mybb->input['action'])
 				//Plugin
 				$plugins->run_hooks("games_userstats_foreach_end");
 			
-				eval("\$user_stats_bit .= \"".$games_core->template("games_user_stats_bit")."\";");
+				eval("\$user_stats_bit .= \"".$templates->get("games_user_stats_bit")."\";");
 			}
 		}
 		
 		//Best Player Ranking
-		if($games_core->settings['stats_bestplayers'] == 1)
+		if($mybb->settings['games_stats_bestplayers'] == 1)
 		{
 			$query = $db->query("SELECT u.uid, u.username, u.avatar, COUNT(c.gid) AS champs
 			FROM ".TABLE_PREFIX."games_champions c
@@ -1478,11 +1478,11 @@ switch($mybb->input['action'])
 				$top100rank = $lang->na;
 			}
 			
-			eval("\$user_stats_bestplayers = \"".$games_core->template('games_user_stats_bestplayers')."\";");
+			eval("\$user_stats_bestplayers = \"".$templates->get('games_user_stats_bestplayers')."\";");
 		}
 		
 		//Tournament stats box
-		if($games_core->settings['tournaments_activated'] == 1)
+		if($mybb->settings['games_tournaments_activated'] == 1)
 		{
 			//Load tournaments
 			$query = $db->query("SELECT p.tid, p.uid, t.champion
@@ -1500,11 +1500,11 @@ switch($mybb->input['action'])
 				}
 			}
 			
-			eval("\$user_stats_tournaments = \"".$games_core->template('games_user_stats_tournaments')."\";");
+			eval("\$user_stats_tournaments = \"".$templates->get('games_user_stats_tournaments')."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -1512,7 +1512,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_userstats_end");
 		
-		eval("\$user_stats = \"".$games_core->template('games_user_stats')."\";");
+		eval("\$user_stats = \"".$templates->get('games_user_stats')."\";");
 		output_page($user_stats);
 	break;
 	case 'scores':
@@ -1562,11 +1562,11 @@ switch($mybb->input['action'])
 		{
 			if(!isset($game['fid']))
 			{
-				eval("\$game_favourite = \"".$games_core->template("games_scores_favourite_add")."\";");
+				eval("\$game_favourite = \"".$templates->get("games_scores_favourite_add")."\";");
 			}
 			else
 			{
-				eval("\$game_favourite = \"".$games_core->template("games_scores_favourite_delete")."\";");
+				eval("\$game_favourite = \"".$templates->get("games_scores_favourite_delete")."\";");
 			}
 		}
 		
@@ -1585,7 +1585,7 @@ switch($mybb->input['action'])
 		{
 			$multipage = multipage($count, $perpage, $page, "games.php?action=scores&gid=".$gid);
 			
-			eval("\$multipages = \"".$games_core->template("games_multipages")."\";");
+			eval("\$multipages = \"".$templates->get("games_multipages")."\";");
 		}
 		
 		//Test scores
@@ -1636,11 +1636,11 @@ switch($mybb->input['action'])
 			//Plugin
 			$plugins->run_hooks("games_scores_while");
 			
-			eval("\$scores_bit .= \"".$games_core->template("games_scores_bit")."\";");
+			eval("\$scores_bit .= \"".$templates->get("games_scores_bit")."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -1648,7 +1648,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_scores_end");
 		
-		eval("\$scorespage = \"".$games_core->template('games_scores')."\";");
+		eval("\$scorespage = \"".$templates->get('games_scores')."\";");
 		output_page($scorespage);
 	break;
 	case 'do_newscore':
@@ -1697,7 +1697,7 @@ switch($mybb->input['action'])
 			$plugins->run_hooks("games_scores_end");
 			
 			//Advanced Last Champions
-			if($games_core->settings['stats_lastchamps_advanced'] == 1)
+			if($mybb->settings['games_stats_lastchamps_advanced'] == 1)
 			{
 				//Test champ
 				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_champions WHERE gid='".$gid."' AND uid='".$mybb->user['uid']."' LIMIT 0,1");
@@ -1807,11 +1807,11 @@ switch($mybb->input['action'])
 		{
 			if(!isset($game['fid']))
 			{
-				eval("\$game_favourite = \"".$games_core->template("games_scores_favourite_add")."\";");
+				eval("\$game_favourite = \"".$templates->get("games_scores_favourite_add")."\";");
 			}
 			else
 			{
-				eval("\$game_favourite = \"".$games_core->template("games_scores_favourite_delete")."\";");
+				eval("\$game_favourite = \"".$templates->get("games_scores_favourite_delete")."\";");
 			}
 		}
 		
@@ -1827,7 +1827,7 @@ switch($mybb->input['action'])
 		{
 			$multipage = multipage($count, $perpage, $page, "games.php?action=newscore&gid=".$gid);
 			
-			eval("\$multipages = \"".$games_core->template("games_multipages")."\";");
+			eval("\$multipages = \"".$templates->get("games_multipages")."\";");
 		}
 		
 		//Test scores
@@ -1872,7 +1872,7 @@ switch($mybb->input['action'])
 			
 			if($test_new <= $scores['dateline'] && $scores['uid'] == $mybb->user['uid'])
 			{
-				eval("\$scores['comment'] = \"".$games_core->template('games_scores_newcomment')."\";");
+				eval("\$scores['comment'] = \"".$templates->get('games_scores_newcomment')."\";");
 			}
 			else
 			{
@@ -1887,11 +1887,11 @@ switch($mybb->input['action'])
 			//Plugin
 			$plugins->run_hooks("games_newscore_while");
 			
-			eval("\$scores_bit .= \"".$games_core->template("games_scores_bit")."\";");
+			eval("\$scores_bit .= \"".$templates->get("games_scores_bit")."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -1899,7 +1899,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_newscore_end");
 		
-		eval("\$scorespage = \"".$games_core->template('games_scores')."\";");
+		eval("\$scorespage = \"".$templates->get('games_scores')."\";");
 		output_page($scorespage);
 	break;
 	case 'last_champs':
@@ -1950,11 +1950,11 @@ switch($mybb->input['action'])
 			//Plugin
 			$plugins->run_hooks("games_champs_while");
 			
-			eval("\$champs_bit .= \"".$games_core->template("games_champs_bit")."\";");
+			eval("\$champs_bit .= \"".$templates->get("games_champs_bit")."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -1962,7 +1962,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_champs_end");
 		
-		eval("\$last_champs = \"".$games_core->template('games_champs')."\";");
+		eval("\$last_champs = \"".$templates->get('games_champs')."\";");
 		output_page($last_champs);
 	break;
 	case 'do_settings':
@@ -1976,7 +1976,7 @@ switch($mybb->input['action'])
 			error_no_permission();
 		}
 		
-		if(!isset($mybb->input['maxgames']) || !isset($mybb->input['sortby']) || !isset($mybb->input['order']) || !isset($mybb->input['maxscores']) || !isset($mybb->input['theme']))
+		if(!isset($mybb->input['maxgames']) || !isset($mybb->input['sortby']) || !isset($mybb->input['order']) || !isset($mybb->input['maxscores']))
 		{
 			redirect("games.php?action=settings", $lang->noinput);
 		}
@@ -1987,7 +1987,6 @@ switch($mybb->input['action'])
 				'games_maxscores'		=> intval($mybb->input['maxscores']),
 				'games_sortby'			=> $db->escape_string($mybb->input['sortby']),
 				'games_order'			=> $db->escape_string($mybb->input['order']),
-				'games_theme'			=> intval($mybb->input['theme']),
 				'games_tournamentnotify'	=> intval($mybb->input['tournamentnotify'])
 			);
 			
@@ -2039,7 +2038,7 @@ switch($mybb->input['action'])
 		$plugins->run_hooks("games_settings_start");
 		
 		//Max games per page
-		$explode_maxgames = explode(",", $games_core->settings['set_maxgames']);
+		$explode_maxgames = explode(",", $mybb->settings['games_set_maxgames']);
 		
 		if(is_array($explode_maxgames))
 		{
@@ -2060,7 +2059,7 @@ switch($mybb->input['action'])
 			}
 		}
 		
-		eval("\$select_maxgames = \"".$games_core->template("games_user_settings_maxgames")."\";");
+		eval("\$select_maxgames = \"".$templates->get("games_user_settings_maxgames")."\";");
 		
 		//Sort by
 		$select_sortby[$user['games_sortby']] = " selected=\"selected\"";
@@ -2069,7 +2068,7 @@ switch($mybb->input['action'])
 		$select_order[$user['games_order']] = " selected=\"selected\"";
 		
 		//Maximum scores per page
-		$explode_maxscores = explode(",", $games_core->settings['set_maxscores']);
+		$explode_maxscores = explode(",", $mybb->settings['games_set_maxscores']);
 		
 		if(is_array($explode_maxscores))
 		{
@@ -2090,27 +2089,10 @@ switch($mybb->input['action'])
 			}
 		}
 		
-		eval("\$select_maxscores = \"".$games_core->template("games_user_settings_maxscores")."\";");
-		
-		//Themes
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_themes WHERE active='1'");
-		
-		while($themes = $db->fetch_array($query))
-		{
-			if($themes['tid'] == $mybb->user['games_theme'])
-			{
-				$selected = " selected=\"selected\"";
-			}
-			else
-			{
-				$selected = "";
-			}
-			
-			eval("\$select_themes .= \"".$games_core->template('games_user_settings_themes')."\";");
-		}
+		eval("\$select_maxscores = \"".$templates->get("games_user_settings_maxscores")."\";");
 		
 		//Tournament Options
-		if($games_core->settings['tournaments_activated'] == 1 && $mybb->usergroup['canplaytournaments'] == 1)
+		if($mybb->settings['games_tournaments_activated'] == 1 && $mybb->usergroup['canplaytournaments'] == 1)
 		{
 			//Tournament Notify
 			if($mybb->user['games_tournamentnotify'] != 0)
@@ -2122,11 +2104,11 @@ switch($mybb->input['action'])
 				$tournamentnotifycheck = '';
 			}
 			
-			eval("\$tournament_settings = \"".$games_core->template('games_user_settings_tournaments')."\";");
+			eval("\$tournament_settings = \"".$templates->get('games_user_settings_tournaments')."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -2134,7 +2116,7 @@ switch($mybb->input['action'])
 		//Plugins
 		$plugins->run_hooks("games_settings_end");
 		
-		eval("\$user_settings = \"".$games_core->template('games_user_settings')."\";");
+		eval("\$user_settings = \"".$templates->get('games_user_settings')."\";");
 		output_page($user_settings);
 	break;
 }

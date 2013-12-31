@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 31/12/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -34,7 +34,7 @@ require_once "./global.php";
 require_once MYBB_ROOT."games/global.php";
 
 //Control if tournaments system is activated
-if($games_core->settings['tournaments_activated'] == 0)
+if($mybb->settings['games_tournaments_activated'] == 0)
 {
 	error_no_permission();
 }
@@ -122,11 +122,11 @@ switch($mybb->input['action'])
 			//Plugin
 			$plugins->run_hooks("games_tournaments_default_while");
 			
-			eval("\$tournaments_bit .= \"".$games_core->template("games_tournaments_".$mybb->input['status']."_bit")."\";");
+			eval("\$tournaments_bit .= \"".$templates->get("games_tournaments_".$mybb->input['status']."_bit")."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -134,7 +134,7 @@ switch($mybb->input['action'])
 		//Plugin
 		$plugins->run_hooks("games_tournaments_default_end");
 		
-		eval("\$tournaments_page = \"".$games_core->template("games_tournaments_".$mybb->input['status'])."\";");
+		eval("\$tournaments_page = \"".$templates->get("games_tournaments_".$mybb->input['status'])."\";");
 		output_page($tournaments_page);
 	break;
 	case 'do_add':
@@ -223,11 +223,11 @@ switch($mybb->input['action'])
 				error($lang->gamedoesntexist, $lang->error);
 			}
 			
-			eval("\$tournament_game = \"".$games_core->template('games_tournaments_add_game_set')."\";");
+			eval("\$tournament_game = \"".$templates->get('games_tournaments_add_game_set')."\";");
 		}
 		else
 		{
-			eval("\$tournament_game = \"".$games_core->template('games_tournaments_add_game')."\";");
+			eval("\$tournament_game = \"".$templates->get('games_tournaments_add_game')."\";");
 		}
 		
 		//Navigation
@@ -237,7 +237,7 @@ switch($mybb->input['action'])
 		$plugins->run_hooks("games_tournaments_add_start");
 		
 		//Rounds
-		$explode_rounds = explode(",", $games_core->settings['tournaments_set_rounds']);
+		$explode_rounds = explode(",", $mybb->settings['games_tournaments_set_rounds']);
 		
 		if(is_array($explode_rounds))
 		{
@@ -246,12 +246,12 @@ switch($mybb->input['action'])
 				$val = trim($val);
 				
 				$tournaments_rounds_sen = $lang->sprintf($lang->tournaments_rounds_sen, $val);
-				eval("\$rounds_bit .= \"".$games_core->template("games_tournaments_add_rounds_bit")."\";");
+				eval("\$rounds_bit .= \"".$templates->get("games_tournaments_add_rounds_bit")."\";");
 			}
 		}
 		
 		//Roundtime
-		$explode_roundtime = explode(",", $games_core->settings['tournaments_set_roundtime']);
+		$explode_roundtime = explode(",", $mybb->settings['games_tournaments_set_roundtime']);
 		
 		if(is_array($explode_roundtime))
 		{
@@ -260,12 +260,12 @@ switch($mybb->input['action'])
 				$val = trim($val);
 				
 				$tournaments_roundtime_sen = $lang->sprintf($lang->tournaments_roundtime_sen, $val);
-				eval("\$roundtime_bit .= \"".$games_core->template("games_tournaments_add_roundtime_bit")."\";");
+				eval("\$roundtime_bit .= \"".$templates->get("games_tournaments_add_roundtime_bit")."\";");
 			}
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -273,7 +273,7 @@ switch($mybb->input['action'])
 		//Plugins
 		$plugins->run_hooks("games_tournaments_add_end");
 		
-		eval("\$add_tournament = \"".$games_core->template('games_tournaments_add')."\";");
+		eval("\$add_tournament = \"".$templates->get('games_tournaments_add')."\";");
 		output_page($add_tournament);
 	break;
 	case 'view':
@@ -363,7 +363,7 @@ switch($mybb->input['action'])
 			$enddate = my_date($mybb->settings['dateformat'], $tournament['roundinformation'][$tournament['rounds']]['endtime']).", ".my_date($mybb->settings['timeformat'], $tournament['roundinformation'][$tournament['rounds']]['endtime']);
 		}
 		
-		eval("\$tournament_infobox = \"".$games_core->template('games_tournaments_view_infobox_'.$tournament['status'])."\";");
+		eval("\$tournament_infobox = \"".$templates->get('games_tournaments_view_infobox_'.$tournament['status'])."\";");
 		
 		//Colspan
 		$colspan = $tournament['maxplayers']+1;
@@ -372,7 +372,7 @@ switch($mybb->input['action'])
 		$plugins->run_hooks("games_tournaments_view_start");
 		
 		//Show Champion
-		eval("\$tournament_rounds .= \"".$games_core->template('games_tournaments_view_rounds_champion')."\";");
+		eval("\$tournament_rounds .= \"".$templates->get('games_tournaments_view_rounds_champion')."\";");
 		
 		//Load Rounds
 		for($rid = $tournament['rounds']; $rid > 0; $rid--)
@@ -430,13 +430,13 @@ switch($mybb->input['action'])
 						$pubdate = my_date($mybb->settings['dateformat'], $players['dateline']).", ".my_date($mybb->settings['timeformat'], $players['dateline']);
 					}
 					
-					eval("\$tournament_rounds_bit_info = \"".$games_core->template('games_tournaments_view_rounds_bit_info')."\";");
+					eval("\$tournament_rounds_bit_info = \"".$templates->get('games_tournaments_view_rounds_bit_info')."\";");
 				}
 				
 				//Plugins
 				$plugins->run_hooks("games_tournaments_view_rounds_players");
 				
-				eval("\$tournament_rounds_bit .= \"".$games_core->template('games_tournaments_view_rounds_bit')."\";");
+				eval("\$tournament_rounds_bit .= \"".$templates->get('games_tournaments_view_rounds_bit')."\";");
 			}
 			
 			for($pid = $numplayers-$players_count; $pid > 0; $pid--)
@@ -460,14 +460,14 @@ switch($mybb->input['action'])
 				//Plugins
 				$plugins->run_hooks("games_tournaments_view_rounds_players_free");
 				
-				eval("\$tournament_rounds_bit .= \"".$games_core->template('games_tournaments_view_rounds_bit')."\";");
+				eval("\$tournament_rounds_bit .= \"".$templates->get('games_tournaments_view_rounds_bit')."\";");
 			}
 			
-			eval("\$tournament_rounds .= \"".$games_core->template('games_tournaments_view_rounds')."\";");
+			eval("\$tournament_rounds .= \"".$templates->get('games_tournaments_view_rounds')."\";");
 		}
 		
 		//Online
-		if($games_core->settings['online'] == "every")
+		if($mybb->settings['games_online'] == "every")
 		{
 			$online = whos_online();
 		}
@@ -475,7 +475,7 @@ switch($mybb->input['action'])
 		//Plugins
 		$plugins->run_hooks("games_tournaments_view_end");
 		
-		eval("\$tournament_view = \"".$games_core->template('games_tournaments_view')."\";");
+		eval("\$tournament_view = \"".$templates->get('games_tournaments_view')."\";");
 		output_page($tournament_view);
 	break;
 	case 'join':
