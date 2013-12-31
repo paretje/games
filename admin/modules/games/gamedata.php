@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2008 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 21/07/2008 by Paretje
+ *   Last modified: 31/12/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -33,19 +33,19 @@ if(!defined("IN_MYBB"))
 	die("Direct initialization of this file is not allowed.<br /><br />Please make sure IN_MYBB is defined.");
 }
 
-//Requires
 require_once MYBB_ROOT."inc/functions_games.php";
 require_once MYBB_ROOT."inc/functions_upload.php";
 
-//Plugin
 $plugins->run_hooks("admin_games_gamedata_start");
 
-//Navigation
 $page->add_breadcrumb_item($lang->gamesection, "index.php?module=games");
 $page->add_breadcrumb_item($lang->nav_gamedata, "index.php?module=games/gamedata");
 
-//Declare the sub-tabs
-if($mybb->input['action'] == "" || $mybb->input['action'] == "add" || $mybb->input['action'] == "add_directory" || $mybb->input['action'] == "delete" || $mybb->input['action'] == "delete_directory")
+if($mybb->input['action'] == ""
+	|| $mybb->input['action'] == "add"
+	|| $mybb->input['action'] == "add_directory"
+	|| $mybb->input['action'] == "delete"
+	|| $mybb->input['action'] == "delete_directory")
 {
 	$sub_tabs = array();
 	$sub_tabs['manage_gamedata'] = array(
@@ -63,19 +63,19 @@ if($mybb->input['action'] == "add" && $mybb->request_method == "post")
 		$directory = "/".$mybb->input['directory'];
 		$url_directory = "&amp;directory=".$mybb->input['directory'];
 	}
-	
+
 	//Check values
 	if(!is_uploaded_file($_FILES['file']['tmp_name']))
 	{
 		$errors[] = $lang->error_missing_file;
 	}
-	
+
 	//Test if directory is writable
 	if(!is_writable(MYBB_ROOT."arcade/gamedata".$directory))
 	{
 		$errors[] = $lang->sprintf($lang->not_writable, "arcade/gamedata".$directory);
 	}
-	
+
 	//Check if there were errors, if no, continue
 	if(!$errors)
 	{
@@ -85,17 +85,17 @@ if($mybb->input['action'] == "add" && $mybb->request_method == "post")
 		{
 			$errors[] = $lang->error_uploadfailed;
 		}
-		
+
 		if(!$errors)
 		{
 			//Log
 			log_admin_action("~".$directory, $_FILES['file']['name']);
-			
+
 			flash_message($lang->added_file, 'success');
 			admin_redirect("index.php?module=games/gamedata".$url_directory);
 		}
 	}
-	
+
 	if($errors)
 	{
 		//Load the errors
@@ -103,7 +103,7 @@ if($mybb->input['action'] == "add" && $mybb->request_method == "post")
 		{
 			$flash_errors .= "<li>".$error."</li>\n";
 		}
-		
+
 		flash_message("<ul>\n".$flash_errors."\n</ul>", 'error');
 		admin_redirect("index.php?module=games/gamedata".$url_directory);
 	}
@@ -112,7 +112,7 @@ elseif($mybb->input['action'] == "add_directory")
 {
 	//Directory
 	$newurl_directory = "&amp;directory=";
-	
+
 	if(!empty($mybb->input['directory']))
 	{
 		$directory = $mybb->input['directory']."/";
@@ -120,21 +120,21 @@ elseif($mybb->input['action'] == "add_directory")
 		$newurl_directory .= $mybb->input['directory']."/";
 		$log_directory = "/".$mybb->input['directory'];
 	}
-	
+
 	$newurl_directory .= $mybb->input['name'];
-	
+
 	//Check values
 	if(empty($mybb->input['name']))
 	{
 		$errors[] = $lang->error_missing_directoryname;
 	}
-	
+
 	//Test if directory is writable
 	if(!is_writable(MYBB_ROOT."arcade/gamedata".$log_directory))
 	{
 		$errors[] = $lang->sprintf($lang->not_writable, "arcade/gamedata".$directory);
 	}
-	
+
 	//Check if there were errors, if no, continue
 	if(!$errors)
 	{
@@ -144,17 +144,17 @@ elseif($mybb->input['action'] == "add_directory")
 			$errors[] = $lang->sprintf($lang->cantmakedir, "arcade/gamedata/".$directory.$mybb->input['name']);
 		}
 		@my_chmod(MYBB_ROOT."arcade/gamedata/".$directory.$mybb->input['name'], 0777);
-		
+
 		if(!$errors)
 		{
 			//Log
 			log_admin_action("~".$log_directory, $mybb->input['name']);
-			
+
 			flash_message($lang->added_directory, 'success');
 			admin_redirect("index.php?module=games/gamedata".$newurl_directory);
 		}
 	}
-	
+
 	if($errors)
 	{
 		//Load the errors
@@ -162,7 +162,7 @@ elseif($mybb->input['action'] == "add_directory")
 		{
 			$flash_errors .= "<li>".$error."</li>\n";
 		}
-		
+
 		flash_message("<ul>\n".$flash_errors."\n</ul>", 'error');
 		admin_redirect("index.php?module=games/gamedata".$url_directory);
 	}
@@ -171,7 +171,7 @@ elseif($mybb->input['action'] == "delete")
 {
 	//Plugin
 	$plugins->run_hooks("admin_games_categories_delete");
-	
+
 	//Directory
 	if(!empty($mybb->input['directory']))
 	{
@@ -179,13 +179,13 @@ elseif($mybb->input['action'] == "delete")
 		$url_directory = "&amp;directory=".$mybb->input['directory'];
 		$log_directory = "/".$mybb->input['directory'];
 	}
-	
+
 	//User clicked no
 	if($mybb->input['no'])
 	{
 		admin_redirect("index.php?module=games/gamedata".$url_directory);
 	}
-	
+
 	//Handle the category
 	if($mybb->request_method == "post")
 	{
@@ -203,7 +203,7 @@ elseif($mybb->input['action'] == "delete")
 			gamedata_delete(MYBB_ROOT."arcade/gamedata/".$directory.$mybb->input['file']);
 			$is_dir = true;
 		}
-		
+
 		//Redirect, if there are errors: show them
 		if(!$errors)
 		{
@@ -211,7 +211,7 @@ elseif($mybb->input['action'] == "delete")
 			{
 				//Log
 				log_admin_action("file", $mybb->input['directory'], $mybb->input['file']);
-				
+
 				flash_message($lang->deleted_file, 'success');
 				admin_redirect("index.php?module=games/gamedata".$url_directory);
 			}
@@ -219,7 +219,7 @@ elseif($mybb->input['action'] == "delete")
 			{
 				//Log
 				log_admin_action("dir", "~".$log_directory, $mybb->input['file']);
-				
+
 				flash_message($lang->deleted_directory, 'success');
 				admin_redirect("index.php?module=games/gamedata".$url_directory);
 			}
@@ -231,7 +231,7 @@ elseif($mybb->input['action'] == "delete")
 			{
 				$flash_errors .= "<li>".$error."</li>\n";
 			}
-			
+
 			flash_message("<ul>\n".$flash_errors."\n</ul>", 'error');
 			admin_redirect("index.php?module=games/gamedata".$url_directory);
 		}
@@ -243,20 +243,23 @@ elseif($mybb->input['action'] == "delete")
 }
 else
 {
-	//Test directory
+	// Check if the directory exists
+	// TODO: check if the directory is within the arcade/gamedata folder!!!!
 	if(!is_dir(MYBB_ROOT."arcade/gamedata/".$mybb->input['directory']))
 	{
 		$lang->directorydoesntexist = $lang->sprintf($lang->directorydoesntexist, $mybb->input['directory']);
-		
+
 		flash_message($lang->directorydoesntexist, 'error');
 		admin_redirect("index.php?module=games/gamedata");
 	}
-	
-	//Location bar
+
+	// TODO: Can this be compacted
 	$locationbar = "<a href=\"index.php?module=games/gamedata\">~</a>";
-	
 	if(!empty($mybb->input['directory']))
 	{
+		$directory = $mybb->input['directory']."/";
+		$url_directory = "&amp;directory=".$mybb->input['directory'];
+		
 		$location_dirs = explode("/", $mybb->input['directory']);
 		if(is_array($location_dirs))
 		{
@@ -268,32 +271,20 @@ else
 			}
 		}
 	}
-	
-	//Navigation and header
+
 	$page->output_header($lang->nav_gamedata);
-	
-	//Show the sub-tabs
 	$page->output_nav_tabs($sub_tabs, 'manage_gamedata');
-	
-	//Plugin
+
 	$plugins->run_hooks("admin_games_gamedata_default_start");
-	
-	//Start table
+
 	$table = new Table;
 	$table->construct_header($locationbar, array("colspan" => 2));
-	
-	//Load gamedata files
+
 	$files = my_scandir(MYBB_ROOT."arcade/gamedata/".$mybb->input['directory']);
-	
-	//Directory
-	if(!empty($mybb->input['directory']))
-	{
-		$directory = $mybb->input['directory']."/";
-		$url_directory = "&amp;directory=".$mybb->input['directory'];
-	}
-	
 	if(is_array($files))
 	{
+		// TODO: Why is this id needed?
+		// TODO: Spread the definition of data on multiple lines
 		foreach($files as $id => $file)
 		{
 			if(is_file(MYBB_ROOT."arcade/gamedata/".$directory.$file))
@@ -312,15 +303,15 @@ else
 	{
 		$data = $lang->no_gamedata;
 	}
-	
+
 	$table->construct_cell($data, array("colspan" => 2));
 	$table->construct_row();
-	
+
 	$table->construct_cell("", array("style" => "background: #ADCBE6; border-bottom: 1px solid #000; border-top: 1px solid #000; border-right: 1px solid #ADCBE6; border-left: 1px solid #ADCBE6;", "colspan" => 2));
 	$table->construct_row();
-	
-	//Add gamedata
-	$table->construct_cell("<strong>".$lang->gamedata_upload."</strong>", array("width" => "25%"));
+
+	$table->construct_cell("<strong>".$lang->gamedata_upload."</strong>",
+		array("width" => "25%"));
 	$table->construct_cell("<form action=\"index.php?module=games/gamedata&amp;action=add\" method=\"post\" enctype=\"multipart/form-data\">
 <input type=\"hidden\" name=\"my_post_key\" value=\"".$mybb->post_code."\" />
 <input type=\"hidden\" name=\"directory\" value=\"".$mybb->input['directory']."\" />
@@ -328,8 +319,7 @@ else
 <input type=\"submit\" class=\"submit\" name=\"".$lang->upload."\" value=\"".$lang->upload."\" />
 </form>");
 	$table->construct_row();
-	
-	//Add gamedata directory
+
 	$table->construct_cell("<strong>".$lang->gamedata_directory."</strong>", array("width" => "25%"));
 	$table->construct_cell("<form action=\"index.php?module=games/gamedata&amp;action=add_directory\" method=\"post\">
 <input type=\"hidden\" name=\"my_post_key\" value=\"".$mybb->post_code."\" />
@@ -338,11 +328,9 @@ else
 <input type=\"submit\" class=\"submit\" name=\"".$lang->save."\" value=\"".$lang->save."\" />
 </form>");
 	$table->construct_row();
-	
-	//Plugin
+
 	$plugins->run_hooks("admin_games_gamedata_default_end");
-	
-	//End of table and AdminCP footer
+
 	$table->output($lang->nav_gamedata);
 	$page->output_footer();
 }
