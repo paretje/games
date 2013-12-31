@@ -50,15 +50,12 @@ $plugins->run_hooks("admin_games_version_start");
 $page->add_breadcrumb_item($lang->gamesection, "index.php?module=games");
 $page->add_breadcrumb_item($lang->nav_version, "index.php?module=games/version");
 
-if($mybb->input['action'] == "")
-{
-	$sub_tabs = array();
-	$sub_tabs['version'] = array(
-		'title' => $lang->nav_version,
-		'link' => "index.php?module=games/version",
-		'description' => $lang->nav_version_desc
-	);
-}
+$sub_tabs = array();
+$sub_tabs['version'] = array(
+	'title' => $lang->nav_version,
+	'link' => "index.php?module=games/version",
+	'description' => $lang->nav_version_desc
+);
 
 // Get most recently released version
 $version_controlfile = fetch_remote_file("http://versions.gamesection.org/dev_version.xml");
