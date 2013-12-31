@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 30/12/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -345,39 +345,6 @@ function is_emptydir($path)
 	}
 }
 
-/*******************************
- * Replacing strings in templates
- * 
- * title: The name/title of the template
- * find: An array with all patterns
- * replace: An array with all replacements
- * themes: Here, you can choose between all themes (1) and the default Game Section theme (0)
- *******************************/
-function replace_templates_gs($title, $find, $replace, $themes=1)
-{
-	global $db;
-	
-	//Themes
-	if($themes == 0)
-	{
-		$where_theme = " AND theme='1'";
-	}
-	
-	//Load current template
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_templates WHERE title='".$title."'".$where_theme);
-	while($template = $db->fetch_array($query))
-	{
-		$old_template = $db->escape_string($template['template']);
-		
-		$new_template['template'] = $db->escape_string(preg_replace($find, $replace, $template['template']));
-		
-		if($template['template'] != $old_template)
-		{
-			$db->update_query("games_templates", $new_template, "tid='".$template['tid']."'");
-		}
-	}
-}
-
 //Send mail because of new tournament round
 function my_mail_newtournamentround($email, $username, $language, $tid, $title, $dateline)
 {
@@ -422,7 +389,7 @@ function whos_online()
 	global $games_core, $lang, $theme, $theme_games, $mybb, $db, $session, $cache, $plugins;
 	
 	//Load games
-	if($games_core->settings['online_image'] == 1)
+	if($mybb->settings['games_online_image'] == 1)
 	{
 		$query2 = $query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE active='1'");
 		while($games = $db->fetch_array($query))
@@ -462,7 +429,7 @@ function whos_online()
 		if($online_loc == "games" || $online_loc == "tournaments")
 		{
 			//Image
-			if($games_core->settings['online_image'] == 1)
+			if($mybb->settings['games_online_image'] == 1)
 			{
 				$loc_image_gid = explode("gid=", $online['location']);
 				$loc_image_gid = explode("&", $loc_image_gid[1]);
@@ -474,7 +441,7 @@ function whos_online()
 				}
 				else
 				{
-					$loc_image = "<a href=\"".$loc_image_link."\"><img src=\"./games/".$theme_games['directory']."/games.png\" alt=\"\" /></a> ";
+					$loc_image = "<a href=\"".$loc_image_link."\"><img src=\"./games/images/games.png\" alt=\"\" /></a> ";
 				}
 			}
 			
@@ -566,7 +533,7 @@ function whos_online()
 	//Output
 	$lang->online_count = $lang->sprintf($lang->online_count, my_number_format($onlinecount), my_number_format($membercount), my_number_format($anoncount), my_number_format($guestcount), $botcount, my_number_format($recordcount), $recorddate, $recordtime);
 	
-	eval("\$online_out = \"".$games_core->template("games_online")."\";");
+	eval("\$online_out = \"".$templates->get("games_online")."\";");
 	
 	return $online_out;
 }
@@ -581,21 +548,21 @@ function stats()
 	
 	//Category settings
 	$cid = intval($mybb->input['cid']);
-	if($cid != 0 && $games_core->settings['stats_cats'] == 1)
+	if($cid != 0 && $mybb->settings['games_stats_cats'] == 1)
 	{
 		$where_cat = " AND g.cid='".$cid."'";
 		$where_cat2 = " AND cid='".$cid."'";
 	}
 	
 	//Last games
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE active='1'".$where_cat2." ORDER BY dateline DESC LIMIT 0,".$games_core->settings['stats_games_max']."");
+	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE active='1'".$where_cat2." ORDER BY dateline DESC LIMIT 0,".$mybb->settings['games_stats_games_max']."");
 	
 	while($games = $db->fetch_array($query))
 	{
 		//Plugin
 		$plugins->run_hooks("games_stats_lastgames");
 		
-		eval("\$last_games_bit .= \"".$games_core->template("games_stats_games_bit")."\";");
+		eval("\$last_games_bit .= \"".$templates->get("games_stats_games_bit")."\";");
 	}
 	
 	//Last champions
@@ -604,7 +571,7 @@ function stats()
 	LEFT JOIN ".TABLE_PREFIX."games g ON (c.gid=g.gid)
 	WHERE g.active='1'".$where_cat."
 	ORDER BY c.dateline DESC
-	LIMIT 0,".$games_core->settings['stats_lastchamps_max']."");
+	LIMIT 0,".$mybb->settings['games_stats_lastchamps_max']."");
 	
 	while($last_champs = $db->fetch_array($query))
 	{
@@ -615,11 +582,11 @@ function stats()
 		
 		$last_champs_sen = $lang->sprintf($lang->last_champs_sen, $last_champs['uid'], $last_champs['username'], $last_champs['gid'], $last_champs['title']);
 		
-		eval("\$last_champs_bit .= \"".$games_core->template("games_stats_champs_bit")."\";");
+		eval("\$last_champs_bit .= \"".$templates->get("games_stats_champs_bit")."\";");
 	}
 	
 	//Language
-	if($games_core->settings['stats_lastchamps_max'] == 1)
+	if($mybb->settings['games_stats_lastchamps_max'] == 1)
 	{
 		$last_champs = "last_champ";
 	}
@@ -634,7 +601,7 @@ function stats()
 	LEFT JOIN ".TABLE_PREFIX."games g ON (s.gid=g.gid)
 	WHERE g.active='1'".$where_cat."
 	ORDER BY s.dateline DESC
-	LIMIT 0,".$games_core->settings['stats_lastscores_max']."");
+	LIMIT 0,".$mybb->settings['games_stats_lastscores_max']."");
 	
 	while($last_scores = $db->fetch_array($query))
 	{
@@ -648,7 +615,7 @@ function stats()
 	}
 	
 	//Language
-	if($games_core->settings['stats_lastscores_max'] == 1)
+	if($mybb->settings['games_stats_lastscores_max'] == 1)
 	{
 		$last_score = "last_score";
 	}
@@ -658,18 +625,18 @@ function stats()
 	}
 	
 	//Most played games
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE active='1'".$where_cat2." ORDER BY played DESC LIMIT 0,".$games_core->settings['stats_games_max']."");
+	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE active='1'".$where_cat2." ORDER BY played DESC LIMIT 0,".$mybb->settings['games_stats_games_max']."");
 	
 	while($games = $db->fetch_array($query))
 	{
 		//Plugin
 		$plugins->run_hooks("games_stats_mostplayedgames");
 		
-		eval("\$mostplayed_games_bit .= \"".$games_core->template("games_stats_games_bit")."\";");
+		eval("\$mostplayed_games_bit .= \"".$templates->get("games_stats_games_bit")."\";");
 	}
 	
 	//Best players
-	if($games_core->settings['stats_bestplayers'] == 1)
+	if($mybb->settings['games_stats_bestplayers'] == 1)
 	{
 		$query = $db->query("SELECT u.uid, u.username, u.avatar, COUNT(c.gid) AS champs
 		FROM ".TABLE_PREFIX."games_champions c
@@ -702,14 +669,14 @@ function stats()
 			//Plugin
 			$plugins->run_hooks("games_stats_bestplayers");
 			
-			eval("\$bestplayers_bit .= \"".$games_core->template("games_stats_bestplayers_bit")."\";");
+			eval("\$bestplayers_bit .= \"".$templates->get("games_stats_bestplayers_bit")."\";");
 		}
 		
-		eval("\$stats_bestplayers = \"".$games_core->template("games_stats_bestplayers")."\";");
+		eval("\$stats_bestplayers = \"".$templates->get("games_stats_bestplayers")."\";");
 	}
 	
 	//Random games
-	if($games_core->settings['stats_randomgames'] == 1)
+	if($mybb->settings['games_stats_randomgames'] == 1)
 	{
 		//Put games in array
 		$query = $db->query("SELECT gid, name, title FROM ".TABLE_PREFIX."games WHERE active='1'".$where_cat2." ORDER BY dateline");
@@ -719,14 +686,14 @@ function stats()
 		}
 		
 		//Load x random games
-		for($i = 1; $i <= $games_core->settings['stats_randomgames_max']; $i++)
+		for($i = 1; $i <= $mybb->settings['games_stats_randomgames_max']; $i++)
 		{
 			$id = mt_rand(0, count($games)-1);
-			eval("\$randomgames_bit .= \"".$games_core->template("games_stats_randomgames_bit")."\";");
+			eval("\$randomgames_bit .= \"".$templates->get("games_stats_randomgames_bit")."\";");
 		}
 		
 		//Language
-		if($games_core->settings['stats_randomgames_max'] == 1)
+		if($mybb->settings['games_stats_randomgames_max'] == 1)
 		{
 			$randomgames = "randomgame";
 		}
@@ -735,13 +702,13 @@ function stats()
 			$randomgames = "randomgames";
 		}
 		
-		eval("\$randomgames = \"".$games_core->template("games_stats_randomgames")."\";");
+		eval("\$randomgames = \"".$templates->get("games_stats_randomgames")."\";");
 	}
 	
 	//Plugin
 	$plugins->run_hooks("games_stats_end");
 	
-	eval("\$stats = \"".$games_core->template("games_stats")."\";");
+	eval("\$stats = \"".$templates->get("games_stats")."\";");
 	
 	return $stats;
 }

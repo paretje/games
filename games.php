@@ -441,7 +441,7 @@ switch($mybb->input['action'])
 		}
 		
 		//Session start
-		$games_core->session_start();
+		$games_core->start();
 		
 		//Load tournament, and the session information
 		if($mybb->settings['games_tournaments_activated'] == 1 && intval($mybb->input['tid']))
@@ -472,16 +472,16 @@ switch($mybb->input['action'])
 				error($lang->tournamentroundended, $lang->error);
 			}
 			
-			$games_core->session['tid'][$game['name']] = $tournament['tid'];
+			$games_core->data['tid'][$game['name']] = $tournament['tid'];
 		}
 		else
 		{
-			$games_core->session['gid'][$game['name']] = $game['gid'];
+			$games_core->data['gid'][$game['name']] = $game['gid'];
 		}
 		
 		//Plugin and session end
 		$plugins->run_hooks("games_play_start");
-		$games_core->session_update();
+		$games_core->update();
 		
 		//Navigation
 		$game['title'] = htmlspecialchars_uni($game['title']);

@@ -38,11 +38,9 @@ function task_tournamentstatus($task)
 	//Check if tournament system is activated
 	require_once MYBB_ROOT."inc/functions_games.php";
 	require_once MYBB_ROOT."inc/class_games.php";
-	$games_core = new games;
+	$games_core = new Game_Session;
 	
-	$games_core->run_settings();
-	
-	if($games_core->settings['tournaments_activated'] == 1)
+	if($mybb->settings['games_tournaments_activated'] == 1)
 	{
 		//Load tournament statistics
 		$tournaments_stats = $cache->read("games_tournaments_stats");

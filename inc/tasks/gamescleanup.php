@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2009 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 29/03/2009 by Paretje
+ *   Last modified: 30/12/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -32,7 +32,7 @@ function task_gamescleanup($task)
 	global $db, $lang;
 	
 	require_once MYBB_ROOT."inc/class_games.php";
-	$games_core = new games;
+	$games_core = new Game_Session;
 	
 	//Load the language file
 	$lang->load("games_tasks");
