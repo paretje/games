@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2008 The Game Section Development Group
+ *   Copyright: © 2006-2013 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 16/07/2008 by Paretje
+ *   Last modified: 31/12/2013 by Paretje
  *
  ***************************************************************************/
 
@@ -27,18 +27,10 @@
  *
  ***************************************************************************/
 
-$l['nav_credits'] = "Credits";
-
 $l['nav_version_desc'] = "Here you can check if you are running the latest version of the Game Section.";
-$l['nav_credits_desc'] = "These people have contributed their time to release this Game Section version, to translate this and to help you when you have problems.";
 
 $l['version_your'] = "Your version:";
 $l['version_latest'] = "Latest version:";
 $l['version_information'] = "Version information:";
 $l['version_download'] = "More information and/or download";
-
-$l['credits_developers'] = "Developers";
-$l['credits_translators'] = "Translators";
-$l['credits_betatesters'] = "Beta Testers";
-$l['credits_supportteam'] = "Support Team";
 ?>
