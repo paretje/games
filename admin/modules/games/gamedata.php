@@ -169,10 +169,8 @@ elseif($mybb->input['action'] == "add_directory")
 }
 elseif($mybb->input['action'] == "delete")
 {
-	//Plugin
-	$plugins->run_hooks("admin_games_categories_delete");
+	$plugins->run_hooks("admin_games_gamedata_delete");
 
-	//Directory
 	if(!empty($mybb->input['directory']))
 	{
 		$directory = $mybb->input['directory']."/";
@@ -180,16 +178,17 @@ elseif($mybb->input['action'] == "delete")
 		$log_directory = "/".$mybb->input['directory'];
 	}
 
-	//User clicked no
 	if($mybb->input['no'])
 	{
 		admin_redirect("index.php?module=games/gamedata".$url_directory);
 	}
 
-	//Handle the category
 	if($mybb->request_method == "post")
 	{
-		//Delete file/directory
+		// TODO: Test if file/dir is in arcade/gamedata
+		/* TODO: Maybe it's even a good idea to simply restrict browsing
+		 * the gamedata to the folder of a game. No general overview,
+		 * no directories, and absolutely block the use of .. */
 		if(is_file(MYBB_ROOT."arcade/gamedata/".$directory.$mybb->input['file']))
 		{
 			if(!@unlink(MYBB_ROOT."arcade/gamedata/".$directory.$mybb->input['file']))
@@ -204,7 +203,6 @@ elseif($mybb->input['action'] == "delete")
 			$is_dir = true;
 		}
 
-		//Redirect, if there are errors: show them
 		if(!$errors)
 		{
 			if($is_file)
@@ -226,7 +224,6 @@ elseif($mybb->input['action'] == "delete")
 		}
 		else
 		{
-			//Load the errors
 			foreach($errors as $error)
 			{
 				$flash_errors .= "<li>".$error."</li>\n";
