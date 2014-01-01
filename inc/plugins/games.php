@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2013 The Game Section Development Group
+ *   Copyright: © 2006-2014 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 30/12/2013 by Paretje
+ *   Last modified: 01/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -201,7 +201,6 @@ function games_install()
 	// Insert the permissions for the ACP
 	change_admin_permission("games", false, 1);
 	change_admin_permission("games", "games", 1);
-	change_admin_permission("games", "gamedata", 1);
 	change_admin_permission("games", "categories", 1);
 	change_admin_permission("games", "version", 1);
 
@@ -329,7 +328,6 @@ function games_uninstall()
 	// Delete Game Section ACP permissions
 	change_admin_permission("games", false, -1);
 	change_admin_permission("games", "games", -1);
-	change_admin_permission("games", "gamedata", -1);
 	change_admin_permission("games", "categories", -1);
 	change_admin_permission("games", "version", -1);
 

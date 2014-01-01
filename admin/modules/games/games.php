@@ -296,13 +296,11 @@ if($mybb->input['action'] == "add")
 }
 if($mybb->input['action'] == "add_manual")
 {
-	//Plugin
 	$plugins->run_hooks("admin_games_games_add_start");
 
-	//Handle the game
 	if($mybb->request_method == "post")
 	{
-		//Check values
+		// Input control
 		if(empty($mybb->input['title']))
 		{
 			$errors[] = $lang->error_missing_title;
