@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2013 The Game Section Development Group
+ *   Copyright: © 2006-2014 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 30/12/2013 by Paretje
+ *   Last modified: 01/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -39,7 +39,6 @@ function games_meta()
 
 	$sub_menu = array();
 	$sub_menu['10'] = array("id" => "games", "title" => $lang->nav_games, "link" => "index.php?module=games/games");
-	$sub_menu['15'] = array("id" => "gamedata", "title" => $lang->nav_gamedata, "link" => "index.php?module=games/gamedata");
 	$sub_menu['20'] = array("id" => "categories", "title" => $lang->nav_categories, "link" => "index.php?module=games/categories");
 	$sub_menu['70'] = array("id" => "version", "title" => $lang->nav_version, "link" => "index.php?module=games/version");
 	
@@ -58,7 +57,6 @@ function games_action_handler($action)
 	
 	$actions = array(
 		'games' => array('active' => 'games', 'file' => 'games.php'),
-		'gamedata' => array('active' => 'gamedata', 'file' => 'gamedata.php'),
 		'categories' => array('active' => 'categories', 'file' => 'categories.php'),
 		'version' => array('active' => 'version', 'file' => 'version.php')
 	);
@@ -83,7 +81,6 @@ function games_admin_permissions()
 	
 	$admin_permissions = array(
 		"games"			=> $lang->can_manage_games,
-		"gamedata"		=> $lang->can_manage_gamedata,
 		"categories"		=> $lang->can_manage_categories,
 		"version"		=> $lang->can_manage_version
 	);
