@@ -178,6 +178,7 @@ elseif($mybb->input['action'] == "edit")
 	}
 
 	$form = new Form("index.php?module=games/categories&amp;action=edit", "post");
+	// TODO: This will be fixed in MyBB 1.8, I guess?
 	echo $form->generate_hidden_field("cid", $mybb->input['cid']);
 	$form_container = new FormContainer($lang->nav_edit_category);
 

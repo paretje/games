@@ -317,12 +317,14 @@ if($mybb->input['action'] == "add_manual")
 		{
 			$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories WHERE cid='".intval($mybb->input['cid'])."'");
 			$cat = $db->fetch_array($query);
-			$cat_test = $db->num_rows($query);
-
-			if($cat_test == 0)
+			if($db->num_rows($query) == 0)
 			{
 				$errors[] = $lang->catdoesntexist;
 			}
+		}
+		else
+		{
+			$cat['title'] = $lang->game_cat_no;
 		}
 		if(!isset($mybb->input['bgcolor']))
 		{
@@ -345,26 +347,21 @@ if($mybb->input['action'] == "add_manual")
 			$errors[] = $lang->error_missing_active;
 		}
 
-		//Test game
 		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".$db->escape_string($mybb->input['name'])."'");
-		$game_test = $db->num_rows($query);
-
-		if($game_test != 0 && $mybb->input['force'] != 1)
+		if($db->num_rows($query) != 0 && $mybb->input['force'] != 1)
 		{
 			$errors[] = $lang->gamealreadyexist;
 		}
 
-		//Check if there were errors, if no, continue
 		if(!$errors)
 		{
-			//Insert game
 			$insert_game = array(
 				'cid'		=> intval($mybb->input['cid']),
 				'title'		=> $db->escape_string($mybb->input['title']),
 				'name'		=> $db->escape_string($mybb->input['name']),
 				'description'	=> $db->escape_string($mybb->input['description']),
-				'what'		=> $db->escape_string($mybb->input['what']),
-				'use_keys'	=> $db->escape_string($mybb->input['use_keys']),
+				'purpose'	=> $db->escape_string($mybb->input['purpose']),
+				'keys'		=> $db->escape_string($mybb->input['keys']),
 				'bgcolor'	=> $db->escape_string($mybb->input['bgcolor']),
 				'width'		=> $db->escape_string($mybb->input['width']),
 				'height'	=> $db->escape_string($mybb->input['height']),
@@ -373,55 +370,37 @@ if($mybb->input['action'] == "add_manual")
 				'active'	=> intval($mybb->input['active'])
 			);
 
-			//Plugin
-			$plugins->run_hooks("admin_games_games_add_do");
+			$plugins->run_hooks("admin_games_games_add_manual_do");
 
 			$gid = $db->insert_query("games", $insert_game);
-
-			//Log
-			if(intval($mybb->input['cid']) !== 0)
-			{
-				log_admin_action($gid, $mybb->input['title'], $mybb->input['cid'], $cat['title']);
-			}
-			else
-			{
-				log_admin_action($gid, $mybb->input['title'], $mybb->input['cid'], $lang->game_cat_no);
-			}
+			log_admin_action($gid, $mybb->input['title'], $mybb->input['cid'], $cat['title']);
 
 			flash_message($lang->added_game, 'success');
 			admin_redirect("index.php?module=games/games");
 		}
 	}
 
-	//Navigation and header
 	$page->add_breadcrumb_item($lang->nav_add_game);
 	$page->output_header($lang->nav_add_game);
-
-	//Show the sub-tabs
 	$page->output_nav_tabs($sub_tabs, 'add_game_manual');
 
-	//Show the errors
 	if($errors)
 	{
 		$page->output_inline_error($errors);
 	}
 
-	//Categories
 	$categories[0] = $lang->game_cat_no;
-
 	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories ORDER BY title ASC");
 	while($category = $db->fetch_array($query))
 	{
 		$categories[$category['cid']] = $category['title'];
 	}
 
-	//Score type
 	$score_type = array(
 		'DESC'		=> $lang->game_high,
 		'ASC'		=> $lang->game_low
 	);
 
-	//Selected items
 	if(!isset($mybb->input['bgcolor']))
 	{
 		$mybb->input['bgcolor'] = "000000";
@@ -439,17 +418,15 @@ if($mybb->input['action'] == "add_manual")
 		$mybb->input['force'] = 0;
 	}
 
-	//Starts the table and the form
 	$form = new Form("index.php?module=games/games&amp;action=add", "post");
 	$form_container = new FormContainer($lang->nav_add_game);
 
-	//Input for game
 	$form_container->output_row($lang->game_title." <em>*</em>", false, $form->generate_text_box('title', $mybb->input['title'], array('id' => 'title')), 'title');
 	$form_container->output_row($lang->game_name." <em>*</em>", $lang->game_name_desc, $form->generate_text_box('name', $mybb->input['name'], array('id' => 'name')), 'name');
 	$form_container->output_row($lang->game_cat." <em>*</em>", false, $form->generate_select_box('cid', $categories, $mybb->input['cid'], array('id' => 'cid')), 'cid');
 	$form_container->output_row($lang->game_description, false, $form->generate_text_area('description', $mybb->input['description'], array('id' => 'description')), 'description');
-	$form_container->output_row($lang->game_what, false, $form->generate_text_area('what', $mybb->input['what'], array('id' => 'what')), 'what');
-	$form_container->output_row($lang->game_keys, false, $form->generate_text_area('use_keys', $mybb->input['use_keys'], array('id' => 'use_keys')), 'use_keys');
+	$form_container->output_row($lang->game_purpose, false, $form->generate_text_area('purpose', $mybb->input['purpose'], array('id' => 'purpose')), 'purpose');
+	$form_container->output_row($lang->game_keys, false, $form->generate_text_area('use_keys', $mybb->input['keys'], array('id' => 'keys')), 'keys');
 	$form_container->output_row($lang->game_bgcolor." <em>*</em>", false, $form->generate_text_box('bgcolor', $mybb->input['bgcolor'], array('id' => 'bgcolor')), 'bgcolor');
 	$form_container->output_row($lang->game_width." <em>*</em>", false, $form->generate_text_box('width', $mybb->input['width'], array('id' => 'width')), 'width');
 	$form_container->output_row($lang->game_height." <em>*</em>", false, $form->generate_text_box('height', $mybb->input['height'], array('id' => 'height')), 'height');
@@ -457,10 +434,8 @@ if($mybb->input['action'] == "add_manual")
 	$form_container->output_row($lang->game_active." <em>*</em>", false, $form->generate_yes_no_radio('active', $mybb->input['active']), 'active');
 	$form_container->output_row($lang->game_force, $lang->game_force_desc, $form->generate_yes_no_radio('force', $mybb->input['force']), 'force');
 
-	//Plugin
 	$plugins->run_hooks("admin_games_games_add_end");
 
-	//End of table and form
 	$form_container->end();
 	$buttons[] = $form->generate_submit_button($lang->save);
 	$buttons[] = $form->generate_reset_button($lang->reset);
