@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2009 The Game Section Development Group
+ *   Copyright: © 2006-2014 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 14/04/2009 by Paretje
+ *   Last modified: 01/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -34,14 +34,12 @@ $l['not_copyable'] = "The follow file couldn't be copied, possible it's because 
 
 $l['nav_overview'] = "Overview";
 $l['nav_add_game'] = "Add Game";
-$l['nav_add_game_simple'] = "Add Game (Simple)";
-$l['nav_add_game_tar'] = "Add Game (Tar)";
+$l['nav_add_game_manual'] = "Add Game (Manual)";
 $l['nav_edit_game'] = "Edit Game";
 
 $l['nav_overview_desc'] = "Here you can manage the games on your board.";
-$l['nav_add_game_desc'] = "Here you can add a game on your board.";
-$l['nav_add_game_simple_desc'] = "Here you can add a game on your board, using the files which the tar of the game contains.";
-$l['nav_add_game_tar_desc'] = "Here you can add	a game on your board, using the tar-file of the game.";
+$l['nav_add_game_desc'] = "Here you can add a game on your board by uploading the tar file.";
+$l['nav_add_game_manual_desc'] = "Here you can add a game on your board by filling in all fields manually.";
 $l['nav_edit_game_desc'] = "Here you can edit a game on your board.";
 
 $l['search'] = "Search";
