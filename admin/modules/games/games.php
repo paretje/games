@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 01/01/2014 by Paretje
+ *   Last modified: 02/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -40,6 +40,7 @@ $plugins->run_hooks("admin_games_games_start");
 
 $page->add_breadcrumb_item($lang->gamesection, "index.php?module=games");
 
+// TODO: The input control can be devided in a function. Maybe even the form?
 if($mybb->input['action'] == "" || $mybb->input['action'] == "add" || $mybb->input['action'] == "add_manual" || $mybb->input['action'] == "edit")
 {
 	$sub_tabs = array();
@@ -274,7 +275,7 @@ if($mybb->input['action'] == "add")
 	}
 
 	//Starts the table and the form
-	$form = new Form("index.php?module=games/games&amp;action=add_tar", "post", false, true);
+	$form = new Form("index.php?module=games/games&amp;action=add", "post", false, true);
 	$form_container = new FormContainer($lang->nav_add_game_tar);
 
 	//Input for game
@@ -315,7 +316,7 @@ if($mybb->input['action'] == "add_manual")
 		}
 		elseif($mybb->input['cid'] != 0)
 		{
-			$query = $db->query("SELECT title FROM ".TABLE_PREFIX."games_categories WHERE cid='".intval($mybb->input['cid'])."'");
+			$query = $db->simple_select("games_categories", "title", "cid='".intval($mybb->input['cid'])."'");
 			$cat = $db->fetch_array($query);
 			if($db->num_rows($query) == 0)
 			{
@@ -347,7 +348,8 @@ if($mybb->input['action'] == "add_manual")
 			$errors[] = $lang->error_missing_active;
 		}
 
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".$db->escape_string($mybb->input['name'])."'");
+		// TODO: Would it be better to use COUNT(), or is this just as fast?
+		$query = $db->simple_select("games", "gid", "name='".$db->escape_string($mybb->input['name'])."'")
 		if($db->num_rows($query) != 0 && $mybb->input['force'] != 1)
 		{
 			$errors[] = $lang->gamealreadyexist;
@@ -390,7 +392,7 @@ if($mybb->input['action'] == "add_manual")
 	}
 
 	$categories[0] = $lang->game_cat_no;
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories ORDER BY title ASC");
+	$query = $db->simple_select("games_categories", "cid, title", "", array('order_by' => 'title', 'order_dir' => 'asc'));
 	while($category = $db->fetch_array($query))
 	{
 		$categories[$category['cid']] = $category['title'];
@@ -418,7 +420,7 @@ if($mybb->input['action'] == "add_manual")
 		$mybb->input['force'] = 0;
 	}
 
-	$form = new Form("index.php?module=games/games&amp;action=add", "post");
+	$form = new Form("index.php?module=games/games&amp;action=add_manual", "post");
 	$form_container = new FormContainer($lang->nav_add_game);
 
 	$form_container->output_row($lang->game_title." <em>*</em>", false, $form->generate_text_box('title', $mybb->input['title'], array('id' => 'title')), 'title');
@@ -447,7 +449,7 @@ elseif($mybb->input['action'] == "edit")
 {
 	$plugins->run_hooks("admin_games_games_edit_start");
 
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE gid='".intval($mybb->input['gid'])."'");
+	$query = $db->simple_select("games", "*", "gid='".intval($mybb->input['gid'])."'");
 	$game = $db->fetch_array($query);
 	if($db->num_rows($query) == 0)
 	{
@@ -472,7 +474,7 @@ elseif($mybb->input['action'] == "edit")
 		}
 		elseif($mybb->input['cid'] != 0)
 		{
-			$query = $db->query("SELECT title FROM ".TABLE_PREFIX."games_categories WHERE cid='".intval($mybb->input['cid'])."'");
+			$query = $db->simple_select("games_categories", "title", "cid='".intval($mybb->input['cid'])."'");
 			$cat = $db->fetch_array($query);
 			if($db->num_rows($query) == 0)
 			{
@@ -509,7 +511,7 @@ elseif($mybb->input['action'] == "edit")
 			if($mybb->input['active'] === 0 && $game['score_type'] === 1)
 			{
 				$tournaments_stats = $cache->read("games_tournaments_stats");
-				$query = $db->query("SELECT status FROM ".TABLE_PREFIX."games_tournaments WHERE gid='".intval($mybb->input['gid'])."'");
+				$query = $db->simple_select("games_tournaments", "status", "gid='".intval($mybb->input['gid'])."'");
 				while($tournaments = $db->fetch_array($query))
 				{
 					$tournaments_stats[$tournaments['status']]--;
@@ -519,7 +521,7 @@ elseif($mybb->input['action'] == "edit")
 			elseif($mybb->input['active'] === 1 && $game['score_type'] === 0)
 			{
 				$tournaments_stats = $cache->read("games_tournaments_stats");
-				$query = $db->query("SELECT status FROM ".TABLE_PREFIX."games_tournaments WHERE gid='".intval($mybb->input['gid'])."'");
+				$query = $db->simple_select("games_tournaments", "status", "gid='".intval($mybb->input['gid'])."'");
 				while($tournaments = $db->fetch_array($query))
 				{
 					$tournaments_stats[$tournaments['status']]++;
@@ -543,7 +545,15 @@ elseif($mybb->input['action'] == "edit")
 
 			if($mybb->input['score_type'] != $game['score_type'])
 			{
-				$query = $db->query("SELECT sid FROM ".TABLE_PREFIX."games_scores WHERE gid='".intval($mybb->input['gid'])."' ORDER BY score ".$db->escape_string($mybb->input['score_type'])." LIMIT 0,1");
+				$query = $db->simple_select("games_scores", "sid",
+					"gid='".intval($mybb->input['gid'])."'",
+					array(
+						'order_by' => 'score',
+						'order_dir' => $db->escape_string($mybb->input['score_type']),
+						'limit_start' => 0,
+						'limit' =>1
+					)
+				);
 				if($db->num_rows($query) == 1)
 				{
 					$update_game['champion'] = $score['sid'];
@@ -576,7 +586,7 @@ elseif($mybb->input['action'] == "edit")
 	}
 
 	$categories[0] = $lang->game_cat_no;
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories ORDER BY title ASC");
+	$query = $db->simple_select("games_categories", "cid, title", "", array('order_by' => 'title', 'order_dir' => 'asc'));
 	while($category = $db->fetch_array($query))
 	{
 		$categories[$category['cid']] = $category['title'];
@@ -614,33 +624,26 @@ elseif($mybb->input['action'] == "edit")
 }
 elseif($mybb->input['action'] == "delete")
 {
-	//Plugin
 	$plugins->run_hooks("admin_games_games_delete");
 
-	// User clicked no
 	if($mybb->input['no'])
 	{
 		admin_redirect("index.php?module=games/games");
 	}
 
-	//Test game
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE gid='".intval($mybb->input['gid'])."'");
+	$gid = intval($mybb->input['gid']);
+	$query = $db->simple_select("games", "*", "gid='".$gid."'");
 	$game = $db->fetch_array($query);
-	$game_test = $db->num_rows($query);
-
-	if($game_test == 0)
+	if($db->num_rows($query) == 0)
 	{
 		flash_message($lang->gamedoesntexist, 'error');
 		admin_redirect("index.php?module=games/games");
 	}
 
-	//Handle the game
 	if($mybb->request_method == "post")
 	{
-		//Delete the files
 		if($mybb->input['files'])
 		{
-			//Test if directories are writable
 			if(!is_writable(MYBB_ROOT."games"))
 			{
 				$errors[] = $lang->sprintf($lang->not_writable, "games");
@@ -652,7 +655,6 @@ elseif($mybb->input['action'] == "delete")
 
 			if(!$errors)
 			{
-				//Delete files
 				if(!@unlink(MYBB_ROOT."games/".$game['name'].".swf"))
 				{
 					$errors[] = $lang->sprintf($lang->not_deleteable, "games/".$game['name'].".swf");
@@ -666,7 +668,6 @@ elseif($mybb->input['action'] == "delete")
 					$errors[] = $lang->sprintf($lang->not_deleteable, "games/images/".$game['name']."2.gif");
 				}
 
-				//Delete gamedata
 				if(is_dir(MYBB_ROOT."arcade/gamedata/".$game['name']))
 				{
 					gamedata_delete(MYBB_ROOT."arcade/gamedata/".$game['name']);
@@ -676,62 +677,53 @@ elseif($mybb->input['action'] == "delete")
 
 		if(!$errors)
 		{
-			//Delete game
-			$db->delete_query("games", "gid='".intval($mybb->input['gid'])."'");
-			$db->delete_query("games_favourites", "gid='".intval($mybb->input['gid'])."'");
-			$db->delete_query("games_scores", "gid='".intval($mybb->input['gid'])."'");
-			$db->delete_query("games_champions", "gid='".intval($mybb->input['gid'])."'");
-			$db->delete_query("games_rating", "gid='".intval($mybb->input['gid'])."'");
-
-			//Update tournaments statistics
 			$tournaments_stats = $cache->read("games_tournaments_stats");
-			$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_tournaments WHERE gid='".intval($mybb->input['gid'])."'");
+			$query = $db->simple_select("games_tournaments", "status", "gid='".$gid."'");
 			while($tournaments = $db->fetch_array($query))
 			{
 				$tournaments_stats[$tournaments['status']]--;
 			}
 			$cache->update("games_tournaments_stats", $tournaments_stats);
 
-			//Delete tournaments
-			$db->delete_query("games_tournaments", "gid='".intval($mybb->input['gid'])."'");
+			$db->delete_query("games", "gid='".$gid."'");
+			$db->delete_query("games_favourites", "gid='".$gid."'");
+			$db->delete_query("games_scores", "gid='".$gid."'");
+			$db->delete_query("games_rating", "gid='".$gid."'");
+			// TODO: will this work with all DBMS systems?
+			$db->delete_query("games_tournaments_players",
+				"tid IN (SELECT tid FROM ".TABLE_PREFIX."games_tournaments WHERE gid='".$gid."')");
+			$db->delete_query("games_tournaments", "gid='".$gid."'");
 
-			//Plugin
 			$plugins->run_hooks("admin_games_games_delete_do");
 
-			//Log
 			if(intval($game['cid']) !== 0)
 			{
-				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories WHERE cid='".intval($game['cid'])."'");
+				$query = $db->simple_select("games_categories", "title", "cid='".$game['cid']."'");
 				$cat = $db->fetch_array($query);
-
-				log_admin_action($mybb->input['gid'], $game['title'], $game['cid'], $cat['title']);
 			}
 			else
 			{
-				log_admin_action($mybb->input['gid'], $game['title'], $game['cid'], $lang->game_cat_no);
+				$cat['title'] = $lang->game_cat_no;
 			}
+			log_admin_action($gid, $game['title'], $game['cid'], $cat['title']);
 
 			flash_message($lang->deleted_game, 'success');
 			admin_redirect("index.php?module=games/games");
 		}
 		else
 		{
-			//Load the errors
+			// TODO: make a function to do this
 			foreach($errors as $error)
 			{
 				$flash_errors .= "<li>".$error."</li>\n";
 			}
-
 			flash_message("<ul>\n".$flash_errors."\n</ul>", 'error');
 			admin_redirect("index.php?module=games/games");
 		}
 	}
 	else
 	{
-		//Header
 		$page->output_header();
-
-		//Show form, confirmation and footer
 		$form = new Form("index.php?module=games/games&amp;action=delete&amp;gid=".$mybb->input['gid']."&amp;my_post_key=".$mybb->post_code, 'post');
 		echo "<div class=\"confirm_action\">\n";
 		echo "<p>".$lang->delete_game_confirmation."</p>\n";
