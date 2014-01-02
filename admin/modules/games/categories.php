@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2013 The Game Section Development Group
+ *   Copyright: © 2006-2014 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 31/12/2013 by Paretje
+ *   Last modified: 02/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -112,7 +112,7 @@ elseif($mybb->input['action'] == "edit")
 {
 	$plugins->run_hooks("admin_games_categories_edit_start");
 
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories WHERE cid='".intval($mybb->input['cid'])."'");
+	$query = $db->simple_select("games_categories", "*", "cid='".intval($mybb->input['cid'])."'");
 	$category = $db->fetch_array($query);
 	if($db->num_rows($query) == 0)
 	{
@@ -205,7 +205,7 @@ elseif($mybb->input['action'] == "delete")
 		admin_redirect("index.php?module=games/categories");
 	}
 
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories WHERE cid='".intval($mybb->input['cid'])."'");
+	$query = $db->simple_select("games_categories", "*", "cid='".intval($mybb->input['cid'])."'");
 	$category = $db->fetch_array($query);
 	if($db->num_rows($query) == 0)
 	{
@@ -216,9 +216,7 @@ elseif($mybb->input['action'] == "delete")
 	if($mybb->request_method == "post")
 	{
 		$db->delete_query("games_categories", "cid='".intval($mybb->input['cid'])."'");
-
-		// TODO: Make this a update_query, with an anonymous array
-		$db->write_query("UPDATE ".TABLE_PREFIX."games SET cid='0' WHERE cid='".intval($mybb->input['cid'])."'");
+		$db->update_query("games", array('cid' => 0), "cid='".intval($mybb->input['cid'])."'");
 
 		$plugins->run_hooks("admin_games_categories_delete_do");
 
@@ -258,7 +256,7 @@ else
 			"width" => 150)
 		);
 
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories ORDER BY title ASC");
+	$query = $db->simple_select("games_categories", "*", "", array('order_by' => 'title', 'order_dir' => 'asc'));
 	if($db->num_rows($query) == 0)
 	{
 		// TODO: Is this the usual way of doing things, <p><em>?
