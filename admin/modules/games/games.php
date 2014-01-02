@@ -349,7 +349,7 @@ if($mybb->input['action'] == "add_manual")
 		}
 
 		// TODO: Would it be better to use COUNT(), or is this just as fast?
-		$query = $db->simple_select("games", "gid", "name='".$db->escape_string($mybb->input['name'])."'")
+		$query = $db->simple_select("games", "gid", "name='".$db->escape_string($mybb->input['name'])."'");
 		if($db->num_rows($query) != 0 && $mybb->input['force'] != 1)
 		{
 			$errors[] = $lang->gamealreadyexist;
