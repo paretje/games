@@ -135,11 +135,12 @@ if($mybb->input['action'] == "add")
 			if(!$errors)
 			{
 				//Unpack tar
-				require_once MYBB_ROOT."inc/3rdparty/tar/pcltar.lib.php";
-
+				require_once MYBB_ROOT."inc/3rdparty/tar/Tar.php";
+				
 				//Extract
-				$tar = PclTarExtract(MYBB_ADMIN_DIR."games/".$_FILES['game_tar']['name'], MYBB_ADMIN_DIR."games", "", "tar");
-
+				$tar = new Archive_Tar(MYBB_ADMIN_DIR."games/".$_FILES['game_tar']['name']);
+				$tar->extract(MYBB_ADMIN_DIR."games");
+				
 				//Tar control
 				if($tar == 0)
 				{
