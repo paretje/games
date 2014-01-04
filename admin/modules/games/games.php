@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 02/01/2014 by Paretje
+ *   Last modified: 03/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -581,58 +581,37 @@ elseif($mybb->input['action'] == "delete")
 }
 else
 {
-	//Control page
-	if(intval($mybb->input['page']))
-	{
-		$pag = intval($mybb->input['page']);
-	}
-	else
-	{
-		$pag = 1;
-	}
-
-	//Navigation and header
 	$page->add_breadcrumb_item($lang->nav_overview);
 	$page->output_header($lang->gamesection);
-
-	//Show the sub-tabs
 	$page->output_nav_tabs($sub_tabs, 'overview');
 
-	//Categories
+	// Generate the search form
 	$categories[0] = $lang->game_cat_no;
-
-	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories ORDER BY title ASC");
+	$query = $db->simple_select("games_categories", "cid, title", "", array('order_by' => 'title', 'order_dir' => 'asc'));
 	while($category = $db->fetch_array($query))
 	{
 		$categories[$category['cid']] = $category['title'];
 	}
 
-	//Actives
 	$actives = array(
 		'0'		=> $lang->active_all,
 		'1'		=> $lang->active_active,
 		'2'		=> $lang->active_inactive
 	);
-
-	//Sort by
 	$sortby = array(
 		'title'		=> $lang->sortby_title,
 		'name'		=> $lang->sortby_name,
 		'dateline'	=> $lang->sortby_dateline,
 		'played'	=> $lang->sortby_played
 	);
-
-	//Order by
-	$orderby = array(
+	$orderdir = array(
 		'ASC'		=> $lang->order_asc,
 		'DESC'		=> $lang->order_desc
 	);
 
-	//Search table
 	$form = new Form("index.php", "get");
 	echo $form->generate_hidden_field("module", "games/games")."\n";
 	$table = new Table;
-
 	$table->construct_cell("<strong>".$lang->game_title.":</strong>
 ".$form->generate_text_box("search[title]", $mybb->input['search']['title'], array("style" => "width: 100px;"))."
 <strong>".$lang->game_name.":</strong>
@@ -648,46 +627,21 @@ else
 <strong>".$lang->sortby."</strong>
 ".$form->generate_select_box("sortby", $sortby, $mybb->input['sortby'])."
 <strong>".$lang->order."</strong>
-".$form->generate_select_box("order", $orderby, $mybb->input['order'])."
+".$form->generate_select_box("order", $orderdir, $mybb->input['order'])."
 <strong>".$lang->gamesperpage."</strong>
 ".$form->generate_text_box("perpage", $mybb->input['perpage'], array("style" => "width: 20px;"))."
 ".$form->generate_submit_button($lang->go));
 	$table->construct_row();
-
 	$table->output($lang->search);
 	$form->end();
 
-	//Control sortby, order and perpage
-	if(isset($mybb->input['sortby']))
-	{
-		$sortby = $mybb->input['sortby'];
-	}
-	else
-	{
-		$sortby = "title";
-	}
-
-	if(isset($mybb->input['order']))
-	{
-		$order = $mybb->input['order'];
-	}
-	else
-	{
-		$order = "ASC";
-	}
-
-	if(intval($mybb->input['perpage']))
-	{
-		$perpage = $mybb->input['perpage'];
-	}
-	else
-	{
-		$perpage = 20;
-	}
-
-	//Multipages
+	$pag = $mybb->input['page'] ? intval($mybb->input['page']) : 1;
+	$sortby = isset($mybb->input['sortby']) ? $mybb->input['sortby'] : "title";
+	$order = isset($mybb->input['order']) ? $mybb->input['order'] : "ASC";
+	$perpage = $mybb->input['perpage'] ? intval($mybb->input['perpage']) : 20;
 	$start = ($pag-1) * $perpage;
 
+	// Build the multipage navigation
 	if(is_array($mybb->input['search']))
 	{
 		if($mybb->input['search']['cid'] != 0)
@@ -695,7 +649,6 @@ else
 			$where_cat = " AND g.cid='".$mybb->input['search']['cid']."'";
 			$where_cat2 = " AND cid='".$mybb->input['search']['cid']."'";
 		}
-
 		if($mybb->input['search']['active'] != 0)
 		{
 			if($mybb->input['search']['active'] == 2)
@@ -710,25 +663,28 @@ else
 			}
 		}
 
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE title LIKE '%".$mybb->input['search']['title']."%' AND name LIKE '%".$mybb->input['search']['name']."%' AND description LIKE '%".$mybb->input['search']['description']."%'".$where_cat2.$where_active2);
+		// TODO: COUNT?
+		$query = $db->simple_select("games", "gid",
+			"title LIKE '%".$mybb->input['search']['title']."%'"
+			." AND name LIKE '%".$mybb->input['search']['name']."%'"
+			."AND description LIKE '%".$mybb->input['search']['description']."%'"
+			.$where_cat2.$where_active2);
 	}
 	else
 	{
-		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games");
+		$query = $db->simple_select("games", "gid");
 	}
-
 	$count = $db->num_rows($query);
-
 	$pages = $count / $perpage;
 	$pages = ceil($pages);
-
 	if($pages > 1)
 	{
 		$addr = explode("&page=", $_SERVER['QUERY_STRING']);
 		$multipages = admin_multipages($pag, $pages, "index.php?".$addr[0]);
 	}
+	echo "\n".$multipages."<br /><br />\n";
 
-	//Loading the games
+	// Test if this is a search query, or an ordinary requist ...
 	if(is_array($mybb->input['search']))
 	{
 		$query = $db->query("SELECT DISTINCT g.*, c.title AS catname
@@ -746,28 +702,18 @@ else
 		ORDER BY g.".$sortby." ".$order."
 		LIMIT ".$start.",".$perpage);
 	}
-
-	$games_test = $db->num_rows($query);
-
-	//Test games
-	if($games_test == 0)
+	if($db->num_rows($query) == 0)
 	{
 		$page->output_error("<p><em>".$lang->no_games."</em></p>");
 		$page->output_footer();
 	}
 
-	//Show multipages
-	echo "\n".$multipages."<br /><br />\n";
-
-	//Plugin
 	$plugins->run_hooks("admin_games_games_default_start");
 
-	//Show games
 	$table = new Table;
 
 	while($games = $db->fetch_array($query))
 	{
-		//Category
 		if($games['cid'] == 0)
 		{
 			$category_edit = "";
@@ -779,10 +725,7 @@ else
 			$games['catname'] = "<a href=\"index.php?module=games/games&amp;search[cid]cid=".$games['cid']."\">".$games['catname']."</a>";
 		}
 
-		//Pubdate
 		$pubdate = my_date($mybb->settings['dateformat'].", ".$mybb->settings['timeformat'], $games['dateline']);
-
-		//Active lang
 		$lang_active = "active_".$games['active'];
 
 		$table->construct_cell("<strong><a href=\"index.php?module=games/games&amp;action=edit&amp;gid=".$games['gid']."\">".$games['title']."</a></strong><br />
@@ -798,20 +741,15 @@ else
 <strong>".$lang->played."</strong> ".$games['played']."<br />
 <strong>".$lang->active."</strong> ".$lang->$lang_active, array("width" => 125));
 
-		//Plugin
 		$plugins->run_hooks("admin_games_games_default_while");
 
 		$table->construct_row();
 	}
 
-	//Plugin
 	$plugins->run_hooks("admin_games_games_default_end");
 
-	//End of table, multipages and AdminCP footer
 	$table->output($lang->gamesection);
-
 	echo "\n".$multipages."\n";
-
 	$page->output_footer();
 }
 
