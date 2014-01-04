@@ -39,10 +39,22 @@
  * @link      http://pear.php.net/package/Archive_Tar
  */
 
-require_once 'PEAR.php';
-
 define('ARCHIVE_TAR_ATT_SEPARATOR', 90001);
 define('ARCHIVE_TAR_END_BLOCK', pack("a512", ''));
+
+/**
+* To make Archive_Tar PEAR-independible, I need to OS_WINDOWS. This isn't
+* part of PHP, but is implied by PHP_OS. It's needed to detect wheter the code
+* is running on a Windows system or not. I could replace this with an
+* expression using PHP_OS, but it's more elegant and more efficiënt to do it
+* just once.
+* 
+* I got this particular implementation from Asido:
+* http://sourceforge.net/p/asido/code/13/tree//trunk/class.asido.php?diff=51700cae34309d5ba8b82942:12
+*/
+if (!defined('OS_WINDOWS')) {
+    define('OS_WINDOWS', strtoupper(substr(PHP_OS, 0, 3)) === 'WIN');
+}
 
 /**
 * Creates a (compressed) Tar archive
@@ -52,7 +64,7 @@ define('ARCHIVE_TAR_END_BLOCK', pack("a512", ''));
 * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
 * @version $Revision$
 */
-class Archive_Tar extends PEAR
+class Archive_Tar
 {
     /**
     * @var string Name of the Tar
@@ -89,11 +101,6 @@ class Archive_Tar extends PEAR
     */
     var $_ignore_regexp='';
 
-    /**
-     * @var object PEAR_Error object
-     */
-    var $error_object=null; 
-
     // {{{ constructor
     /**
     * Archive_Tar Class constructor. This flavour of the constructor only
@@ -112,7 +119,6 @@ class Archive_Tar extends PEAR
     */
     function Archive_Tar($p_tarname, $p_compress = null)
     {
-        $this->PEAR();
         $this->_compress = false;
         $this->_compress_type = 'none';
         if (($p_compress === null) || ($p_compress == '')) {
@@ -163,9 +169,6 @@ class Archive_Tar extends PEAR
                 $extname = 'bz2';
 
             if (!extension_loaded($extname)) {
-                PEAR::loadExtension($extname);
-            }
-            if (!extension_loaded($extname)) {
                 $this->_error("The extension '$extname' couldn't be found.\n".
                     "Please make sure your version of PHP was built ".
                     "with '$extname' support.\n");
@@ -182,7 +185,6 @@ class Archive_Tar extends PEAR
         // ----- Look for a local copy to delete
         if ($this->_temp_tarname != '')
             @unlink($this->_temp_tarname);
-        $this->_PEAR();
     }
     // }}}
 
@@ -651,14 +653,16 @@ class Archive_Tar extends PEAR
     // {{{ _error()
     function _error($p_message)
     {
-        $this->error_object = &$this->raiseError($p_message); 
+        // TODO: do this more gentle!
+        die("Error: Archive_Tar: ".$p_message);
     }
     // }}}
 
     // {{{ _warning()
     function _warning($p_message)
     {
-        $this->error_object = &$this->raiseError($p_message); 
+        // TODO: do this more gentle!!!
+        die("Warning: Archive_Tar: ".$p_message);
     }
     // }}}
 
