@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2013 The Game Section Development Group
+ *   Copyright: © 2006-2014 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 21/01/2013 by Paretje
+ *   Last modified: 06/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -57,7 +57,7 @@ function games_info()
 		"website"	=> "http://www.gamesection.org",
 		"author"	=> "Paretje",
 		"authorsite"	=> "http://www.gamesection.org",
-		"version"	=> "1.2.3-1",
+		"version"	=> "1.2.4",
 		"guid"		=> "db37073977904e9458f54937ceb13a9f",
 		"compatibility" => "14*,16*"
 	);
