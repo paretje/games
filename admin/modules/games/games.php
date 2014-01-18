@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 03/01/2014 by Paretje
+ *   Last modified: 17/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -60,6 +60,7 @@ if($mybb->input['action'] == "" || $mybb->input['action'] == "add" || $mybb->inp
 	);
 }
 
+// TODO: Control if there are no missing or unnecessary plugin hooks
 if($mybb->input['action'] == "add")
 {
 	//Plugin
@@ -303,7 +304,7 @@ if($mybb->input['action'] == "add_manual")
 	{
 		$cat = control_games_input($errors);
 
-		// TODO: Would it be better to use COUNT(), or is this just as fast?
+		// TODO: Wouldn't it be better to use COUNT(), or is this just as fast?
 		$query = $db->simple_select("games", "gid", "name='".$db->escape_string($mybb->input['name'])."'");
 		if($db->num_rows($query) != 0 && $mybb->input['force'] != 1)
 		{
@@ -345,7 +346,9 @@ if($mybb->input['action'] == "add_manual")
 	{
 		$page->output_inline_error($errors);
 	}
-	
+
+	// Fill the default values when the user starts to add a game manually
+	// TODO: Is there any situation where only one of these would be !isset?
 	if(!isset($mybb->input['bgcolor']))
 	{
 		$mybb->input['bgcolor'] = "000000";
@@ -384,7 +387,9 @@ elseif($mybb->input['action'] == "edit")
 
 		if(!$errors)
 		{
-			if($mybb->input['active'] === 0 && $game['score_type'] === 1)
+			// Tournaments stats are kept in cache, and should be
+			// updated if a game a game gets enabled or disabled.
+			if($mybb->input['active'] === 0 && $game['active'] === 1)
 			{
 				$tournaments_stats = $cache->read("games_tournaments_stats");
 				$query = $db->simple_select("games_tournaments", "status", "gid='".intval($mybb->input['gid'])."'");
@@ -394,7 +399,7 @@ elseif($mybb->input['action'] == "edit")
 				}
 				$cache->update("games_tournaments_stats", $tournaments_stats);
 			}
-			elseif($mybb->input['active'] === 1 && $game['score_type'] === 0)
+			elseif($mybb->input['active'] === 1 && $game['active'] === 0)
 			{
 				$tournaments_stats = $cache->read("games_tournaments_stats");
 				$query = $db->simple_select("games_tournaments", "status", "gid='".intval($mybb->input['gid'])."'");
@@ -419,6 +424,9 @@ elseif($mybb->input['action'] == "edit")
 				'active'	=> intval($mybb->input['active'])
 			);
 
+			// If the score type of the game changes (which
+			// determines wheter lower or higher scores are better)
+			// the champion-reference has to be updated.
 			if($mybb->input['score_type'] != $game['score_type'])
 			{
 				$query = $db->simple_select("games_scores", "sid",
@@ -456,12 +464,21 @@ elseif($mybb->input['action'] == "edit")
 	);
 	$page->output_nav_tabs($sub_tabs, 'edit_game');
 
+	/* When there are errors, it means the user has changed some values when
+	 * he tried to submit his changed, it failed. So, if there were errors,
+	 * could better show the new values of the fields he/she tried to submit
+	 * in order to make it easier to fix the error, instead of having to
+	 * redo all changes. */
 	if($errors)
 	{
 		$page->output_inline_error($errors);
+		build_games_form($lang->nav_edit_game, "edit", $mybb->input);
+	}
+	else
+	{
+		build_games_form($lang->nav_edit_game, "edit", $game);
 	}
 
-	build_games_form($lang->nav_edit_game, "edit", $game);
 	$page->output_footer();
 }
 elseif($mybb->input['action'] == "delete")
@@ -509,7 +526,6 @@ elseif($mybb->input['action'] == "delete")
 				{
 					$errors[] = $lang->sprintf($lang->not_deleteable, "games/images/".$game['name']."2.gif");
 				}
-
 				if(is_dir(MYBB_ROOT."arcade/gamedata/".$game['name']))
 				{
 					gamedata_delete(MYBB_ROOT."arcade/gamedata/".$game['name']);
@@ -799,6 +815,7 @@ function build_games_form($title, $action, $values)
 	$form->end();
 }
 
+// TODO: Wait a minute ... isn't pass by reference deprecated?
 function control_games_input(&$errors)
 {
 	global $mybb, $lang, $db;
