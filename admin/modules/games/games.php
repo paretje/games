@@ -600,78 +600,32 @@ else
 	$page->add_breadcrumb_item($lang->nav_overview);
 	$page->output_header($lang->gamesection);
 	$page->output_nav_tabs($sub_tabs, 'overview');
+	build_games_search_form();
 
-	// Generate the search form
-	$categories[0] = $lang->game_cat_no;
-	$query = $db->simple_select("games_categories", "cid, title", "", array('order_by' => 'title', 'order_dir' => 'asc'));
-	while($category = $db->fetch_array($query))
+	// TODO: Can't this be done in a more generic way?
+	// Handle search query
+	if($mybb->input['search']['cid'] != 0)
 	{
-		$categories[$category['cid']] = $category['title'];
+		$where_cat = " AND g.cid='".$mybb->input['search']['cid']."'";
+		$where_cat2 = " AND cid='".$mybb->input['search']['cid']."'";
 	}
-
-	$actives = array(
-		'0'		=> $lang->active_all,
-		'1'		=> $lang->active_active,
-		'2'		=> $lang->active_inactive
-	);
-	$sortby = array(
-		'title'		=> $lang->sortby_title,
-		'name'		=> $lang->sortby_name,
-		'dateline'	=> $lang->sortby_dateline,
-		'played'	=> $lang->sortby_played
-	);
-	$orderdir = array(
-		'ASC'		=> $lang->order_asc,
-		'DESC'		=> $lang->order_desc
-	);
-
-	$form = new Form("index.php", "get");
-	echo $form->generate_hidden_field("module", "games/games")."\n";
-	$table = new Table;
-	$table->construct_cell("<strong>".$lang->game_title.":</strong>
-".$form->generate_text_box("search[title]", $mybb->input['search']['title'], array("style" => "width: 100px;"))."
-<strong>".$lang->game_name.":</strong>
-".$form->generate_text_box("search[name]", $mybb->input['search']['name'], array("style" => "width: 100px;"))."
-<strong>".$lang->game_description.":</strong>
-".$form->generate_text_box("search[description]", $mybb->input['search']['description'], array("style" => "width: 100px;"))."
-<strong>".$lang->game_cat.":</strong>
-".$form->generate_select_box("search[cid]", $categories, $mybb->input['search']['cid'])."
-<strong>".$lang->active."</strong>
-".$form->generate_select_box("search[active]", $actives, intval($mybb->input['search']['active']))."
-<br />
-<br />
-<strong>".$lang->sortby."</strong>
-".$form->generate_select_box("sortby", $sortby, $mybb->input['sortby'])."
-<strong>".$lang->order."</strong>
-".$form->generate_select_box("order", $orderdir, $mybb->input['order'])."
-<strong>".$lang->gamesperpage."</strong>
-".$form->generate_text_box("perpage", $mybb->input['perpage'], array("style" => "width: 20px;"))."
-".$form->generate_submit_button($lang->go));
-	$table->construct_row();
-	$table->output($lang->search);
-	$form->end();
+	if($mybb->input['search']['active'] != 0)
+	{
+		if($mybb->input['search']['active'] == 2)
+		{
+			$where_active = " AND g.active='0'";
+			$where_active2 = " AND active='0'";
+		}
+		else
+		{
+			$where_active = " AND g.active='1'";
+			$where_active2 = " AND active='1'";
+		}
+	}
 
 	// Build the multipage navigation
 	if(is_array($mybb->input['search']))
 	{
-		if($mybb->input['search']['cid'] != 0)
-		{
-			$where_cat = " AND g.cid='".$mybb->input['search']['cid']."'";
-			$where_cat2 = " AND cid='".$mybb->input['search']['cid']."'";
-		}
-		if($mybb->input['search']['active'] != 0)
-		{
-			if($mybb->input['search']['active'] == 2)
-			{
-				$where_active = " AND g.active='0'";
-				$where_active2 = " AND active='0'";
-			}
-			else
-			{
-				$where_active = " AND g.active='1'";
-				$where_active2 = " AND active='1'";
-			}
-		}
 
 		// TODO: COUNT?
 		$query = $db->simple_select("games", "gid",
@@ -865,5 +819,62 @@ function control_games_input(&$errors)
 	}
 
 	return $cat;
+}
+
+build_games_search_form()
+{
+	global $lang, $db, $mybb;
+
+	// Generate the search form
+	$categories[0] = $lang->game_cat_no;
+	$query = $db->simple_select("games_categories", "cid, title", "", array('order_by' => 'title', 'order_dir' => 'asc'));
+	while($category = $db->fetch_array($query))
+	{
+		$categories[$category['cid']] = $category['title'];
+	}
+
+	$actives = array(
+		'0'		=> $lang->active_all,
+		'1'		=> $lang->active_active,
+		'2'		=> $lang->active_inactive
+	);
+	$sortby = array(
+		'title'		=> $lang->sortby_title,
+		'name'		=> $lang->sortby_name,
+		'dateline'	=> $lang->sortby_dateline,
+		'played'	=> $lang->sortby_played
+	);
+	$orderdir = array(
+		'ASC'		=> $lang->order_asc,
+		'DESC'		=> $lang->order_desc
+	);
+
+	$form = new Form("index.php", "get");
+	echo $form->generate_hidden_field("module", "games/games")."\n";
+	$table = new Table;
+	$table->construct_cell("<strong>".$lang->game_title.":</strong>
+".$form->generate_text_box("search[title]", $mybb->input['search']['title'], array("style" => "width: 100px;"))."
+<strong>".$lang->game_name.":</strong>
+".$form->generate_text_box("search[name]", $mybb->input['search']['name'], array("style" => "width: 100px;"))."
+<strong>".$lang->game_description.":</strong>
+".$form->generate_text_box("search[description]", $mybb->input['search']['description'], array("style" => "width: 100px;"))."
+<strong>".$lang->game_cat.":</strong>
+".$form->generate_select_box("search[cid]", $categories, $mybb->input['search']['cid'])."
+<strong>".$lang->active."</strong>
+".$form->generate_select_box("search[active]", $actives, intval($mybb->input['search']['active']))."
+<br />
+<br />
+<strong>".$lang->sortby."</strong>
+".$form->generate_select_box("sortby", $sortby, $mybb->input['sortby'])."
+<strong>".$lang->order."</strong>
+".$form->generate_select_box("order", $orderdir, $mybb->input['order'])."
+<strong>".$lang->gamesperpage."</strong>
+".$form->generate_text_box("perpage", $mybb->input['perpage'], array("style" => "width: 20px;"))."
+".$form->generate_submit_button($lang->go));
+	$table->construct_row();
+	$table->output($lang->search);
+	$form->end();
+
+
 }
 ?>
