@@ -651,12 +651,6 @@ else
 	$table->output($lang->search);
 	$form->end();
 
-	$pag = $mybb->input['page'] ? intval($mybb->input['page']) : 1;
-	$sortby = isset($mybb->input['sortby']) ? $mybb->input['sortby'] : "title";
-	$order = isset($mybb->input['order']) ? $mybb->input['order'] : "ASC";
-	$perpage = $mybb->input['perpage'] ? intval($mybb->input['perpage']) : 20;
-	$start = ($pag-1) * $perpage;
-
 	// Build the multipage navigation
 	if(is_array($mybb->input['search']))
 	{
@@ -691,14 +685,18 @@ else
 		$query = $db->simple_select("games", "gid");
 	}
 	$count = $db->num_rows($query);
-	$pages = $count / $perpage;
-	$pages = ceil($pages);
-	if($pages > 1)
-	{
-		$addr = explode("&page=", $_SERVER['QUERY_STRING']);
-		$multipages = admin_multipages($pag, $pages, "index.php?".$addr[0]);
-	}
-	echo "\n".$multipages."<br /><br />\n";
+
+	$pag = $mybb->input['page'] ? intval($mybb->input['page']) : 1;
+	$sortby = isset($mybb->input['sortby']) ? $mybb->input['sortby'] : "title";
+	$order = isset($mybb->input['order']) ? $mybb->input['order'] : "ASC";
+	$perpage = $mybb->input['perpage'] ? intval($mybb->input['perpage']) : 20;
+	$start = ($pag-1) * $perpage;
+
+	// TODO: built simply the complete URL with empty and default parameters
+	//	 after all, it's better then this hack, isn't it?
+	$addr = explode("&page=", $_SERVER['QUERY_STRING']);
+	$pagination = draw_admin_pagination($pag, $perpage, $count, "index.php?".$addr['0']);
+	echo $pagination."<br /><br />";
 
 	// Test if this is a search query, or an ordinary requist ...
 	if(is_array($mybb->input['search']))
@@ -765,7 +763,7 @@ else
 	$plugins->run_hooks("admin_games_games_default_end");
 
 	$table->output($lang->gamesection);
-	echo "\n".$multipages."\n";
+	echo $pagination;
 	$page->output_footer();
 }
 

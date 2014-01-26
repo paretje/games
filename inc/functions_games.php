@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2013 The Game Section Development Group
+ *   Copyright: © 2006-2014 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 30/12/2013 by Paretje
+ *   Last modified: 26/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -26,69 +26,6 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  ***************************************************************************/
-
-//Function to create multipages in the AdminCP
-function admin_multipages($page, $pages, $url)
-{
-	global $theme, $templates, $lang, $mybb;
-	
-	if($pages != 0)
-	{
-		//Prevpage
-		if($page > 1)
-		{
-			$prev_page = $page - 1;
-			
-			$prevpage = "<span><a href=\"".$url."&amp;page=".$prev_page."\">&lt; ".$lang->multipage_previous."</a></span> ";
-		}
-		
-		//Nextpage
-		if($page < $pages)
-		{
-			$next_page = $page + 1;
-			
-			$nextpage = " <span><a href=\"".$url."&amp;page=".$next_page."\">".$lang->multipage_next." &gt;</a></span>";
-		}
-		
-		//Start value of multipages
-		$start = $page -4;
-		
-		if($start < 1)
-		{
-			$start = 1;
-		}
-		
-		//End value of multipages
-		$end = $page + 4;
-		
-		if($end > $pages)
-		{
-			$end = $pages;
-		}
-		
-		//Multipages
-		for($i = $start; $i<=$end; $i++)
-		{
-			if($i == $page)
-			{
-				$mppage .= " <span><strong>[".$i."]</strong></span>";
-			}
-			else
-			{
-				$mppage .= " <span><a href=\"".$url."&amp;page=".$i."\">".$i."</a></span>";
-			}
-		}
-		
-		//Output
-		$lang->multipage_pages = $lang->sprintf($lang->multipage_pages, $pages);
-		
-		$start = "<span><a href=\"".$url."&amp;page=1\">&laquo; ".$lang->multipage_first."</a></span> ";
-		$end = " <span><a href=\"".$url."&amp;page=".$pages."\">".$lang->multipage_last." &raquo;</a></span>";
-		$multipage = $lang->multipage_pages." ".$start.$prevpage.$mppage.$nextpage.$end;
-		
-		return $multipage;
-	}
-}
 
 //Function to compute the time of something
 function nice_time_gs($stamp)
