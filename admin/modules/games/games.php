@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 17/01/2014 by Paretje
+ *   Last modified: 27/01/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -602,49 +602,43 @@ else
 	$page->output_nav_tabs($sub_tabs, 'overview');
 	build_games_search_form();
 
-	// TODO: Can't this be done in a more generic way?
 	// Handle search query
-	if($mybb->input['search']['cid'] != 0)
+	if(is_array($mybb->input['search']))
 	{
-		$where_cat = " AND g.cid='".$mybb->input['search']['cid']."'";
-		$where_cat2 = " AND cid='".$mybb->input['search']['cid']."'";
-	}
-	if($mybb->input['search']['active'] != 0)
-	{
-		if($mybb->input['search']['active'] == 2)
+		// TODO: add g or not? So, remove g for the joined query, or add
+		// it for the normal one (is this possible, or is there some
+		// kind of escaping?)
+		// Alternative: use regularexpression to add/delete it afterwards
+		$where = "g.title LIKE '%".$mybb->input['search']['title']."%'"
+			." AND g.name LIKE '%".$mybb->input['search']['name']."%'"
+			." AND g.description LIKE '%".$mybb->input['search']['description']."%'";
+		if($mybb->input['search']['cid'] != 0)
 		{
-			$where_active = " AND g.active='0'";
-			$where_active2 = " AND active='0'";
+			$where .= " AND g.cid='".$mybb->input['search']['cid']."'";
 		}
-		else
+		if($mybb->input['search']['active'] != 0)
 		{
-			$where_active = " AND g.active='1'";
-			$where_active2 = " AND active='1'";
+			if($mybb->input['search']['active'] == 2)
+			{
+				$where .= " AND g.active='0'";
+			}
+			else
+			{
+				$where .= " AND g.active='1'";
+			}
 		}
 	}
 
 	// Build the multipage navigation
-	if(is_array($mybb->input['search']))
-	{
-
-		// TODO: COUNT?
-		$query = $db->simple_select("games", "gid",
-			"title LIKE '%".$mybb->input['search']['title']."%'"
-			." AND name LIKE '%".$mybb->input['search']['name']."%'"
-			."AND description LIKE '%".$mybb->input['search']['description']."%'"
-			.$where_cat2.$where_active2);
-	}
-	else
-	{
-		$query = $db->simple_select("games", "gid");
-	}
-	$count = $db->num_rows($query);
-
 	$pag = $mybb->input['page'] ? intval($mybb->input['page']) : 1;
 	$sortby = isset($mybb->input['sortby']) ? $mybb->input['sortby'] : "title";
 	$order = isset($mybb->input['order']) ? $mybb->input['order'] : "ASC";
 	$perpage = $mybb->input['perpage'] ? intval($mybb->input['perpage']) : 20;
 	$start = ($pag-1) * $perpage;
+
+	// TODO: COUNT?
+	$query = $db->simple_select("games g", "gid", $where);
+	$count = $db->num_rows($query);
 
 	// TODO: built simply the complete URL with empty and default parameters
 	//	 after all, it's better then this hack, isn't it?
@@ -655,21 +649,16 @@ else
 	// Test if this is a search query, or an ordinary requist ...
 	if(is_array($mybb->input['search']))
 	{
-		$query = $db->query("SELECT DISTINCT g.*, c.title AS catname
+		$where_sql = "WHERE ".$where;
+	}
+	$query = $db->query("SELECT DISTINCT g.*, c.title AS catname
 		FROM ".TABLE_PREFIX."games g
 		LEFT JOIN ".TABLE_PREFIX."games_categories c ON (g.cid=c.cid)
-		WHERE g.title LIKE '%".$mybb->input['search']['title']."%' AND g.name LIKE '%".$mybb->input['search']['name']."%' AND g.description LIKE '%".$mybb->input['search']['description']."%'".$where_cat.$where_active."
+		".$where_sql."
 		ORDER BY g.".$sortby." ".$order."
 		LIMIT ".$start.",".$perpage);
-	}
-	else
-	{
-		$query = $db->query("SELECT DISTINCT g.*, c.title AS catname
-		FROM ".TABLE_PREFIX."games g
-		LEFT JOIN ".TABLE_PREFIX."games_categories c ON (g.cid=c.cid)
-		ORDER BY g.".$sortby." ".$order."
-		LIMIT ".$start.",".$perpage);
-	}
+
+	// Stop here if there are no games to show ...
 	if($db->num_rows($query) == 0)
 	{
 		$page->output_error("<p><em>".$lang->no_games."</em></p>");
@@ -821,7 +810,7 @@ function control_games_input(&$errors)
 	return $cat;
 }
 
-build_games_search_form()
+function build_games_search_form()
 {
 	global $lang, $db, $mybb;
 
