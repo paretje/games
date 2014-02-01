@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 27/01/2014 by Paretje
+ *   Last modified: 01/02/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -602,34 +602,39 @@ else
 	$page->output_nav_tabs($sub_tabs, 'overview');
 	build_games_search_form();
 
-	// Handle search query
+	// Handle search query and the url used for pagination based on the search query
+	$url = "index.php?module=games/games";
 	if(is_array($mybb->input['search']))
 	{
-		// TODO: add g or not? So, remove g for the joined query, or add
-		// it for the normal one (is this possible, or is there some
-		// kind of escaping?)
-		// Alternative: use regularexpression to add/delete it afterwards
+		// TODO: escape!
 		$where = "g.title LIKE '%".$mybb->input['search']['title']."%'"
 			." AND g.name LIKE '%".$mybb->input['search']['name']."%'"
 			." AND g.description LIKE '%".$mybb->input['search']['description']."%'";
+		// TODO: htmlencode
+		$url .= "&name=".$mybb->input['search']['name'];
+		$url .= "&description=".$mybb->input['search']['description'];
 		if($mybb->input['search']['cid'] != 0)
 		{
-			$where .= " AND g.cid='".$mybb->input['search']['cid']."'";
+			$where .= " AND g.cid='".intval($mybb->input['search']['cid'])."'";
+			$url .= "&cid=".intval($mybb->input['search']['cid']);
 		}
 		if($mybb->input['search']['active'] != 0)
 		{
 			if($mybb->input['search']['active'] == 2)
 			{
 				$where .= " AND g.active='0'";
+				$url .= "&active=0";
 			}
 			else
 			{
 				$where .= " AND g.active='1'";
+				$url .= "&active=1";
 			}
 		}
 	}
 
 	// Build the multipage navigation
+	// TODO: escape and htmlencode?
 	$pag = $mybb->input['page'] ? intval($mybb->input['page']) : 1;
 	$sortby = isset($mybb->input['sortby']) ? $mybb->input['sortby'] : "title";
 	$order = isset($mybb->input['order']) ? $mybb->input['order'] : "ASC";
@@ -640,10 +645,8 @@ else
 	$query = $db->simple_select("games g", "gid", $where);
 	$count = $db->num_rows($query);
 
-	// TODO: built simply the complete URL with empty and default parameters
-	//	 after all, it's better then this hack, isn't it?
-	$addr = explode("&page=", $_SERVER['QUERY_STRING']);
-	$pagination = draw_admin_pagination($pag, $perpage, $count, "index.php?".$addr['0']);
+	$url .= "&sortby=".$sortby."&order=".$order."&perpage".$perpage;
+	$pagination = draw_admin_pagination($pag, $perpage, $count, $url);
 	echo $pagination."<br /><br />";
 
 	// Test if this is a search query, or an ordinary requist ...
@@ -671,6 +674,7 @@ else
 
 	while($games = $db->fetch_array($query))
 	{
+		// TODO: put this in separate function?
 		if($games['cid'] == 0)
 		{
 			$category_edit = "";
