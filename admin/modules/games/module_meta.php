@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 30/12/2008 by Paretje
+ *   Last modified: 17/09/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -47,7 +47,7 @@ function games_meta()
 	$sub_menu['60'] = array("id" => "tools", "title" => $lang->nav_tools, "link" => "index.php?module=games/tools");
 	$sub_menu['70'] = array("id" => "version", "title" => $lang->nav_version, "link" => "index.php?module=games/version");
 	
-	$plugins->run_hooks_by_ref("admin_games_menu", $sub_menu);
+	$plugins->run_hooks("admin_games_menu", $sub_menu);
 	
 	$page->add_menu_item($lang->gamesection, "games", "index.php?module=games", 60, $sub_menu);
 	
@@ -71,7 +71,7 @@ function games_action_handler($action)
 		'version' => array('active' => 'version', 'file' => 'version.php')
 	);
 	
-	$plugins->run_hooks_by_ref("admin_games_action_handler", $actions);
+	$plugins->run_hooks("admin_games_action_handler", $actions);
 
 	if(!isset($actions[$action]))
 	{
@@ -100,7 +100,7 @@ function games_admin_permissions()
 		"version"		=> $lang->can_manage_version
 	);
 	
-	$plugins->run_hooks_by_ref("admin_games_permissions", $admin_permissions);
+	$plugins->run_hooks("admin_games_permissions", $admin_permissions);
 	
 	return array("name" => $lang->gamesection, "permissions" => $admin_permissions, "disporder" => 60);
 }
