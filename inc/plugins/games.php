@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 01/01/2014 by Paretje
+ *   Last modified: 17/09/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -59,7 +59,7 @@ function games_info()
 		"authorsite"	=> "http://www.gamesection.org",
 		"version"	=> "1.3.0",
 		"guid"		=> "db37073977904e9458f54937ceb13a9f",
-		"compatibility" => "16*"
+		"compatibility" => "18*"
 	);
 }
 
@@ -766,7 +766,7 @@ function games_groups_graph()
 	$form_container->output_row($lang->tournaments, "", "<div class=\"group_settings_bit\">".implode("</div><div class=\"group_settings_bit\">", $tournaments_options)."</div>");
 
 	//Plugin
-	$plugins->run_hooks_by_ref("admin_user_groups_edit_games", $form_container);
+	$plugins->run_hooks("admin_user_groups_edit_games", $form_container);
 
 	$form_container->end();
 	echo "</div>";

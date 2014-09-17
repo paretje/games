@@ -116,7 +116,7 @@ function upload_file_gs($file, $path, $filename="")
 	$upload['path'] = $path;
 	$upload['type'] = $file['type'];
 	$upload['size'] = $file['size'];
-	$plugins->run_hooks_by_ref("upload_file_end", $upload);
+	$plugins->run_hooks("upload_file_end", $upload);
 	return $upload;
 }
 
