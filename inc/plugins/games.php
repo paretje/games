@@ -367,7 +367,7 @@ function games_activate()
 	require_once MYBB_ROOT.'inc/adminfunctions_templates.php';
 
 	find_replace_templatesets('header', '#'.preg_quote('{$lang->toplinks_help}</a></li>').'#', "{\$lang->toplinks_help}</a></li>
-					<li><a href=\"{\$mybb->settings['bburl']}/games.php\"><img src=\"{\$mybb->settings['bburl']}/games/images/games.png\" alt=\"\" />{\$lang->gamesection}</a></li>");
+						<li><a href=\"{\$mybb->settings['bburl']}/games.php\" style=\"background-image: url('{\$mybb->settings['bburl']}/games/images/games.png')\">{\$lang->gamesection}</a></li>");
 
 	find_replace_templatesets('usercp_nav', '#'.preg_quote('{$usercpmenu}').'#', "{\$usercpmenu}
 <tr>
@@ -388,8 +388,8 @@ function games_deactivate()
 	// Undo Game Section changes to MyBB templates
 	require_once MYBB_ROOT."inc/adminfunctions_templates.php";
 
-	find_replace_templatesets("header", '#'.preg_quote('
-					<li><a href="{$mybb->settings[\'bburl\']}/games.php"><img src="{$mybb->settings[\'bburl\']}/games/images/games.png" alt="" />{$lang->gamesection}</a></li>').'#', '', 0);
+	find_replace_templatesets('header', '#'.preg_quote('
+						<li><a href="{$mybb->settings[\'bburl\']}/games.php" style="background-image: url(\'{$mybb->settings[\'bburl\']}/games/images/games.png\')">{$lang->gamesection}</a></li>').'#', '', 0);
 
 	find_replace_templatesets("usercp_nav", '#'.preg_quote('
 <tr>
