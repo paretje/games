@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 27/01/2014 by Paretje
+ *   Last modified: 02/10/2014 by Paretje
  *
  ***************************************************************************/
 
@@ -63,13 +63,10 @@ if($mybb->input['action'] == "" || $mybb->input['action'] == "add" || $mybb->inp
 // TODO: Control if there are no missing or unnecessary plugin hooks
 if($mybb->input['action'] == "add")
 {
-	//Plugin
 	$plugins->run_hooks("admin_games_games_add_tar_start");
 
-	//Handle the game
 	if($mybb->request_method == "post")
 	{
-		//Check values
 		if(!intval($mybb->input['cid']) && intval($mybb->input['cid']) !== 0)
 		{
 			$errors[] = $lang->error_missing_category;
@@ -79,7 +76,6 @@ if($mybb->input['action'] == "add")
 			$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories WHERE cid='".intval($mybb->input['cid'])."'");
 			$cat = $db->fetch_array($query);
 			$cat_test = $db->num_rows($query);
-
 			if($cat_test == 0)
 			{
 				$errors[] = $lang->catdoesntexist;
@@ -89,14 +85,11 @@ if($mybb->input['action'] == "add")
 		{
 			$errors[] = $lang->error_missing_active;
 		}
-
-		//Test file
 		if(intval($_FILES['game_tar']['size']) == 0 || !is_uploaded_file($_FILES['game_tar']['tmp_name']))
 		{
 			$errors[] = $lang->error_missing_game_tar;
 		}
 
-		//Test if directories are writable
 		if(!is_writable(MYBB_ADMIN_DIR."games"))
 		{
 			$errors[] = $lang->sprintf($lang->not_writable, $config['admin_dir']."/games");
@@ -110,23 +103,18 @@ if($mybb->input['action'] == "add")
 			$errors[] = $lang->sprintf($lang->not_writable, "games/images");
 		}
 
-		//File name
 		$filename = explode(".tar", $_FILES['game_tar']['name']);
 		$filename = my_substr($filename[0], 5);
-
-		//Test game
+		// TODO: count?
 		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".$db->escape_string($filename)."'");
 		$game_test = $db->num_rows($query);
-
-		if($game_test != 0 && $mybb->input['force'] != 1)
+		if($game_test > && $mybb->input['force'] != 1)
 		{
 			$errors[] = $lang->gamealreadyexist;
 		}
 
-		//Check if there were errors, if no, continue
 		if(!$errors)
 		{
-			//Upload file
 			$file_tar = upload_file($_FILES['game_tar'], MYBB_ADMIN_DIR."games", $_FILES['game_tar']['name']);
 			if($file_tar['error'])
 			{
@@ -135,14 +123,11 @@ if($mybb->input['action'] == "add")
 
 			if(!$errors)
 			{
-				//Unpack tar
 				require_once MYBB_ROOT."inc/3rdparty/tar/Tar.php";
 				
-				//Extract
 				$tar = new Archive_Tar(MYBB_ADMIN_DIR."games/".$_FILES['game_tar']['name']);
 				$tar->extract(MYBB_ADMIN_DIR."games");
 				
-				//Tar control
 				if($tar == 0)
 				{
 					$errors[] = $lang->tar_problem;
@@ -150,10 +135,8 @@ if($mybb->input['action'] == "add")
 
 				if(!$errors)
 				{
-					//Delete tar
 					@unlink(MYBB_ADMIN_DIR."games/".$_FILES['game_tar']['name']);
 
-					//SWF file
 					if(!@copy(MYBB_ADMIN_DIR."games/".$filename.".swf", MYBB_ROOT."games/".$filename.".swf"))
 					{
 						$errors[] = $lang->error_missing_game_tar_swf;
@@ -163,8 +146,6 @@ if($mybb->input['action'] == "add")
 						@my_chmod(MYBB_ROOT."games/".$filename.".swf", 0777);
 						@unlink(MYBB_ADMIN_DIR."games/".$filename.".swf");
 					}
-
-					//GIF1 file
 					if(!@copy(MYBB_ADMIN_DIR."games/".$filename."1.gif", MYBB_ROOT."games/images/".$filename."1.gif"))
 					{
 						$errors[] = $lang->error_missing_game_tar_gif1;
@@ -174,8 +155,6 @@ if($mybb->input['action'] == "add")
 						@my_chmod(MYBB_ROOT."games/images/".$filename."1.gif", 0777);
 						@unlink(MYBB_ADMIN_DIR."games/".$filename."1.gif");
 					}
-
-					//GIF2 file
 					if(!@copy(MYBB_ADMIN_DIR."games/".$filename."2.gif", MYBB_ROOT."games/images/".$filename."2.gif"))
 					{
 						$errors[] = $lang->error_missing_game_tar_gif2;
@@ -185,8 +164,6 @@ if($mybb->input['action'] == "add")
 						@my_chmod(MYBB_ROOT."games/images/".$filename."2.gif", 0777);
 						@unlink(MYBB_ADMIN_DIR."games/".$filename."2.gif");
 					}
-
-					//Copy gamedata
 					if(is_dir(MYBB_ADMIN_DIR."games/gamedata/".$filename))
 					{
 						gamedata_copy(MYBB_ADMIN_DIR."games/gamedata/".$filename, MYBB_ROOT."arcade/gamedata/".$filename);
@@ -195,10 +172,11 @@ if($mybb->input['action'] == "add")
 
 					if(!$errors)
 					{
-						//Load php file
+						// TODO: Note that this could be a serious security risk.
+						// Some kind of control, or a simply parsing the content
+						// would probably safer.
 						require_once(MYBB_ADMIN_DIR."games/".$filename.".php");
 
-						//Highscore type
 						if($config['highscore_type'] == "low" || $config['highscore_type'] == "ASC")
 						{
 							$high = "ASC";
@@ -208,14 +186,13 @@ if($mybb->input['action'] == "add")
 							$high = "DESC";
 						}
 
-						//Insert game
 						$insert_game = array(
 							'cid'		=> intval($mybb->input['cid']),
 							'title'		=> $db->escape_string($config['gtitle']),
 							'name'		=> $db->escape_string($config['gname']),
 							'description'	=> $db->escape_string($config['gwords']),
-							'what'		=> $db->escape_string($config['object']),
-							'use_keys'	=> $db->escape_string($config['gkeys']),
+							'purpose'	=> $db->escape_string($config['object']),
+							'keys'		=> $db->escape_string($config['gkeys']),
 							'bgcolor'	=> $db->escape_string($config['bgcolor']),
 							'width'		=> intval($config['gwidth']),
 							'height'	=> intval($config['gheight']),
@@ -224,12 +201,10 @@ if($mybb->input['action'] == "add")
 							'active'	=> intval($mybb->input['active'])
 						);
 
-						//Plugin
 						$plugins->run_hooks("admin_games_games_add_tar_do");
 
 						$gid = $db->insert_query("games", $insert_game);
 
-						//Log
 						if(intval($mybb->input['cid']) !== 0)
 						{
 							log_admin_action($gid, $config['gtitle'], $mybb->input['cid'], $cat['title']);
@@ -247,48 +222,37 @@ if($mybb->input['action'] == "add")
 		}
 	}
 
-	//Navigation and header
-	$page->add_breadcrumb_item($lang->nav_add_game_tar);
-	$page->output_header($lang->nav_add_game_tar);
-
-	//Show the sub-tabs
+	$page->add_breadcrumb_item($lang->nav_add_game);
+	$page->output_header($lang->nav_add_game);
 	$page->output_nav_tabs($sub_tabs, 'add_game');
 
-	//Show the errors
 	if($errors)
 	{
 		$page->output_inline_error($errors);
 	}
 
-	//Categories
 	$categories[0] = $lang->game_cat_no;
-
 	$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games_categories ORDER BY title ASC");
 	while($category = $db->fetch_array($query))
 	{
 		$categories[$category['cid']] = $category['title'];
 	}
 
-	//Selected items
 	if(!isset($mybb->input['force']))
 	{
 		$mybb->input['force'] = 0;
 	}
 
-	//Starts the table and the form
 	$form = new Form("index.php?module=games/games&amp;action=add", "post", false, true);
 	$form_container = new FormContainer($lang->nav_add_game_tar);
 
-	//Input for game
 	$form_container->output_row($lang->game_tar." <em>*</em>", false, $form->generate_file_upload_box('game_tar', array('id' => 'game_tar')), 'game_tar');
 	$form_container->output_row($lang->game_cat." <em>*</em>", false, $form->generate_select_box('cid', $categories, $mybb->input['cid'], array('id' => 'cid')), 'cid');
 	$form_container->output_row($lang->game_active." <em>*</em>", false, $form->generate_yes_no_radio('active', $mybb->input['active']), 'active');
 	$form_container->output_row($lang->game_force, $lang->game_force_desc, $form->generate_yes_no_radio('force', $mybb->input['force']), 'force');
 
-	//Plugin
 	$plugins->run_hooks("admin_games_games_add_tar_end");
 
-	//End of table and form
 	$form_container->end();
 	$buttons[] = $form->generate_submit_button($lang->save);
 	$buttons[] = $form->generate_reset_button($lang->reset);
@@ -321,8 +285,8 @@ if($mybb->input['action'] == "add_manual")
 				'purpose'	=> $db->escape_string($mybb->input['purpose']),
 				'keys'		=> $db->escape_string($mybb->input['keys']),
 				'bgcolor'	=> $db->escape_string($mybb->input['bgcolor']),
-				'width'		=> $db->escape_string($mybb->input['width']),
-				'height'	=> $db->escape_string($mybb->input['height']),
+				'width'		=> intval($mybb->input['width']),
+				'height'	=> intval($mybb->input['height']),
 				'dateline'	=> TIME_NOW,
 				'score_type'	=> $db->escape_string($mybb->input['score_type']),
 				'active'	=> intval($mybb->input['active'])
@@ -348,7 +312,6 @@ if($mybb->input['action'] == "add_manual")
 	}
 
 	// Fill the default values when the user starts to add a game manually
-	// TODO: Is there any situation where only one of these would be !isset?
 	if(!isset($mybb->input['bgcolor']))
 	{
 		$mybb->input['bgcolor'] = "000000";
@@ -757,6 +720,7 @@ function build_games_form($title, $action, $values)
 }
 
 // TODO: Wait a minute ... isn't pass by reference deprecated?
+// Note: returns category string
 function control_games_input(&$errors)
 {
 	global $mybb, $lang, $db;
