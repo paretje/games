@@ -108,7 +108,7 @@ if($mybb->input['action'] == "add")
 		// TODO: count?
 		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE name='".$db->escape_string($filename)."'");
 		$game_test = $db->num_rows($query);
-		if($game_test > && $mybb->input['force'] != 1)
+		if($game_test > 0 && $mybb->input['force'] != 1)
 		{
 			$errors[] = $lang->gamealreadyexist;
 		}
