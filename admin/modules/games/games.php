@@ -244,7 +244,7 @@ if($mybb->input['action'] == "add")
 	}
 
 	$form = new Form("index.php?module=games/games&amp;action=add", "post", false, true);
-	$form_container = new FormContainer($lang->nav_add_game_tar);
+	$form_container = new FormContainer($lang->nav_add_game);
 
 	$form_container->output_row($lang->game_tar." <em>*</em>", false, $form->generate_file_upload_box('game_tar', array('id' => 'game_tar')), 'game_tar');
 	$form_container->output_row($lang->game_cat." <em>*</em>", false, $form->generate_select_box('cid', $categories, $mybb->input['cid'], array('id' => 'cid')), 'cid');
