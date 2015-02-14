@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 15/02/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -43,7 +43,8 @@ $theme_templates['games'] = "<html>
 	color: #000000;
 }
 </style>
-<script type=\"text/javascript\" src=\"jscripts/games_rating.js?ver=120\"></script>
+<script type=\"text/javascript\" src=\"jscripts/rating.js?ver=1803\"></script>
+<script type=\"text/javascript\" src=\"jscripts/games_rating.js?ver=125\"></script>
 <script type=\"text/javascript\">
 <!--
 	lang.stars = new Array();
@@ -101,7 +102,7 @@ $theme_templates['games_bit'] = "<tr>
 {\$games_favourite}
 {\$games_tournament}
 <li>
-<ul class=\"star_rating{\$not_rated}\" style=\"float:left;\" id=\"rating_game_{\$games[\'gid\']}\">
+<ul class=\"star_rating{\$not_rated}\" style=\"float:left;\" id=\"rating_thread_{\$games[\'gid\']}\">
 <li style=\"width: {\$games[\'width\']}%\" class=\"current_rating\" id=\"current_rating_{\$games[\'gid\']}\">{\$ratingvotesav}</li>
 </ul>
 </li>

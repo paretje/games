@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2013 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 10/09/2013 by Paretje
+ *   Last modified: 14/02/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -821,7 +821,7 @@ switch($mybb->input['action'])
 		}
 	break;
 	case 'rate':
-		$gid = intval($mybb->input['gid']);
+		$gid = intval($mybb->input['tid']);
 		
 		//Test user
 		if($mybb->user['uid'] == 0)
