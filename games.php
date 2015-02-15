@@ -889,9 +889,9 @@ switch($mybb->input['action'])
 		{
 			$width = $rating*20;
 			$ratingvotesav = $lang->sprintf($lang->rating_votes_average, $rate_count, $rating);
-			echo "<success><br />".$lang->rating_added."</success>\n";
-			echo "<average>".$ratingvotesav."</average>\n";
-			echo "<width>".$width."</width>";
+			$json = array("success" => $lang->rating_added, "average" => $ratingvotesav, "width" => $width);
+			@header("Content-type: application/json; charset=" + $lang->settings['charset']);
+			echo json_encode($json);
 		}
 		else
 		{
