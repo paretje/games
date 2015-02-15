@@ -249,17 +249,31 @@ Copyright © 2006-{\$copy_year} <strong><a href=\"http://www.gamesection.org\" t
 </span>
 <br />";
 
-$theme_templates['games_menu'] = "<br />
+$theme_templates['games_menu'] = "<style type=\"text/css\">
+ul.games_menu
+{
+	list-style: none outside none;
+	font-weight: bold;
+	text-align: right;
+	margin: 10px;
+}
+ul.games_menu li
+{
+	display: inline;
+	padding-left: 5px;
+}
+ul.games_menu li a:link {
+	color: #000000;
+}
+</style>
 <table border=\"0\" cellspacing=\"{\$theme[\'borderwidth\']}\" cellpadding=\"{\$theme[\'tablespace\']}\" class=\"tborder\">
 <tr>
 <td class=\"trow1\">
-<div class=\"menu\">
-<ul>
+<ul class=\"games_menu\">
 <li><a href=\"games.php\">{\$lang->gamesection}</a></li>
 {\$games_menu_lastchamps}
 {\$games_menu_user}
 </ul>
-</div>
 </td>
 </tr>
 </table>";
