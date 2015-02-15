@@ -855,7 +855,7 @@ switch($mybb->input['action'])
 		
 		//Insert rating
 		$rate = array(
-			'gid'			=> intval($mybb->input['gid']),
+			'gid'			=> intval($mybb->input['tid']),
 			'uid'			=> intval($mybb->user['uid']),
 			'username'		=> $db->escape_string($mybb->user['username']),
 			'rating'		=> intval($mybb->input['rating']),
