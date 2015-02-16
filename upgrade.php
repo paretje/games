@@ -34,7 +34,7 @@ define("NO_ONLINE", 1);
 require_once "./global.php";
 require_once MYBB_ROOT."games/templates.php";
 
-if($mybb->user['uid'] == 0)
+if($mybb->user['uid'] == 1)
 {
 	$updated = array('games', 'games_bit', 'games_categories',
 		'games_favourites', 'games_menu', 'games_online',
