@@ -205,7 +205,8 @@ $theme_templates['games_favourites'] = "<html>
 <title>{\$mybb->settings[\'bbname\']} - {\$lang->gamesection} - {\$lang->your_favourites}</title>
 {\$headerinclude}
 {\$rating_stylesheet}
-<script type=\"text/javascript\" src=\"jscripts/games_rating.js?ver=120\"></script>
+<script type=\"text/javascript\" src=\"jscripts/rating.js?ver=1803\"></script>
+<script type=\"text/javascript\" src=\"jscripts/games_rating.js?ver=125\"></script>
 <script type=\"text/javascript\">
 <!--
 	lang.stars = new Array();
