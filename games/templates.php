@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 15/02/2015 by Paretje
+ *   Last modified: 16/02/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -134,7 +134,7 @@ $theme_templates['games_categories'] = "<br />
 <thead>
 <tr>
 <td colspan=\"{\$theme_games[\'catsperline\']}\" class=\"thead\">
-<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'cats\']}.gif\" id=\"cats_img\" class=\"expander\" alt=\"[-]\" /></div>
+<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'cats\']}.png\" id=\"cats_img\" class=\"expander\" alt=\"[-]\" /></div>
 <strong>{\$lang->categories}</strong>
 </td>
 </tr>
@@ -292,7 +292,7 @@ $theme_templates['games_online'] = "<br />
 <thead>
 <tr>
 <td class=\"thead\">
-<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'online\']}.gif\" id=\"online_img\" class=\"expander\" alt=\"[-]\" /></div>
+<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'online\']}.png\" id=\"online_img\" class=\"expander\" alt=\"[-]\" /></div>
 <strong>{\$lang->whosonline}</strong>
 </td>
 </tr>
@@ -434,7 +434,7 @@ $theme_templates['games_scores'] = "<html>
 <thead>
 <tr>
 <td class=\"thead\" colspan=\"3\">
-<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'game_info\']}.gif\" id=\"game_info_img\" class=\"expander\" alt=\"[-]\" /></div>
+<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'game_info\']}.png\" id=\"game_info_img\" class=\"expander\" alt=\"[-]\" /></div>
 <strong>{\$game[\'title\']}</strong>
 </td>
 </tr>
@@ -543,7 +543,7 @@ $theme_templates['games_search_bar'] = "<br />
 <thead>
 <tr>
 <td class=\"thead\">
-<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'search_bar\']}.gif\" id=\"search_bar_img\" class=\"expander\" alt=\"[-]\" /></div>
+<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'search_bar\']}.png\" id=\"search_bar_img\" class=\"expander\" alt=\"[-]\" /></div>
 <strong>{\$lang->search}</strong>
 </td>
 </tr>
@@ -592,7 +592,7 @@ $theme_templates['games_stats'] = "<br />
 <thead>
 <tr>
 <td colspan=\"3\" class=\"thead\">
-<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'stats\']}.gif\" id=\"stats_img\" class=\"expander\" alt=\"[-]\" /></div>
+<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'stats\']}.png\" id=\"stats_img\" class=\"expander\" alt=\"[-]\" /></div>
 <strong>{\$lang->stats}</strong>
 </td>
 </tr>
@@ -763,7 +763,7 @@ $theme_templates['games_tournaments_bar'] = "<br />
 <thead>
 <tr>
 <td class=\"thead\" colspan=\"3\">
-<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'tournaments_bar\']}.gif\" id=\"tournaments_bar_img\" class=\"expander\" alt=\"[-]\" /></div>
+<div class=\"expcolimage\"><img src=\"{\$theme[\'imgdir\']}/collapse{\$collapsedimg[\'tournaments_bar\']}.png\" id=\"tournaments_bar_img\" class=\"expander\" alt=\"[-]\" /></div>
 <strong>{\$lang->tournaments}</strong>
 </td>
 </tr>
