@@ -394,6 +394,7 @@ else
 	$page->output_nav_tabs($sub_tabs, 'tools');
 	
 	//Plugin
+	$lang->load("games_games");
 	$plugins->run_hooks("admin_games_tools_default_start");
 	
 	//Start table
