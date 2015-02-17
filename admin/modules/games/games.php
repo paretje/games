@@ -1077,6 +1077,66 @@ elseif($mybb->input['action'] == "delete")
 		$page->output_footer();
 	}
 }
+elseif($mybb->input['action'] == "reset_scores")
+{
+	//Plugin
+	$plugins->run_hooks("admin_games_games_reset_scores");
+
+	//Test game
+	if(intval($mybb->input['gid']) != 0)
+	{
+		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE gid='".intval($mybb->input['gid'])."'");
+		$game = $db->fetch_array($query);
+		$game_test = $db->num_rows($query);
+
+		if($game_test == 0)
+		{
+			flash_message($lang->gamedoesntexist, 'error');
+			admin_redirect("index.php?module=games/games");
+		}
+	}
+	elseif($mybb->input['gid'] != "all")
+	{
+		flash_message($lang->gamedoesntexist, 'error');
+		admin_redirect("index.php?module=games/games");
+	}
+
+	// User clicked no
+	if($mybb->input['no'])
+	{
+		admin_redirect("index.php?module=games/games");
+	}
+
+	//Handle the reset
+	if($mybb->request_method == "post")
+	{
+		if($mybb->input['gid'] == "all")
+		{
+			//Reset scores and champions table
+			$db->write_query("TRUNCATE ".TABLE_PREFIX."games_scores");
+			$db->write_query("TRUNCATE ".TABLE_PREFIX."games_champions");
+		}
+		else
+		{
+			//Delete scores and champions
+			$db->delete_query("games_scores", "gid='".intval($mybb->input['gid'])."'");
+			$db->delete_query("games_champions", "gid='".intval($mybb->input['gid'])."'");
+		}
+
+		//Plugin
+		$plugins->run_hooks("admin_games_games_reset_scores_do");
+
+		//Log
+		log_admin_action($mybb->input['gid']);
+
+		flash_message($lang->resetdone_scores, 'success');
+		admin_redirect("index.php?module=games/games");
+	}
+	else
+	{
+		$page->output_confirm_action("index.php?module=games/games&action=reset_scores&gid=".$mybb->input['gid'], $lang->reset_scores_confirmation);
+	}
+}
 else
 {
 	//Control page
@@ -1290,6 +1350,7 @@ else
 <a href=\"index.php?module=games/games&amp;action=delete&amp;gid=".$games['gid']."&amp;my_post_key=".$mybb->post_code."\">".$lang->delete_game."</a><br />
 ".$category_edit."
 <a href=\"index.php?module=games/gamedata&amp;directory=".$games['name']."\">".$lang->gamedata."</a><br /><br />
+<a href=\"index.php?module=games/games&amp;action=reset_scores&amp;gid=".$games['gid']."&amp;my_post_key=".$mybb->post_code."\" onclick=\"return AdminCP.deleteConfirmation(this, '".$lang->reset_scores_confirmation."')\">".$lang->reset_scores."</a><br /><br />
 <a href=\"../games.php?action=play&amp;gid=".$games['gid']."\">".$lang->play_game."</a>", array("width" => 125));
 		$table->construct_cell("<strong>".$lang->game_cat.":</strong> ".$games['catname']."<br >
 <strong>".$lang->addedon."</strong> ".$pubdate."<br />
