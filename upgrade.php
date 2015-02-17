@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 16/02/2015 by Paretje
+ *   Last modified: 17/02/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -38,8 +38,9 @@ if($mybb->user['uid'] == 1)
 {
 	$updated = array('games', 'games_bit', 'games_categories',
 		'games_favourites', 'games_menu', 'games_online',
-		'games_scores', 'games_search_bar', 'games_stats',
-		'games_tournaments_bar');
+		'games_stats_randomgames', 'games_scores',
+		'games_search_bar', 'games_stats',
+		'games_tournaments_add_game', 'games_tournaments_bar');
 	foreach($updated as $name)
 	{
 		$db->update_query("games_templates",
