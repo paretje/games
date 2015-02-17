@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 16/02/2015 by Paretje
+ *   Last modified: 17/02/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -666,7 +666,7 @@ $theme_templates['games_stats_games_bit'] = "<a href=\"games.php?action=play&amp
 
 $theme_templates['games_stats_randomgames'] = "<script type=\"text/javascript\" src=\"jscripts/randomgames.js?ver=120\"></script>
 <fieldset>
-<legend><strong><a onclick=\"randomgames_update({\$cid})\">{\$lang->\$randomgames}</a></strong></legend>
+<legend><strong><a onclick=\"randomgames_update({\$cid})\" style=\"cursor: pointer;\">{\$lang->\$randomgames}</a></strong></legend>
 <div id=\"randomgames\">
 {\$randomgames_bit}
 </div>
@@ -741,7 +741,7 @@ $theme_templates['games_tournaments_add'] = "<html>
 </html>";
 
 $theme_templates['games_tournaments_add_game'] = "<input type=\"text\" class=\"textbox\" id=\"title\" name=\"title\" size=\"40\" maxlength=\"30\" value=\"\" />
-<a onclick=\"search_games(title.value)\">{\$lang->search}</a>
+<a onclick=\"search_games(title.value)\" style=\"cursor: pointer;\">{\$lang->search}</a>
 <div id=\"games\"></div>";
 
 $theme_templates['games_tournaments_add_game_search'] = "<br />
