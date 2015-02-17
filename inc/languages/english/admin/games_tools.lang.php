@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2009 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 17/04/2009 by Paretje
+ *   Last modified: 17/02/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -45,6 +45,7 @@ $l['repair_rating_desc'] = "This will recount the rating of a game, and delete t
 $l['repair_favourites_desc'] = "This will delete the double favourites on your board.";
 $l['repair_tournaments_stats_desc'] = "This will recount the tournament statistics.";
 $l['cleanup_gamedata_desc'] = "This will clean up the unnecessary gamedata.";
+$l['reset_scores_desc'] = "This will reset all scores.";
 $l['repair_permissions_desc'] = "This will repair the default usergroup and administration permissions of the Game Section.";
 
 $l['not_writable'] = "The follow directory has no chmod 777:<br />\n{1}";

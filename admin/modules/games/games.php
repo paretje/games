@@ -1349,8 +1349,8 @@ else
 		$table->construct_cell("<a href=\"index.php?module=games/games&amp;action=edit&amp;gid=".$games['gid']."\">".$lang->edit_game."</a><br />
 <a href=\"index.php?module=games/games&amp;action=delete&amp;gid=".$games['gid']."&amp;my_post_key=".$mybb->post_code."\">".$lang->delete_game."</a><br />
 ".$category_edit."
+<a href=\"index.php?module=games/games&amp;action=reset_scores&amp;gid=".$games['gid']."&amp;my_post_key=".$mybb->post_code."\" onclick=\"return AdminCP.deleteConfirmation(this, '".$lang->reset_scores_confirmation."')\">".$lang->reset_scores."</a><br />
 <a href=\"index.php?module=games/gamedata&amp;directory=".$games['name']."\">".$lang->gamedata."</a><br /><br />
-<a href=\"index.php?module=games/games&amp;action=reset_scores&amp;gid=".$games['gid']."&amp;my_post_key=".$mybb->post_code."\" onclick=\"return AdminCP.deleteConfirmation(this, '".$lang->reset_scores_confirmation."')\">".$lang->reset_scores."</a><br /><br />
 <a href=\"../games.php?action=play&amp;gid=".$games['gid']."\">".$lang->play_game."</a>", array("width" => 125));
 		$table->construct_cell("<strong>".$lang->game_cat.":</strong> ".$games['catname']."<br >
 <strong>".$lang->addedon."</strong> ".$pubdate."<br />
