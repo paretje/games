@@ -421,10 +421,10 @@ else
 	$table->construct_cell("<a href=\"index.php?module=games/tools&amp;action=cleanup_gamedata\"><strong>".$lang->cleanup_gamedata."</strong></a><br />\n<small>".$lang->cleanup_gamedata_desc."</small>");
 	$table->construct_row();
 	
-	$table->construct_cell("<a href=\"index.php?module=games/games&amp;action=reset_scores&amp;gid=all\"><strong>".$lang->reset_scores."</strong></a><br />\n<small>".$lang->reset_scores_desc."</small>");
+	$table->construct_cell("<a href=\"index.php?module=games/tools&amp;action=repair_permissions\"><strong>".$lang->repair_permissions."</strong></a><br />\n<small>".$lang->repair_permissions_desc."</small>");
 	$table->construct_row();
 	
-	$table->construct_cell("<a href=\"index.php?module=games/tools&amp;action=repair_permissions\"><strong>".$lang->repair_permissions."</strong></a><br />\n<small>".$lang->repair_permissions_desc."</small>");
+	$table->construct_cell("<a href=\"index.php?module=games/games&amp;action=reset_scores&amp;gid=all\"><strong>".$lang->reset_scores."</strong></a><br />\n<small>".$lang->reset_scores_desc."</small>");
 	$table->construct_row();
 	
 	//Plugin
