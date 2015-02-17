@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 07/02/2010 by Paretje
+ *   Last modified: 17/02/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -59,6 +59,7 @@ $l['admin_log_games_games_add_simple'] = "Added game #{1} ({2}) from category #{
 $l['admin_log_games_games_add_tar'] = "Added game #{1} ({2}) from category #{3} ({4})";
 $l['admin_log_games_games_edit'] = "Edited game #{1} ({2}) from category #{3} ({4})";
 $l['admin_log_games_games_delete'] = "Deleted game #{1} ({2}) from category #{3} ({4})";
+$l['admin_log_games_games_reset_scores'] = "Scores reset ({1})";
 
 $l['admin_log_games_gamedata_add'] = "Addeded gamedata-file {3} in {2}";
 $l['admin_log_games_gamedata_add_directory'] = "Added gamedata-directory {3} in {2}";
