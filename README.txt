@@ -3,7 +3,7 @@ Online - Urbanus <info@Online-Urbanus.be>
 http://www.Online-Urbanus.be
 
 This program is released under the GNU General Public License (GPL) version 3,
-see the file 'COPYING' for more information.
+see the file 'LICENSE.txt' for more information.
 
 Description
 ===========
