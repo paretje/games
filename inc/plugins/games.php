@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 14/02/2015 by Paretje
+ *   Last modified: 17/03/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -238,7 +238,9 @@ ADD `games_maxscores` INT(2) NOT NULL DEFAULT '0',
 ADD `games_sortby` VARCHAR(10) NOT NULL DEFAULT '0',
 ADD `games_order` VARCHAR(4) NOT NULL DEFAULT '0',
 ADD `games_theme` INT(10) NOT NULL DEFAULT '0',
-ADD `games_tournamentnotify` INT(1) NOT NULL DEFAULT '1';");
+ADD `games_tournamentnotify` INT(1) NOT NULL DEFAULT '1',
+ADD `games_champnotify_pm` INT(1) NOT NULL DEFAULT '1',
+ADD `games_champnotify_email` INT(1) NOT NULL DEFAULT '0';");
 
 $db->write_query("UPDATE ".TABLE_PREFIX."usergroups SET canviewgames='1', canplaygames='0', canplaytournaments='0', canaddtournaments='0' WHERE gid='1'");
 $db->write_query("UPDATE ".TABLE_PREFIX."usergroups SET canviewgames='1', canplaygames='0', canplaytournaments='0', canaddtournaments='0' WHERE gid='5'");
@@ -383,7 +385,9 @@ DROP `games_maxscores`,
 DROP `games_sortby`,
 DROP `games_order`,
 DROP `games_theme`,
-DROP `games_tournamentnotify`;");
+DROP `games_tournamentnotify`,
+DROP `games_champnotify_pm`,
+DROP `games_champnotify_email`;");
 
 //Update usergroupschache
 $cache->update_usergroups();

@@ -1988,7 +1988,9 @@ switch($mybb->input['action'])
 				'games_sortby'			=> $db->escape_string($mybb->input['sortby']),
 				'games_order'			=> $db->escape_string($mybb->input['order']),
 				'games_theme'			=> intval($mybb->input['theme']),
-				'games_tournamentnotify'	=> intval($mybb->input['tournamentnotify'])
+				'games_tournamentnotify'	=> intval($mybb->input['tournamentnotify']),
+				'games_champnotify_pm'		=> intval($mybb->input['champnotifypm']),
+				'games_champnotify_email'	=> intval($mybb->input['champnotifyemail'])
 			);
 			
 			$plugins->run_hooks("games_do_settings");
@@ -2123,6 +2125,25 @@ switch($mybb->input['action'])
 			}
 			
 			eval("\$tournament_settings = \"".$games_core->template('games_user_settings_tournaments')."\";");
+		}
+
+		// Notification Options
+		if($mybb->user['games_champnotify_pm'] != 0)
+		{
+			$champpmcheck = "checked=\"checked\"";
+		}
+		else
+		{
+			$champpmcheck = '';
+		}
+
+		if($mybb->user['games_champnotify_email'] != 0)
+		{
+			$champemailcheck = "checked=\"checked\"";
+		}
+		else
+		{
+			$champemailcheck = '';
 		}
 		
 		//Online

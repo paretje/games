@@ -1073,6 +1073,20 @@ $theme_templates['games_user_settings'] = "<html>
 </select>
 </fieldset>
 {\$tournament_settings}
+<br />
+<fieldset class=\"trow2\">
+<legend><strong>{\$lang->options_notify}</strong></legend>
+<table cellspacing=\"0\" cellpadding=\"2\">
+<tr>
+<td valign=\"top\" width=\"1\"><input type=\"checkbox\" class=\"checkbox\" name=\"champpmnotify\" id=\"champpmnotify\" value=\"1\" {\$champpmcheck} /></td>
+<td><span class=\"smalltext\"><label for=\"champpmnotify\">{\$lang->champnotify_pm}</label></span></td>
+</tr>
+<tr>
+<td valign=\"top\" width=\"1\"><input type=\"checkbox\" class=\"checkbox\" name=\"champemailnotify\" id=\"champemailnotify\" value=\"1\" {\$champemailcheck} /></td>
+<td><span class=\"smalltext\"><label for=\"champemailnotify\">{\$lang->champnotify_email}</label></span></td>
+</tr>
+</table>
+</fieldset>
 </td>
 <td width=\"50%\" class=\"trow1\" valign=\"top\">
 <fieldset class=\"trow2\">
