@@ -1078,12 +1078,12 @@ $theme_templates['games_user_settings'] = "<html>
 <legend><strong>{\$lang->options_notify}</strong></legend>
 <table cellspacing=\"0\" cellpadding=\"2\">
 <tr>
-<td valign=\"top\" width=\"1\"><input type=\"checkbox\" class=\"checkbox\" name=\"champpmnotify\" id=\"champpmnotify\" value=\"1\" {\$champpmcheck} /></td>
-<td><span class=\"smalltext\"><label for=\"champpmnotify\">{\$lang->option_champnotify_pm}</label></span></td>
+<td valign=\"top\" width=\"1\"><input type=\"checkbox\" class=\"checkbox\" name=\"champnotifypm\" id=\"champnotifypm\" value=\"1\" {\$champpmcheck} /></td>
+<td><span class=\"smalltext\"><label for=\"champnotifypm\">{\$lang->option_champnotify_pm}</label></span></td>
 </tr>
 <tr>
-<td valign=\"top\" width=\"1\"><input type=\"checkbox\" class=\"checkbox\" name=\"champemailnotify\" id=\"champemailnotify\" value=\"1\" {\$champemailcheck} /></td>
-<td><span class=\"smalltext\"><label for=\"champemailnotify\">{\$lang->option_champnotify_email}</label></span></td>
+<td valign=\"top\" width=\"1\"><input type=\"checkbox\" class=\"checkbox\" name=\"champnotifyemail\" id=\"champnotifyemail\" value=\"1\" {\$champemailcheck} /></td>
+<td><span class=\"smalltext\"><label for=\"champnotifyemail\">{\$lang->option_champnotify_email}</label></span></td>
 </tr>
 </table>
 </fieldset>
