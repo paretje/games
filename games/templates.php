@@ -1079,11 +1079,11 @@ $theme_templates['games_user_settings'] = "<html>
 <table cellspacing=\"0\" cellpadding=\"2\">
 <tr>
 <td valign=\"top\" width=\"1\"><input type=\"checkbox\" class=\"checkbox\" name=\"champpmnotify\" id=\"champpmnotify\" value=\"1\" {\$champpmcheck} /></td>
-<td><span class=\"smalltext\"><label for=\"champpmnotify\">{\$lang->champnotify_pm}</label></span></td>
+<td><span class=\"smalltext\"><label for=\"champpmnotify\">{\$lang->option_champnotify_pm}</label></span></td>
 </tr>
 <tr>
 <td valign=\"top\" width=\"1\"><input type=\"checkbox\" class=\"checkbox\" name=\"champemailnotify\" id=\"champemailnotify\" value=\"1\" {\$champemailcheck} /></td>
-<td><span class=\"smalltext\"><label for=\"champemailnotify\">{\$lang->champnotify_email}</label></span></td>
+<td><span class=\"smalltext\"><label for=\"champemailnotify\">{\$lang->option_champnotify_email}</label></span></td>
 </tr>
 </table>
 </fieldset>
