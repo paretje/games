@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 14/02/2015 by Paretje
+ *   Last modified: 05/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -48,6 +48,7 @@ $plugins->add_hook("admin_user_users_delete_commit", "games_users_delete");
 $plugins->add_hook("admin_user_groups_edit_graph_tabs", "games_groups_graph_tabs");
 $plugins->add_hook("admin_user_groups_edit_graph", "games_groups_graph");
 $plugins->add_hook("admin_user_groups_edit_commit", "games_groups_commit");
+$plugins->add_hook("admin_page_output_footer", "games_users_reset_scores");
 
 function games_info()
 {
@@ -842,14 +843,21 @@ function games_users_delete()
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_rating WHERE uid='".$user['uid']."'");
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_scores WHERE uid='".$user['uid']."'");
 	$db->write_query("DELETE FROM ".TABLE_PREFIX."games_sessions WHERE uid='".$user['uid']."'");
-	
+
+	games_repair_champs($user);
+}
+
+function games_repair_champs($orig_user)
+{
+	global $db;
+
 	//Update champions
 	//Loading the games and scores
 	$query = $db->query("SELECT DISTINCT g.gid, g.score_type, g.title, s.uid, s.username, s.score, s.dateline, c.score AS champscore
 	FROM ".TABLE_PREFIX."games g
 	LEFT JOIN ".TABLE_PREFIX."games_scores s ON (g.gid=s.gid)
 	LEFT JOIN ".TABLE_PREFIX."games_champions c ON (g.gid=c.gid)
-	WHERE c.uid='".$user['uid']."'");
+	WHERE c.uid='".$orig_user['uid']."'");
 	while($scores = $db->fetch_array($query))
 	{
 		if(($champ[$scores['gid']]['score'] < $scores['score'] && $scores['score_type'] == DESC) || ($champ[$scores['gid']]['score'] > $scores['score'] && $score['score_type'] == ASC))
@@ -882,7 +890,7 @@ function games_users_delete()
 	}
 	
 	//Delete champions without a second score
-	$db->delete_query("games_champions", "uid='".$user['uid']."'");
+	$db->delete_query("games_champions", "uid='".$orig_user['uid']."'");
 }
 
 function games_groups_graph_tabs($tabs)
@@ -928,5 +936,24 @@ function games_groups_commit()
 	$updated_group['canplaygames'] = $mybb->input['canplaygames'];
 	$updated_group['canplaytournaments'] = $mybb->input['canplaytournaments'];
 	$updated_group['canaddtournaments'] = $mybb->input['canaddtournaments'];
+}
+
+function games_users_reset_scores($args)
+{
+	global $mybb, $lang;
+
+	if($args['this']->active_module = "user")
+	{
+		echo "
+<script type=\"text/javascript\">
+	$('.popup_menu').each(function() {
+		var menu = $(this)
+		var id = menu.attr('id').split('_');
+		if(id[0] == \"user\") {
+			menu.append('<div class=\"popup_item_container\"><a href=\"index.php?module=games-games&amp;action=reset_scores&amp;uid=' + id[1] + '&amp;my_post_key=" . $mybb->post_code . "\" onclick=\"return AdminCP.deleteConfirmation(this, \'" . $lang->reset_scores_confirmation . "\')\" class=\"popup_item\">" . $lang->user_reset_scores . "</a></div>');
+		}
+	});
+</script>";
+	}
 }
 ?>

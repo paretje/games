@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 17/02/2015 by Paretje
+ *   Last modified: 05/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -53,6 +53,8 @@ $l['can_play_games'] = "Can play on the Game Section?";
 $l['tournaments'] = "Tournaments";
 $l['can_play_tournaments'] = "Can play tournaments?";
 $l['can_add_tournaments'] = "Can add tournaments?";
+
+$l['user_reset_scores'] = "Reset Scores";
 
 $l['admin_log_games_games_add'] = "Added game #{1} ({2}) from category #{3} ({4})";
 $l['admin_log_games_games_add_simple'] = "Added game #{1} ({2}) from category #{3} ({4})";
