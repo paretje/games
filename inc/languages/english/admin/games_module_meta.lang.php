@@ -62,7 +62,7 @@ $l['admin_log_games_games_add_simple'] = "Added game #{1} ({2}) from category #{
 $l['admin_log_games_games_add_tar'] = "Added game #{1} ({2}) from category #{3} ({4})";
 $l['admin_log_games_games_edit'] = "Edited game #{1} ({2}) from category #{3} ({4})";
 $l['admin_log_games_games_delete'] = "Deleted game #{1} ({2}) from category #{3} ({4})";
-$l['admin_log_games_games_reset_scores'] = "Scores reset ({1})";
+$l['admin_log_games_games_reset_scores'] = "Scores reset (game={1}, user={2})";
 
 $l['admin_log_games_gamedata_add'] = "Addeded gamedata-file {3} in {2}";
 $l['admin_log_games_gamedata_add_directory'] = "Added gamedata-directory {3} in {2}";

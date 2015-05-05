@@ -1124,6 +1124,9 @@ elseif($mybb->input['action'] == "reset_scores")
 			//Reset scores and champions table
 			$db->write_query("TRUNCATE ".TABLE_PREFIX."games_scores");
 			$db->write_query("TRUNCATE ".TABLE_PREFIX."games_champions");
+
+			$gid = 'all';
+			$uid = 'all';
 		}
 		elseif(intval($mybb->input['uid']) != 0)
 		{
@@ -1133,19 +1136,25 @@ elseif($mybb->input['action'] == "reset_scores")
 
 			//Repair champions
 			games_repair_champs($user);
+
+			$gid = 'all';
+			$uid = '#' . intval($mybb->input['uid']);
 		}
 		else
 		{
 			//Delete scores and champions
 			$db->delete_query("games_scores", "gid='".intval($mybb->input['gid'])."'");
 			$db->delete_query("games_champions", "gid='".intval($mybb->input['gid'])."'");
+
+			$gid = '#' . intval($mybb->input['gid']);
+			$uid = 'all';
 		}
 
 		//Plugin
 		$plugins->run_hooks("admin_games_games_reset_scores_do");
 
 		//Log
-		log_admin_action($mybb->input['gid']);
+		log_admin_action($gid, $uid);
 
 		flash_message($lang->resetdone_scores, 'success');
 		if(intval($mybb->input['uid']) != 0)
