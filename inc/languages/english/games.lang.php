@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 16/02/2010 by Paretje
+ *   Last modified: 05/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -158,6 +158,7 @@ $l['settingssaved'] = "Your settings are saved.<br />You will be redirected.";
 $l['options_games'] = "Games Options";
 $l['options_scores'] = "Score Options";
 $l['options_themes'] = "Theme Options";
+$l['options_notify'] = "Notification Options";
 
 $l['option_maxgames'] = "Maximum Games Per Page:";
 $l['option_maxgames_sen'] = "{1} games per page";
@@ -177,4 +178,26 @@ $l['option_maxscores'] = "Maximum Scores Per Page:";
 $l['option_maxscores_sen'] = "{1} scores per page";
 
 $l['option_themes'] = "Game Section Theme:";
+
+$l['option_champnotify_pm'] = "Notify me by PM when I'm beaten as the champion of a game.";
+$l['option_champnotify_email'] = "Notify me by email when I'm beaten as the champion of a game.";
+
+$l['emailsubject_champbeaten'] = "Champion score of {1} beaten";
+$l['email_champbeaten'] = "{1},
+
+	{2} has just beaten your champion score of {4} for {3} with {5}. 
+
+To play the game, you can go to the following URL:
+{7}/{8}
+
+Thank you,
+{6} Staff
+
+------------------------------------------
+Unsubscription Information:
+
+If you would not like to receive any more notifications of beaten champion scores, visit the following URL in your browser:
+{7}/games.php?action=settings
+
+------------------------------------------";
 ?>

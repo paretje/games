@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 17/02/2015 by Paretje
+ *   Last modified: 05/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -121,7 +121,6 @@ $l['gamedoesntexist'] = "The selected game doesn't exist.";
 $l['delete_gamefiles'] = "Yes, and delete the files, too";
 
 $l['delete_game_confirmation'] = "Are you sure you want to delete this game?";
-$l['reset_scores_confirmation'] = "Are you sure you want to reset these scores?";
 
 $l['added_game'] = "The game is successfully added.";
 $l['edited_game'] = "The game is successfully edited.";

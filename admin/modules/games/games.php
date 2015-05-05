@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 05/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -1082,7 +1082,7 @@ elseif($mybb->input['action'] == "reset_scores")
 	//Plugin
 	$plugins->run_hooks("admin_games_games_reset_scores");
 
-	//Test game
+	//Test game or user
 	if(intval($mybb->input['gid']) != 0)
 	{
 		$query = $db->query("SELECT * FROM ".TABLE_PREFIX."games WHERE gid='".intval($mybb->input['gid'])."'");
@@ -1093,6 +1093,15 @@ elseif($mybb->input['action'] == "reset_scores")
 		{
 			flash_message($lang->gamedoesntexist, 'error');
 			admin_redirect("index.php?module=games/games");
+		}
+	}
+	elseif(intval($mybb->input['uid']) != 0)
+	{
+		$user = get_user(intval($mybb->input['uid']));
+		if(!$user['uid'])
+		{
+			flash_message($lang->error_invalid_user, 'error');
+			admin_redirect("index.php?module=user-users");
 		}
 	}
 	elseif($mybb->input['gid'] != "all")
@@ -1115,22 +1124,47 @@ elseif($mybb->input['action'] == "reset_scores")
 			//Reset scores and champions table
 			$db->write_query("TRUNCATE ".TABLE_PREFIX."games_scores");
 			$db->write_query("TRUNCATE ".TABLE_PREFIX."games_champions");
+
+			$gid = 'all';
+			$uid = 'all';
+		}
+		elseif(intval($mybb->input['uid']) != 0)
+		{
+			//Delete scores and champions
+			$db->delete_query("games_scores", "uid='".intval($mybb->input['uid'])."'");
+			$db->delete_query("games_champions", "uid='".intval($mybb->input['uid'])."'");
+
+			//Repair champions
+			games_repair_champs($user);
+
+			$gid = 'all';
+			$uid = '#' . intval($mybb->input['uid']);
 		}
 		else
 		{
 			//Delete scores and champions
 			$db->delete_query("games_scores", "gid='".intval($mybb->input['gid'])."'");
 			$db->delete_query("games_champions", "gid='".intval($mybb->input['gid'])."'");
+
+			$gid = '#' . intval($mybb->input['gid']);
+			$uid = 'all';
 		}
 
 		//Plugin
 		$plugins->run_hooks("admin_games_games_reset_scores_do");
 
 		//Log
-		log_admin_action($mybb->input['gid']);
+		log_admin_action($gid, $uid);
 
 		flash_message($lang->resetdone_scores, 'success');
-		admin_redirect("index.php?module=games/games");
+		if(intval($mybb->input['uid']) != 0)
+		{
+			admin_redirect("index.php?module=user");
+		}
+		else
+		{
+			admin_redirect("index.php?module=games/games");
+		}
 	}
 	else
 	{
