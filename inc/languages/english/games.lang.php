@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 17/03/2015 by Paretje
+ *   Last modified: 05/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -181,4 +181,23 @@ $l['option_themes'] = "Game Section Theme:";
 
 $l['option_champnotify_pm'] = "Notify me by PM when I'm beaten as the champion of a game.";
 $l['option_champnotify_email'] = "Notify me by email when I'm beaten as the champion of a game.";
+
+$l['emailsubject_champbeaten'] = "Champion score of {1} beaten";
+$l['email_champbeaten'] = "{1},
+
+	{2} has just beaten your champion score of {4} for {3} with {5}. 
+
+To play the game, you can go to the following URL:
+{7}/{8}
+
+Thank you,
+{6} Staff
+
+------------------------------------------
+Unsubscription Information:
+
+If you would not like to receive any more notifications of beaten champion scores, visit the following URL in your browser:
+{7}/games.php?action=settings
+
+------------------------------------------";
 ?>
