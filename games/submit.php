@@ -317,7 +317,7 @@ else
 				$ex_champ = $db->fetch_array($query);
 
 				$subject = $lang->sprintf($lang->emailsubject_champbeaten, $game['title']);
-				$message = $lang->sprintf($lang->email_champbeaten, $champ_ex['username'], $mybb->user['username'], $game['title'], $champ['score'], $score, $mybb->settings['bbname'], $mybb->settings['bburl'], "games.php?action=play&amp;gid=" . $gid);
+				$message = $lang->sprintf($lang->email_champbeaten, $champ_ex['username'], $mybb->user['username'], $game['title'], $champ['score'], $score, $mybb->settings['bbname'], $mybb->settings['bburl'], "games.php?action=play&gid=" . $gid);
 
 				if($ex_champ['games_champnotify_pm'] == 1)
 				{
