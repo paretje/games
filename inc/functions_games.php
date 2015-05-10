@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 10/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -564,7 +564,7 @@ function whos_online()
 	$plugins->run_hooks("games_whosonline_end");
 	
 	//Output
-	$lang->online_count = $lang->sprintf($lang->online_count, my_number_format($onlinecount), my_number_format($membercount), my_number_format($anoncount), my_number_format($guestcount), $botcount, my_number_format($recordcount), $recorddate, $recordtime);
+	$online_count = $lang->sprintf($lang->games_online_count, my_number_format($onlinecount), my_number_format($membercount), my_number_format($anoncount), my_number_format($guestcount), $botcount, my_number_format($recordcount), $recorddate, $recordtime);
 	
 	eval("\$online_out = \"".$games_core->template("games_online")."\";");
 	

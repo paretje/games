@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2010 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 16/02/2010 by Paretje
+ *   Last modified: 10/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -41,7 +41,7 @@ $l['your_settings'] = "Your Settings";
 $l['your_stats'] = "Your Statistics";
 
 $l['whosonline'] = "Who's Online";
-$l['online_count'] = "<strong>Online:</strong> {1} | <strong>Members:</strong> {2} | <strong>Invisible:</strong> {3} | <strong>Guests:</strong> {4} | <strong>Bots:</strong> {5} | <strong>Record:</strong> {6} at {8} on {7}";
+$l['games_online_count'] = "<strong>Online:</strong> {1} | <strong>Members:</strong> {2} | <strong>Invisible:</strong> {3} | <strong>Guests:</strong> {4} | <strong>Bots:</strong> {5} | <strong>Record:</strong> {6} at {8} on {7}";
 
 $l['stats'] = "Statistics";
 $l['last_games'] = "Last games";

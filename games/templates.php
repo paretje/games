@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 17/02/2015 by Paretje
+ *   Last modified: 10/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -300,7 +300,7 @@ $theme_templates['games_online'] = "<br />
 </thead>
 <tbody style=\"{\$collapsed[\'online_e\']}\" id=\"online_e\">
 <tr>
-<td class=\"tcat\">{\$lang->online_count}</td>
+<td class=\"tcat\">{\$online_count}</td>
 </tr>
 <tr>
 <td class=\"trow1\" valign=\"top\">
