@@ -40,7 +40,8 @@ if($mybb->user['uid'] == 1)
 		'games_favourites', 'games_menu', 'games_online',
 		'games_stats_randomgames', 'games_scores',
 		'games_search_bar', 'games_stats',
-		'games_tournaments_add_game', 'games_tournaments_bar');
+		'games_tournaments_add_game', 'games_tournaments_bar',
+		'games_user_settings');
 	foreach($updated as $name)
 	{
 		$db->update_query("games_templates",

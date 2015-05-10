@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2009 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 14/04/2009 by Paretje
+ *   Last modified: 05/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -63,6 +63,7 @@ $l['edit_game'] = "Edit game";
 $l['delete_game'] = "Delete game";
 $l['edit_cat'] = "Edit category";
 $l['gamedata'] = "Gamedata";
+$l['reset_scores'] = "Reset scores";
 $l['play_game'] = "Play game";
 $l['addedon'] = "Added on:";
 $l['played'] = "Total played:";
@@ -124,4 +125,5 @@ $l['delete_game_confirmation'] = "Are you sure you want to delete this game?";
 $l['added_game'] = "The game is successfully added.";
 $l['edited_game'] = "The game is successfully edited.";
 $l['deleted_game'] = "The game is successfully deleted.";
+$l['resetdone_scores'] = "The scores are reset.";
 ?>

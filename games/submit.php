@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 17/03/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -308,6 +308,41 @@ else
 				$lastchamps = $lastchamps[0];
 			
 				$cache->update("games_lastchamps", $lastchamps);
+			}
+
+			// Send notification if champion beaten
+			if($champ['uid'] != $update_champ['uid'])
+			{
+				$query = $db->simple_select("users", "*", "uid='".$champ['uid']."'");
+				$ex_champ = $db->fetch_array($query);
+
+				$subject = $lang->sprintf($lang->emailsubject_champbeaten, $game['title']);
+				$message = $lang->sprintf($lang->email_champbeaten, $champ_ex['username'], $mybb->user['username'], $game['title'], $champ['score'], $score, $mybb->settings['bbname'], $mybb->settings['bburl'], "games.php?action=play&gid=" . $gid);
+
+				if($ex_champ['games_champnotify_pm'] == 1)
+				{
+					require_once MYBB_ROOT."inc/datahandlers/pm.php";
+					$pmhandler = new PMDataHandler();
+
+					$pm = array(
+						'subject' => $subject,
+						'message' => $message,
+						'toid' => array($ex_champ['uid']),
+						'fromid' => $mybb->user['uid'],
+						'options' => array('savecopy' => '0','signature' => '1')
+					);
+
+					$pmhandler->set_data($pm);
+					if($pmhandler->validate_pm())
+					{
+						$pmhandler->insert_pm();
+					}
+				}
+
+				if($ex_champ['games_champnotify_email'] == 1)
+				{
+					my_mail($ex_champ['email'], $subject, $message);
+				}
 			}
 		
 			//Plugin

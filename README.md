@@ -1,9 +1,10 @@
-Game Section 1.2.5
-Online - Urbanus <info@Online-Urbanus.be>
-http://www.Online-Urbanus.be
+Game Section 1.3.0
+==================
+Copyright: 2006-2015 Paretje <info@Online-Urbanus.be>  
+Homepage: http://www.gamesection.org
 
 This program is released under the GNU General Public License (GPL) version 3,
-see the file 'COPYING' for more information.
+see the file 'LICENSE.txt' for more information.
 
 Description
 ===========

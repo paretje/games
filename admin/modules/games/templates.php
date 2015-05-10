@@ -2,11 +2,11 @@
 /***************************************************************************
  *
  *   Game Section for MyBB
- *   Copyright: © 2006-2012 The Game Section Development Group
+ *   Copyright: © 2006-2015 The Game Section Development Group
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 11/12/2012 by Paretje
+ *   Last modified: 17/03/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -119,14 +119,21 @@ if($mybb->input['action'] == "add")
 	{
 		$lang->template_set = $lang->template_set_global;
 	}
-	
+
 	//Extra header
-	$page->extra_header .= "
-	<link type=\"text/css\" href=\"./jscripts/codepress/languages/codepress-mybb.css\" rel=\"stylesheet\" id=\"cp-lang-style\" />
-	<script type=\"text/javascript\" src=\"./jscripts/codepress/codepress.js\"></script>
-	<script type=\"text/javascript\">
-		CodePress.language = \'mybb\';
-	</script>";
+	$page->extra_header .= '
+<link href="./jscripts/codemirror/lib/codemirror.css" rel="stylesheet">
+<link href="./jscripts/codemirror/theme/mybb.css" rel="stylesheet">
+<script src="./jscripts/codemirror/lib/codemirror.js"></script>
+<script src="./jscripts/codemirror/mode/xml/xml.js"></script>
+<script src="./jscripts/codemirror/mode/javascript/javascript.js"></script>
+<script src="./jscripts/codemirror/mode/css/css.js"></script>
+<script src="./jscripts/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<link href="./jscripts/codemirror/addon/dialog/dialog-mybb.css" rel="stylesheet" >
+<script src="./jscripts/codemirror/addon/dialog/dialog.js"></script>
+<script src="./jscripts/codemirror/addon/search/searchcursor.js"></script>
+<script src="./jscripts/codemirror/addon/search/search.js"></script>
+';
 	
 	//Navigation and header
 	$page->add_breadcrumb_item($lang->nav_templates, "index.php?module=games/templates");
@@ -160,9 +167,8 @@ if($mybb->input['action'] == "add")
 	echo $form->generate_hidden_field("tid", $mybb->input['tid']);
 	$form_container = new FormContainer($lang->nav_add_template);
 	
-	//Input for game
 	$form_container->output_row($lang->template_title, false, $form->generate_text_box('title', $mybb->input['title'], array('id' => 'title')), 'title');
-	$form_container->output_row("", "", $form->generate_text_area('template', $mybb->input['template'], array('id' => 'template', 'class' => 'codepress mybb', 'style' => 'width: 100%; height: 500px;')), 'template');
+	$form_container->output_row("", "", $form->generate_text_area('template', $mybb->input['template'], array('id' => 'template', 'class' => '', 'style' => 'width: 100%; height: 500px;')), 'template');
 	
 	//Plugin
 	$plugins->run_hooks("admin_games_templates_add_end");
@@ -173,18 +179,16 @@ if($mybb->input['action'] == "add")
 	$buttons[] = $form->generate_submit_button($lang->save_return);
 	$form->output_submit_wrapper($buttons);
 	$form->end();
-	
-	echo "<script language=\"Javascript\" type=\"text/javascript\">
-	Event.observe('add', 'submit', function()
-	{
-		if($('template_cp')) {
-			var area = $('template_cp');
-			area.id = 'template';
-			area.value = template.getCode();
-			area.disabled = false;
-		}
-	});
-</script>";
+
+	echo "<script type=\"text/javascript\">
+		var editor = CodeMirror.fromTextArea(document.getElementById(\"template\"), {
+			lineNumbers: true,
+			lineWrapping: true,
+			mode: \"text/html\",
+			tabMode: \"indent\",
+			theme: \"mybb\"
+		});
+	</script>";
 	
 	$page->output_footer();
 }
@@ -281,12 +285,19 @@ elseif($mybb->input['action'] == "edit")
 	}
 	
 	//Extra header
-	$page->extra_header .= "
-	<link type=\"text/css\" href=\"./jscripts/codepress/languages/codepress-mybb.css\" rel=\"stylesheet\" id=\"cp-lang-style\" />
-	<script type=\"text/javascript\" src=\"./jscripts/codepress/codepress.js\"></script>
-	<script type=\"text/javascript\">
-		CodePress.language = \'mybb\';
-	</script>";
+	$page->extra_header .= '
+<link href="./jscripts/codemirror/lib/codemirror.css" rel="stylesheet">
+<link href="./jscripts/codemirror/theme/mybb.css" rel="stylesheet">
+<script src="./jscripts/codemirror/lib/codemirror.js"></script>
+<script src="./jscripts/codemirror/mode/xml/xml.js"></script>
+<script src="./jscripts/codemirror/mode/javascript/javascript.js"></script>
+<script src="./jscripts/codemirror/mode/css/css.js"></script>
+<script src="./jscripts/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<link href="./jscripts/codemirror/addon/dialog/dialog-mybb.css" rel="stylesheet" >
+<script src="./jscripts/codemirror/addon/dialog/dialog.js"></script>
+<script src="./jscripts/codemirror/addon/search/searchcursor.js"></script>
+<script src="./jscripts/codemirror/addon/search/search.js"></script>
+';
 	
 	//Navigation and header
 	$page->add_breadcrumb_item($lang->nav_templates, "index.php?module=games/templates");
@@ -327,7 +338,7 @@ elseif($mybb->input['action'] == "edit")
 	
 	//Input for game
 	$form_container->output_row($lang->template_title, false, $form->generate_text_box('title', $template['title'], array('id' => 'title')), 'title');
-	$form_container->output_row("", "", $form->generate_text_area('template', $template['template'], array('id' => 'template', 'class' => 'codepress mybb', 'style' => 'width: 100%; height: 500px;')), 'template');
+	$form_container->output_row("", "", $form->generate_text_area('template', $template['template'], array('id' => 'template', 'class' => '', 'style' => 'width: 100%; height: 500px;')), 'template');
 	
 	//Plugin
 	$plugins->run_hooks("admin_games_templates_edit_end");
@@ -338,18 +349,16 @@ elseif($mybb->input['action'] == "edit")
 	$buttons[] = $form->generate_submit_button($lang->save_return);
 	$form->output_submit_wrapper($buttons);
 	$form->end();
-	
-	echo "<script language=\"Javascript\" type=\"text/javascript\">
-	Event.observe('edit', 'submit', function()
-	{
-		if($('template_cp')) {
-			var area = $('template_cp');
-			area.id = 'template';
-			area.value = template.getCode();
-			area.disabled = false;
-		}
-	});
-</script>";
+
+	echo "<script type=\"text/javascript\">
+		var editor = CodeMirror.fromTextArea(document.getElementById(\"template\"), {
+			lineNumbers: true,
+			lineWrapping: true,
+			mode: \"text/html\",
+			tabMode: \"indent\",
+			theme: \"mybb\"
+		});
+	</script>";
 	
 	$page->output_footer();
 }
