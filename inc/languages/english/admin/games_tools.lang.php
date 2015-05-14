@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 17/02/2015 by Paretje
+ *   Last modified: 14/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -36,6 +36,7 @@ $l['repair_rating'] = "Repair and Recount Ratings";
 $l['repair_favourites'] = "Repair Favourites";
 $l['repair_tournaments_stats'] = "Repair Tournament Statistics";
 $l['cleanup_gamedata'] = "Clean-up Gamedata";
+$l['reset_scores'] = "Reset Scores";
 $l['repair_permissions'] = "Repair Permissions";
 
 $l['repair_scores_desc'] = "This will delete the double scores on your board.";
