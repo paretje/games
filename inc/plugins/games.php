@@ -6,7 +6,7 @@
  *   
  *   Website: http://www.gamesection.org
  *   
- *   Last modified: 09/05/2015 by Paretje
+ *   Last modified: 14/05/2015 by Paretje
  *
  ***************************************************************************/
 
@@ -59,7 +59,7 @@ function games_info()
 		"author"	=> "Paretje",
 		"authorsite"	=> "http://www.gamesection.org",
 		"version"	=> "1.3.0",
-		"guid"		=> "db37073977904e9458f54937ceb13a9f",
+		"codename"	=> "games",
 		"compatibility" => "18*"
 	);
 }
