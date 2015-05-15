@@ -422,7 +422,7 @@ find_replace_templatesets('header', '#'.preg_quote('{$lang->toplinks_help}</a></
 find_replace_templatesets('usercp_nav', '#'.preg_quote('{$usercpmenu}').'#', "{\$usercpmenu}
 <tr>
 	<td class=\"tcat\">
-		<div class=\"expcolimage\"><img src=\"{\$theme['imgdir']}/collapse{\$collapsedimg['usercpgames']}.gif\" id=\"usercpgames_img\" class=\"expander\" alt=\"[-]\" title=\"[-]\" /></div>
+		<div class=\"expcolimage\"><img src=\"{\$theme['imgdir']}/collapse{\$collapsedimg['usercpgames']}.png\" id=\"usercpgames_img\" class=\"expander\" alt=\"[-]\" title=\"[-]\" /></div>
 		<div><span class=\"smalltext\"><strong>{\$lang->gamesection}</strong></span></div>
 	</td>
 </tr>
@@ -444,7 +444,7 @@ find_replace_templatesets('header', '#'.preg_quote('
 find_replace_templatesets("usercp_nav", '#'.preg_quote('
 <tr>
 	<td class="tcat">
-		<div class="expcolimage"><img src="{$theme[\'imgdir\']}/collapse{$collapsedimg[\'usercpgames\']}.gif" id="usercpgames_img" class="expander" alt="[-]" title="[-]" /></div>
+		<div class="expcolimage"><img src="{$theme[\'imgdir\']}/collapse{$collapsedimg[\'usercpgames\']}.png" id="usercpgames_img" class="expander" alt="[-]" title="[-]" /></div>
 		<div><span class="smalltext"><strong>{$lang->gamesection}</strong></span></div>
 	</td>
 </tr>
