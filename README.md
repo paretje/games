@@ -1,4 +1,4 @@
-Game Section 1.3.0
+Game Section 1.3.1
 ==================
 Copyright: 2006-2015 Paretje <info@Online-Urbanus.be>  
 Homepage: http://www.gamesection.org
@@ -21,8 +21,8 @@ Installing the Game Section plugin on your MyBB installation is quite easy:
     2. Activate the plugin
     3. Add games to the Game Section
 
-Upgrading from Game Section 1.2.4
-=================================
+Upgrading from Game Section 1.2.4 or 1.3.0
+==========================================
     1. Overwrite the existing files with the new files
     2. Run upgrade.php
-    3. Delete upgrade.php, as leaving it on your board is a security risk
+    3. Delete upgrade.php, as leaving it on your board is a potential security risk
