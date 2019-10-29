@@ -152,7 +152,8 @@ class games
 				//Create new setting
 				$session_create = array(
 					'uid'			=> intval($mybb->user['uid']),
-					'lastchange'		=> intval(TIME_NOW)
+					'lastchange'		=> intval(TIME_NOW),
+					'sessiondata'		=> serialize($this->session)
 				);
 				
 				$db->insert_query("games_sessions", $session_create);
